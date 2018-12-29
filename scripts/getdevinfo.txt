@@ -1,0 +1,11 @@
+8064000000
+响应：
+COS version：4 bytes
+SN：32 bytes
+NET Flag：1 byte （01-Test Net 02-Formal Net ）
+Life Cycle：4bytes(04000000-生产状态 01000000-初始化状态 02000000-用户状态)
+
+
+8064010000
+响应：
+PIN state： 1 byte （03-PIN未设置 02-PIN锁定 00-PIN登出 01-PIN登录）
