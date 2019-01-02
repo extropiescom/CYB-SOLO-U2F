@@ -22,7 +22,7 @@ const  register = async () => {
 			return null;
 		}
 		
-		if(devObj.lifecycle=lifeCycle.user){
+		if(devObj.lifecycle!=lifeCycle.user){
 			console.log("please init your device by wookong solo client first!\n");
 			return null;
 		}
@@ -81,6 +81,8 @@ const  register = async () => {
 			console.log("device connect fail!\n");
 			return null;
 		}
+		
+		return addrObj.address;
 				
 }
 function login()
