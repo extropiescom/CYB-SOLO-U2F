@@ -25,6 +25,11 @@ const pinState = {
 	login:"01",
 	logout:"00"
 	}
+const lifeCycle = {
+	init:"01",
+	user:"02",
+	factory:"04"
+	}
 
 function padding(send_data, send_len)
 {

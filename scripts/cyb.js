@@ -1,3 +1,9 @@
+var cancelFlag = 0;
+
+const abort = async () =>{
+	cancelFlag = 1;
+}
+
 
 const  register = async () => {	 	
 		var devObj = await connect();
@@ -15,8 +21,13 @@ const  register = async () => {
 			console.log("device connect fail!\n");
 			return null;
 		}
-		var PINObj;
 		
+		if(devObj.lifecycle=lifeCycle.user){
+			console.log("please init your device by wookong solo client first!\n");
+			return null;
+		}
+		
+		var PINObj;
 		do{
 			PINObj = await checkpinstate();
 			if(PINObj.isConnect)
@@ -31,11 +42,15 @@ const  register = async () => {
 									console.log("pin login\n");
 								break;
 								case pinState.locked:
+								{
 									console.log("pin locked\n");
-								break;
+									return null;
+								}				
 								case pinState.notset:
+								{
 									console.log("pin notset\n");
-								break;
+									return null;
+								}
 							}
 					}else
 						console.log("checkpinstate:%s\n",PINObj.err);
@@ -44,6 +59,11 @@ const  register = async () => {
 			else
 			{
 				console.log("device connect fail!\n");
+				return null;
+			}
+			if(cancelFlag==1){
+				cancelFlag = 0;
+				console.log("operation aborted!\n");
 				return null;
 			}
 		}while(PINObj.state!=pinState.login)
