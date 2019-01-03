@@ -1,21 +1,25 @@
+import {vKHtag,commDefine,padding} from './util.js'
+import {B64_encode,B64_decode} from './b64.js'
+import {sign} from './u2f'
 
 function cmdCallback(response){
-			  if(!response.errorCode){
-			  	var rv = response.signatureData;
-		 		 	res = B64_decode(rv).join('');
+			var res;
+			if(!response.errorCode){
+			var rv = response.signatureData;
+		 		res = B64_decode(rv).join('');
 		     	res = res.substring(5,res.length);
-			  }
-			  else{
-			  	var strcode = response.errorCode.toString(16);
-			  	if(strcode.length%2!=0)
-				  	strcode = "0" + strcode;
-			  	res = commDefine.cmdNG + strcode;
-			  }
-			  return res;	 
+			}
+			else{
+			var strcode = response.errorCode.toString(16);
+			if(strcode.length%2!=0)
+				strcode = "0" + strcode;
+			res = commDefine.cmdNG + strcode;
+			}
+			return res;	 
 }
 
 
-const sendcmd = async (send_buf) =>{
+export const sendcmd = async (send_buf) =>{
 
 		var callbackflag = 0;
 		var res;
@@ -67,11 +71,12 @@ const sendcmd = async (send_buf) =>{
 			var self = this;
 			
 			await new Promise((resolve, reject) => {
-            u2f.sign(location.origin, vKHb32, [key],(response)=>{
+            sign(location.origin, vKHb32, [key],(response)=>{
             	res = cmdCallback(response);
             	resolve(res);
             	}, commDefine.pilotTimeout);
-        });
+		});
+
 
 			if(res.length==4&&res!=commDefine.cmdOK) // if not OK cancel the rest send
 				return res;
@@ -79,5 +84,5 @@ const sendcmd = async (send_buf) =>{
 		return res;
 		
 }
-	
+
 

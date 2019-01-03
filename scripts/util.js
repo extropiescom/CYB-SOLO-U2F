@@ -1,12 +1,12 @@
-var vKHtag = "3B7D8101";
+export var vKHtag = "3B7D8101";
 
-const errorCode = {
+export const errorCode = {
       succuess: 0,
       fail:1,
       timeout: 5
  			}
  
- const commDefine = {
+export const commDefine = {
  			maxPacketLength: 50,
  			headerLength:8,
  			packetControlLength:6,
@@ -17,21 +17,22 @@ const errorCode = {
  			normalTimeout:5,
  			cmdOK:"9000",
  			cmdNG:"68",
- 			noDevice:"6805"
+			noDevice:"6805",
+			appID:"6802"
  			}
-const pinState = {
+export const pinState = {
 	notset:"03",
 	locked:"02",
 	login:"01",
 	logout:"00"
 	}
-const lifeCycle = {
+export const lifeCycle = {
 	init:"01",
 	user:"02",
 	factory:"04"
 	}
 
-function padding(send_data, send_len)
+export function padding(send_data, send_len)
 {
     for(var i=0;i<64-8-send_len;i++)
     {
@@ -41,7 +42,7 @@ function padding(send_data, send_len)
 }
 
 
-function parseAddr(strAddr)
+export function parseAddr(strAddr)
 {
 	 var arr=new Array();
 	 var addr = "";

@@ -1,11 +1,38 @@
+import {connect,checkpinstate,getaddress} from './solo-api.js'
+import {pinState,lifeCycle} from './util.js'
+const { Apis } = require('cybexjs-ws')
+
 var cancelFlag = 0;
 
-const abort = async () =>{
+window.abort = async () =>{
 	cancelFlag = 1;
 }
 
+const initcybex = async i => {
+	if (i >= 3) {
+	  return false;
+	}
+  
+	try {
+	  console.log('[cybex][initcybex]Apis = ', Apis);
+  
+	  await Apis.instance('wss://shanghai.51nebula.com/', true).init_promise;
+  
+	  return true;
+	} catch (err) {
+	  console.log('err in initcybex = ', err);
+  
+	  await Promise.delay(3000);
+	  await Apis.close();
+  
+	  return initcybex(++i);
+	}
+  };
 
-const  register = async () => {	 	
+  
+window.register = async () => {	 	
+		console.log("start register\n");
+		
 		var devObj = await connect();
 		if(devObj.isConnect)
 		{
@@ -81,15 +108,44 @@ const  register = async () => {
 			console.log("device connect fail!\n");
 			return null;
 		}
+
+		var cybAddress = addrObj.address.substring(0,addrObj.address.length-1);
+
+		let id = {};
+  		try {
+				await initcybex(0);
+				id = await Apis.instance()
+				.db_api()
+				.exec('get_key_references', [[cybAddress]]);
+				//check resgit or not
+				if (!id[0][0]) {
+					console.log("cyb not regist!\n");
+				}
+				else{
+					console.log("account exists!\n");
+				}
+  			} catch (err) {
+				console.log("api connect fail!\n");
+			  }
+			  
+
+			 try {
+				console.log('[cybex][getBalance]id =', id);
+				const account = await Apis.instance()
+				  .db_api()
+				  .exec('get_accounts', id);
+				console.log('[getbalance][accounts]accounts = ', account[0].name);
+			  } catch (err) {
+				console.log("get address fail\n");
+				}
+
 		
-		return addrObj.address;
 				
 }
-function login()
-{
+window.login = async () =>{
 	
 }
-function sign()
-{
+
+window.sign = async () =>{
 	
 }

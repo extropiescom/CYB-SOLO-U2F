@@ -5,7 +5,7 @@
 // https://developers.google.com/open-source/licenses/bsd
 
 // WebSafeBase64Escape and Unescape.
-function B64_encode(bytes, opt_length) {
+export function B64_encode(bytes, opt_length) {
   if (!opt_length) opt_length = bytes.length;
   var b64out =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -34,7 +34,7 @@ function B64_encode(bytes, opt_length) {
 }
 
 // Normal base64 encode; not websafe, including padding.
-function base64_encode(bytes, opt_length) {
+export function base64_encode(bytes, opt_length) {
   if (!opt_length) opt_length = bytes.length;
   var b64out =
       'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
@@ -72,7 +72,7 @@ var B64_inmap =
  42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 0, 0, 0, 0, 0
 ];
 
-function B64_decode(string) {
+export function B64_decode(string) {
   var bytes = [];
   var accu = 0;
   var shift = 0;

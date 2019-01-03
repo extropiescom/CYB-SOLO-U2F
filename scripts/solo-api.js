@@ -1,5 +1,8 @@
-
-const  connect = async ()=>{
+import {vKHtag,errorCode,commDefine,pinState,lifeCycle,padding,parseAddr} from './util.js'
+import {sendcmd} from './solo-io.js'
+import './b64.js'
+import './u2f.js'
+export const  connect = async ()=>{
 	var devObj = {
 	 	isConnect:false,
 	 	version:"",
@@ -13,7 +16,7 @@ const  connect = async ()=>{
 		var res = await sendcmd(cmd);
 		if(res.length==4&&res!=commDefine.cmdOK)
 		{
-			  if(res==commDefine.noDevice){
+			  if(res==commDefine.noDevice||commDefine.appID){
 			  	 devObj.isConnect = false;
 			  }
 			  else{
@@ -47,7 +50,7 @@ const  connect = async ()=>{
 		return res;
 }
 
-const  checkpinstate = async ()=>{
+export const  checkpinstate = async ()=>{
 	var PINObj = {
 	 	isConnect:false,
 	 	state:"",
@@ -81,7 +84,7 @@ const  checkpinstate = async ()=>{
 		}
 }
 
-const  getaddress = async ()=>{
+export const  getaddress = async ()=>{
 	var addrObj = {
 	 	isConnect:false,
 	 	address:"",
@@ -131,7 +134,7 @@ const  getaddress = async ()=>{
 		}
 }
 
-function signTransaction(lcdmode)
+export function signTransaction(lcdmode)
 {
 	
 }

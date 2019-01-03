@@ -759,3 +759,7 @@ u2f.getApiVersion = function(callback, opt_timeoutSeconds) {
     port.postMessage(req);
   });
 };
+
+module.exports = {
+  sign: u2f.sign,
+};
