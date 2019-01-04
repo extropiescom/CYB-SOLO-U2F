@@ -13,12 +13,13 @@ export const commDefine = {
  			fisrtPacket:"0001",
  			midPacket:"0002",
  			lastPacket:"0000",
- 			pilotTimeout:2,
+ 			pilotTimeout:10,
  			normalTimeout:5,
  			cmdOK:"9000",
  			cmdNG:"68",
 			noDevice:"6805",
-			appID:"6802"
+			appID:"6802",
+			waitBtn:"6F00"
  			}
 export const pinState = {
 	notset:"03",

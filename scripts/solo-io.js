@@ -2,9 +2,15 @@ import {vKHtag,commDefine,padding} from './util.js'
 import {B64_encode,B64_decode} from './b64.js'
 import {sign} from './u2f'
 
+var isFinal = 0;
+
 function cmdCallback(response){
 			var res;
 			if(!response.errorCode){
+				if(!isFinal){
+					res = commDefine.cmdOK;
+					return res;	
+				}
 			var rv = response.signatureData;
 		 		res = B64_decode(rv).join('');
 		     	res = res.substring(5,res.length);
@@ -26,6 +32,7 @@ export const sendcmd = async (send_buf) =>{
 		var mutiFirst = 1;
 		var strSendLen;
 		var send_len = send_buf.length;
+		var pacBuf;
 		//final callback
 
 		//org send_buf	
@@ -39,31 +46,35 @@ export const sendcmd = async (send_buf) =>{
 				  if(strSendLen.length%2!=0)
 				  	strSendLen = "0" + strSendLen;
 				  	
-					send_buf = strSendLen + commDefine.lastPacket + send_buf;
-					send_buf = padding(send_buf,send_len);
+					pacBuf = strSendLen + commDefine.lastPacket + send_buf;
+					pacBuf = padding(pacBuf,send_len);
 					send_len = 0;
+					isFinal = 1;
 			}
 			if(send_len>commDefine.maxPacketLength - commDefine.headerLength - commDefine.packetControlLength)
 			{//if more then 50 send first 50 and -50
-					send_len = send_len/2;
-					strSendLen = commDefine.maxPacketLength.toString(16);
+				   var tmpLen = commDefine.maxPacketLength/2;
+					strSendLen = tmpLen.toString(16);
 					 if(strSendLen.length%2!=0)
 				  	strSendLen = "0" + strSendLen;
 				  	
 					if(mutiFirst==1){// first in multi packet index = 1
-						send_buf = strSendLen + commDefine.fisrtPacket + send_buf;
+						pacBuf = strSendLen + commDefine.fisrtPacket + send_buf;
 						mutiFirst = 0;
 					}
 					else{
-						send_buf = strSendLen + commDefine.midPacket + send_buf;
+						pacBuf = strSendLen + commDefine.midPacket + send_buf;
 					}
-					send_buf = padding(send_buf,commDefine.maxPacketLength);
+					pacBuf = padding(pacBuf,commDefine.maxPacketLength/2);
+					send_buf = send_buf.substring(commDefine.maxPacketLength,send_len);
 					send_len = send_len- commDefine.maxPacketLength;
+					isFinal = 0;
+	
 			}
 		
-			send_buf = vKHtag+send_buf;
-			var vKHb64= B64_encode(send_buf,64);
-			var vKHb32= B64_encode(send_buf,32);
+			pacBuf = vKHtag+pacBuf;
+			var vKHb64= B64_encode(pacBuf,64);
+			var vKHb32= B64_encode(pacBuf,32);
 				 
 			var key = {};
 			key["version"] = "U2F_V2";
@@ -78,9 +89,10 @@ export const sendcmd = async (send_buf) =>{
 		});
 
 
-			if(res.length==4&&res!=commDefine.cmdOK) // if not OK cancel the rest send
+			if(res.length==4&&res!=commDefine.cmdOK){ // if not OK cancel the rest send
 				return res;
-			}	
+			}
+		}	
 		return res;
 		
 }

@@ -60,7 +60,7 @@ export const  checkpinstate = async ()=>{
 		var res = await sendcmd(cmd);
 	  if(res.length==4&&res!=commDefine.cmdOK)
 		{
-				if(res==commDefine.noDevice){
+				if(res==commDefine.noDevice||commDefine.appID){
 			  	 PINObj.isConnect = false;
 			  }
 			  else{
@@ -94,7 +94,7 @@ export const  getaddress = async ()=>{
 	 	var res = await sendcmd(cmdRecover);
 	  if(res.length==4&&res!=commDefine.cmdOK)
 		{
-				if(res==commDefine.noDevice){
+				if(res==commDefine.noDevice||commDefine.appID){
 			  	 addrObj.isConnect = false;
 			  }
 			  else{
@@ -109,7 +109,7 @@ export const  getaddress = async ()=>{
 		var res = await sendcmd(cmd);
 	  if(res.length==4&&res!=commDefine.cmdOK)
 		{
-				if(res==commDefine.noDevice){
+				if(res==commDefine.noDevice||commDefine.appID){
 			  	 addrObj.isConnect = false;
 			  }
 			  else{
@@ -134,7 +134,61 @@ export const  getaddress = async ()=>{
 		}
 }
 
-export function signTransaction(lcdmode)
-{
+export const  signTransaction = async (tranData)=>{
+	var signObj = {
+		isConnect:false,
+		signature:"",
+		err:""
+		};
+	var cmdSign = "80a0020034a1b84621ed2ecd968f5a010009030000000000000012133e8104000000000000000104066f776e65723203435942034359420500";
+	var res = await sendcmd(cmdSign);
+	if(res.length==4&&res!=commDefine.cmdOK)
+		{
+			if(res==commDefine.noDevice||commDefine.appID){
+				signObj.isConnect = false;
+				return signObj;
+			  }
+			  else{
+				signObj.isConnect = true;
+				signObj.err = res;
+				return signObj;
+			  }
+		}
 	
+
+		var getBtn = "80ae000000";
+		do{
+			res = await sendcmd(getBtn);
+		}while(res==commDefine.waitBtn)
+
+		if(res.length==4&&res!=commDefine.cmdOK)
+		{
+			if(res==commDefine.noDevice||commDefine.appID){
+				signObj.isConnect = false;
+				return signObj;
+			  }
+			  else{
+				signObj.isConnect = true;
+				signObj.err = res;
+				return signObj;
+			  }
+		}
+		else if(res.length>4){
+			var resData = res;
+			  res = res.substring(res.length-4,res.length);
+			  if(res ==commDefine.cmdOK){
+				signObj.isConnect = true;
+				signObj.signature = resData.substring(0,resData.length-4);
+				return signObj;
+				}
+				else{
+					return signObj;
+				}
+		}else if(res==commDefine.cmdOK)
+		{
+				signObj.isConnect = true;
+				return signObj;
+		}
+		
+		return signObj;
 }
