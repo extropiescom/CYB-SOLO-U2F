@@ -1,24 +1,30 @@
-<!DOCTYPE html 
-      PUBLIC "-//W3C//DTD HTML 4.01//EN"
-      "http://www.w3.org/TR/html4/strict.dtd">
-<html lang="en-US">
-<head profile="http://www.w3.org/2005/10/profile">
-<link rel="icon" 
-      type="image/png" 
-      href="1.png">
-
-<html>
 <head>
-<meta charset="utf-8">
-<script src="./renderer.js"></script>
-<title>CYB SOLO</title>
+      <meta charset="utf-8">
+      <script src="./renderer.js"></script>
+      <title>CYB SOLO</title>
+      <link href="css.css" rel="stylesheet" type="text/css" />
 </head>
-<body>
-<button class="btn" type="button" onclick="register()">register</button>	
-<button class="btn" type="button" onclick="login('aaaaaaaaabbbbbbvvvvfff')">login</button>	
-<button class="btn" type="button" onclick="sign()">sign</button>	
-<br>
-<button class="btn" type="button" onclick="abort()">abort</button>	
+
+<body background="bg.png" width="100%" height="100%">
+      <div id="imgLogin" style="position:absolute; margin-left:40%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:99">
+            <img src="login.png" onclick="login('aaaaaaaaabbbbbbvvvvfff')" style="cursor:pointer;">
+      </div>
+      <div id="imgDone" style="position:absolute; margin-left:40%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:0">
+            <img src="done.png" onclick="restart()" style="cursor:pointer;">
+      </div>
+      <div id="accountholder" style="position:absolute; margin-left:49%;margin-top:25%; height: 50; width: 200px; background-color:transparent;z-index:100">
+      <font id="account" color="#FFFFFF"></font>           
+      </div>
+      <div id="imgWaitBTN" style="position:absolute; margin-left:40%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:0">
+            <img src="waitBTN.png"  style="cursor:pointer;">
+      </div>
+      <div id="imgProcessing" style="position:absolute; margin-left:40%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:0">
+            <img src="processing.png"  style="cursor:pointer;">
+      </div>
+      <div id="imgWaitPIN" style="position:absolute; margin-left:40%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:0">
+            <img src="waitPIN.png"  style="cursor:pointer;">
+      </div>
+      <div id="log" style="position:absolute; margin-left:5%;margin-top:10%; height: 480px; width: 450px; background-color:transparent;z-index:99;"></div>
 </body>
 
 </html>

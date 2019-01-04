@@ -13,7 +13,7 @@ export const commDefine = {
  			fisrtPacket:"0001",
  			midPacket:"0002",
  			lastPacket:"0000",
- 			pilotTimeout:10,
+ 			pilotTimeout:2,
  			normalTimeout:5,
  			cmdOK:"9000",
  			cmdNG:"68",

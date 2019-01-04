@@ -69,14 +69,25 @@
 	
 	var cancelFlag = 0;
 	
-	window.abort = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+	function sillyUIcontroll(top) {
+		document.getElementById("imgDone").style.zIndex = 0;
+		document.getElementById("imgLogin").style.zIndex = 0;
+		document.getElementById("imgWaitPIN").style.zIndex = 0;
+		document.getElementById("imgWaitBTN").style.zIndex = 0;
+		document.getElementById("imgProcessing").style.zIndex = 0;
+	
+		document.getElementById(top).style.zIndex = 99;
+	}
+	
+	window.restart = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
 		return _regenerator2.default.wrap(function _callee$(_context) {
 			while (1) {
 				switch (_context.prev = _context.next) {
 					case 0:
-						cancelFlag = 1;
+						sillyUIcontroll("imgLogin");
+						document.getElementById("account").innerText = "";
 	
-					case 1:
+					case 2:
 					case 'end':
 						return _context.stop();
 				}
@@ -84,75 +95,90 @@
 		}, _callee, undefined);
 	}));
 	
+	window.abort = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+		return _regenerator2.default.wrap(function _callee2$(_context2) {
+			while (1) {
+				switch (_context2.prev = _context2.next) {
+					case 0:
+						cancelFlag = 1;
+	
+					case 1:
+					case 'end':
+						return _context2.stop();
+				}
+			}
+		}, _callee2, undefined);
+	}));
+	
 	var initcybex = function () {
-		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(i) {
-			return _regenerator2.default.wrap(function _callee2$(_context2) {
+		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(i) {
+			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
-					switch (_context2.prev = _context2.next) {
+					switch (_context3.prev = _context3.next) {
 						case 0:
 							if (!(i >= 3)) {
-								_context2.next = 2;
+								_context3.next = 2;
 								break;
 							}
 	
-							return _context2.abrupt('return', false);
+							return _context3.abrupt('return', false);
 	
 						case 2:
-							_context2.prev = 2;
+							_context3.prev = 2;
 	
 							console.log('[cybex][initcybex]Apis = ', Apis);
 	
-							_context2.next = 6;
+							_context3.next = 6;
 							return Apis.instance('wss://shanghai.51nebula.com/', true).init_promise;
 	
 						case 6:
-							return _context2.abrupt('return', true);
+							return _context3.abrupt('return', true);
 	
 						case 9:
-							_context2.prev = 9;
-							_context2.t0 = _context2['catch'](2);
+							_context3.prev = 9;
+							_context3.t0 = _context3['catch'](2);
 	
-							console.log('err in initcybex = ', _context2.t0);
+							console.log('err in initcybex = ', _context3.t0);
 	
-							_context2.next = 14;
+							_context3.next = 14;
 							return _promise2.default.delay(3000);
 	
 						case 14:
-							_context2.next = 16;
+							_context3.next = 16;
 							return Apis.close();
 	
 						case 16:
-							return _context2.abrupt('return', initcybex(++i));
+							return _context3.abrupt('return', initcybex(++i));
 	
 						case 17:
 						case 'end':
-							return _context2.stop();
+							return _context3.stop();
 					}
 				}
-			}, _callee2, undefined, [[2, 9]]);
+			}, _callee3, undefined, [[2, 9]]);
 		}));
 	
 		return function initcybex(_x) {
-			return _ref2.apply(this, arguments);
+			return _ref3.apply(this, arguments);
 		};
 	}();
 	
-	window.register = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+	window.register = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
 		var devObj, PINObj, addrObj, cybAddress, id, account;
-		return _regenerator2.default.wrap(function _callee3$(_context3) {
+		return _regenerator2.default.wrap(function _callee4$(_context4) {
 			while (1) {
-				switch (_context3.prev = _context3.next) {
+				switch (_context4.prev = _context4.next) {
 					case 0:
 						console.log("start register\n");
 	
-						_context3.next = 3;
+						_context4.next = 3;
 						return (0, _soloApi.connect)();
 	
 					case 3:
-						devObj = _context3.sent;
+						devObj = _context4.sent;
 	
 						if (!devObj.isConnect) {
-							_context3.next = 8;
+							_context4.next = 8;
 							break;
 						}
 	
@@ -160,123 +186,126 @@
 							console.log("device connect success!\n");
 							console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
 						} else console.log("connect:%s\n", devObj.err);
-						_context3.next = 10;
+						_context4.next = 11;
 						break;
 	
 					case 8:
 						console.log("device connect fail!\n");
-						return _context3.abrupt('return', null);
+						alert("Please connect WOOKONG SOLO!\n");
+						return _context4.abrupt('return', null);
 	
-					case 10:
+					case 11:
 						if (!(devObj.lifecycle != _util.lifeCycle.user)) {
-							_context3.next = 13;
+							_context4.next = 14;
 							break;
 						}
 	
 						console.log("please init your device by wookong solo client first!\n");
-						return _context3.abrupt('return', null);
+						return _context4.abrupt('return', null);
 	
-					case 13:
-						_context3.next = 15;
+					case 14:
+						_context4.next = 16;
 						return (0, _soloApi.checkpinstate)();
 	
-					case 15:
-						PINObj = _context3.sent;
+					case 16:
+						PINObj = _context4.sent;
 	
 						if (!PINObj.isConnect) {
-							_context3.next = 34;
+							_context4.next = 37;
 							break;
 						}
 	
 						if (PINObj.err) {
-							_context3.next = 31;
+							_context4.next = 34;
 							break;
 						}
 	
-						_context3.t0 = PINObj.state;
-						_context3.next = _context3.t0 === _util.pinState.logout ? 21 : _context3.t0 === _util.pinState.login ? 23 : _context3.t0 === _util.pinState.locked ? 25 : _context3.t0 === _util.pinState.notset ? 27 : 29;
+						_context4.t0 = PINObj.state;
+						_context4.next = _context4.t0 === _util.pinState.logout ? 22 : _context4.t0 === _util.pinState.login ? 26 : _context4.t0 === _util.pinState.locked ? 28 : _context4.t0 === _util.pinState.notset ? 30 : 32;
 						break;
 	
-					case 21:
+					case 22:
 						console.log("pin logout\n");
-						return _context3.abrupt('break', 29);
+						document.getElementById("imgLogin").style.zIndex = 0;
+						document.getElementById("imgWaitPIN").style.zIndex = 99;
+						return _context4.abrupt('break', 32);
 	
-					case 23:
+					case 26:
 						console.log("pin login\n");
-						return _context3.abrupt('break', 29);
+						return _context4.abrupt('break', 32);
 	
-					case 25:
+					case 28:
 						console.log("pin locked\n");
-						return _context3.abrupt('return', null);
+						return _context4.abrupt('return', null);
 	
-					case 27:
+					case 30:
 						console.log("pin notset\n");
-						return _context3.abrupt('return', null);
-	
-					case 29:
-						_context3.next = 32;
-						break;
-	
-					case 31:
-						console.log("checkpinstate:%s\n", PINObj.err);
+						return _context4.abrupt('return', null);
 	
 					case 32:
-						_context3.next = 36;
+						_context4.next = 35;
 						break;
 	
 					case 34:
-						console.log("device connect fail!\n");
-						return _context3.abrupt('return', null);
+						console.log("checkpinstate:%s\n", PINObj.err);
 	
-					case 36:
+					case 35:
+						_context4.next = 39;
+						break;
+	
+					case 37:
+						console.log("device connect fail!\n");
+						return _context4.abrupt('return', null);
+	
+					case 39:
 						if (!(cancelFlag == 1)) {
-							_context3.next = 40;
+							_context4.next = 43;
 							break;
 						}
 	
 						cancelFlag = 0;
 						console.log("operation aborted!\n");
-						return _context3.abrupt('return', null);
+						return _context4.abrupt('return', null);
 	
-					case 40:
+					case 43:
 						if (PINObj.state != _util.pinState.login) {
-							_context3.next = 13;
+							_context4.next = 14;
 							break;
 						}
 	
-					case 41:
-						_context3.next = 43;
+					case 44:
+						_context4.next = 46;
 						return (0, _soloApi.getaddress)();
 	
-					case 43:
-						addrObj = _context3.sent;
+					case 46:
+						addrObj = _context4.sent;
 	
 						if (!addrObj.isConnect) {
-							_context3.next = 48;
+							_context4.next = 51;
 							break;
 						}
 	
 						if (!addrObj.err) console.log("CYB address:%s\n", addrObj.address);else console.log("getaddress:%s\n", addrObj.err);
-						_context3.next = 50;
+						_context4.next = 53;
 						break;
 	
-					case 48:
+					case 51:
 						console.log("device connect fail!\n");
-						return _context3.abrupt('return', null);
+						return _context4.abrupt('return', null);
 	
-					case 50:
+					case 53:
 						cybAddress = addrObj.address.substring(0, addrObj.address.length - 1);
 						id = {};
-						_context3.prev = 52;
-						_context3.next = 55;
+						_context4.prev = 55;
+						_context4.next = 58;
 						return initcybex(0);
 	
-					case 55:
-						_context3.next = 57;
+					case 58:
+						_context4.next = 60;
 						return Apis.instance().db_api().exec('get_key_references', [[cybAddress]]);
 	
-					case 57:
-						id = _context3.sent;
+					case 60:
+						id = _context4.sent;
 	
 						//check resgit or not
 						if (!id[0][0]) {
@@ -284,59 +313,59 @@
 						} else {
 							console.log("account exists!\n");
 						}
-						_context3.next = 64;
+						_context4.next = 67;
 						break;
 	
-					case 61:
-						_context3.prev = 61;
-						_context3.t1 = _context3['catch'](52);
+					case 64:
+						_context4.prev = 64;
+						_context4.t1 = _context4['catch'](55);
 	
 						console.log("api connect fail!\n");
 	
-					case 64:
-						_context3.prev = 64;
+					case 67:
+						_context4.prev = 67;
 	
 						console.log('[cybex][getBalance]id =', id);
-						_context3.next = 68;
+						_context4.next = 71;
 						return Apis.instance().db_api().exec('get_accounts', id);
 	
-					case 68:
-						account = _context3.sent;
+					case 71:
+						account = _context4.sent;
 	
 						console.log('[getbalance][accounts]accounts = ', account[0].name);
-						_context3.next = 75;
+						_context4.next = 78;
 						break;
 	
-					case 72:
-						_context3.prev = 72;
-						_context3.t2 = _context3['catch'](64);
+					case 75:
+						_context4.prev = 75;
+						_context4.t2 = _context4['catch'](67);
 	
 						console.log("get address fail\n");
 	
-					case 75:
+					case 78:
 					case 'end':
-						return _context3.stop();
+						return _context4.stop();
 				}
 			}
-		}, _callee3, undefined, [[52, 61], [64, 72]]);
+		}, _callee4, undefined, [[55, 64], [67, 75]]);
 	}));
 	window.login = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(random) {
+		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(random) {
 			var devObj, PINObj, addrObj, cybAddress, id, account, signObj;
-			return _regenerator2.default.wrap(function _callee4$(_context4) {
+			return _regenerator2.default.wrap(function _callee5$(_context5) {
 				while (1) {
-					switch (_context4.prev = _context4.next) {
+					switch (_context5.prev = _context5.next) {
 						case 0:
 							console.log("start login\n");
 	
-							_context4.next = 3;
+							_context5.next = 3;
 							return (0, _soloApi.connect)();
 	
 						case 3:
-							devObj = _context4.sent;
+							devObj = _context5.sent;
 	
 							if (!devObj.isConnect) {
-								_context4.next = 8;
+								_context5.next = 8;
 								break;
 							}
 	
@@ -344,123 +373,126 @@
 								console.log("device connect success!\n");
 								console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
 							} else console.log("connect:%s\n", devObj.err);
-							_context4.next = 10;
+							_context5.next = 11;
 							break;
 	
 						case 8:
 							console.log("device connect fail!\n");
-							return _context4.abrupt('return', null);
+							window.alert("Please connect WOOKONG SOLO!\n");
+							return _context5.abrupt('return', null);
 	
-						case 10:
+						case 11:
 							if (!(devObj.lifecycle != _util.lifeCycle.user)) {
-								_context4.next = 13;
+								_context5.next = 14;
 								break;
 							}
 	
 							console.log("please init your device by wookong solo client first!\n");
-							return _context4.abrupt('return', null);
+							return _context5.abrupt('return', null);
 	
-						case 13:
-							_context4.next = 15;
+						case 14:
+							_context5.next = 16;
 							return (0, _soloApi.checkpinstate)();
 	
-						case 15:
-							PINObj = _context4.sent;
+						case 16:
+							PINObj = _context5.sent;
 	
 							if (!PINObj.isConnect) {
-								_context4.next = 34;
+								_context5.next = 36;
 								break;
 							}
 	
 							if (PINObj.err) {
-								_context4.next = 31;
+								_context5.next = 33;
 								break;
 							}
 	
-							_context4.t0 = PINObj.state;
-							_context4.next = _context4.t0 === _util.pinState.logout ? 21 : _context4.t0 === _util.pinState.login ? 23 : _context4.t0 === _util.pinState.locked ? 25 : _context4.t0 === _util.pinState.notset ? 27 : 29;
+							_context5.t0 = PINObj.state;
+							_context5.next = _context5.t0 === _util.pinState.logout ? 22 : _context5.t0 === _util.pinState.login ? 25 : _context5.t0 === _util.pinState.locked ? 27 : _context5.t0 === _util.pinState.notset ? 29 : 31;
 							break;
 	
-						case 21:
+						case 22:
 							console.log("pin logout\n");
-							return _context4.abrupt('break', 29);
-	
-						case 23:
-							console.log("pin login\n");
-							return _context4.abrupt('break', 29);
+							sillyUIcontroll("imgWaitPIN");
+							return _context5.abrupt('break', 31);
 	
 						case 25:
-							console.log("pin locked\n");
-							return _context4.abrupt('return', null);
+							console.log("pin login\n");
+							return _context5.abrupt('break', 31);
 	
 						case 27:
-							console.log("pin notset\n");
-							return _context4.abrupt('return', null);
+							console.log("pin locked\n");
+							return _context5.abrupt('return', null);
 	
 						case 29:
-							_context4.next = 32;
-							break;
+							console.log("pin notset\n");
+							return _context5.abrupt('return', null);
 	
 						case 31:
-							console.log("checkpinstate:%s\n", PINObj.err);
-	
-						case 32:
-							_context4.next = 36;
+							_context5.next = 34;
 							break;
 	
+						case 33:
+							console.log("checkpinstate:%s\n", PINObj.err);
+	
 						case 34:
-							console.log("device connect fail!\n");
-							return _context4.abrupt('return', null);
+							_context5.next = 38;
+							break;
 	
 						case 36:
+							console.log("device connect fail!\n");
+							return _context5.abrupt('return', null);
+	
+						case 38:
 							if (!(cancelFlag == 1)) {
-								_context4.next = 40;
+								_context5.next = 42;
 								break;
 							}
 	
 							cancelFlag = 0;
 							console.log("operation aborted!\n");
-							return _context4.abrupt('return', null);
+							return _context5.abrupt('return', null);
 	
-						case 40:
+						case 42:
 							if (PINObj.state != _util.pinState.login) {
-								_context4.next = 13;
+								_context5.next = 14;
 								break;
 							}
 	
-						case 41:
-							_context4.next = 43;
+						case 43:
+							_context5.next = 45;
 							return (0, _soloApi.getaddress)();
 	
-						case 43:
-							addrObj = _context4.sent;
+						case 45:
+							addrObj = _context5.sent;
 	
 							if (!addrObj.isConnect) {
-								_context4.next = 48;
+								_context5.next = 50;
 								break;
 							}
 	
 							if (!addrObj.err) console.log("CYB address:%s\n", addrObj.address);else console.log("getaddress:%s\n", addrObj.err);
-							_context4.next = 50;
+							_context5.next = 52;
 							break;
 	
-						case 48:
-							console.log("device connect fail!\n");
-							return _context4.abrupt('return', null);
-	
 						case 50:
+							console.log("device connect fail!\n");
+							return _context5.abrupt('return', null);
+	
+						case 52:
+							sillyUIcontroll("imgProcessing");
 							cybAddress = addrObj.address.substring(0, addrObj.address.length - 1);
 							id = {};
-							_context4.prev = 52;
-							_context4.next = 55;
+							_context5.prev = 55;
+							_context5.next = 58;
 							return initcybex(0);
 	
-						case 55:
-							_context4.next = 57;
+						case 58:
+							_context5.next = 60;
 							return Apis.instance().db_api().exec('get_key_references', [[cybAddress]]);
 	
-						case 57:
-							id = _context4.sent;
+						case 60:
+							id = _context5.sent;
 	
 							//check resgit or not
 							if (!id[0][0]) {
@@ -468,41 +500,45 @@
 							} else {
 								console.log("account exists!\n");
 							}
-							_context4.next = 64;
+							_context5.next = 67;
 							break;
 	
-						case 61:
-							_context4.prev = 61;
-							_context4.t1 = _context4['catch'](52);
+						case 64:
+							_context5.prev = 64;
+							_context5.t1 = _context5['catch'](55);
 	
 							console.log("api connect fail!\n");
 	
-						case 64:
-							_context4.prev = 64;
+						case 67:
+							_context5.prev = 67;
 							//get account
 							console.log('[cybex][getBalance]id =', id);
-							_context4.next = 68;
+							_context5.next = 71;
 							return Apis.instance().db_api().exec('get_accounts', id);
 	
-						case 68:
-							account = _context4.sent;
+						case 71:
+							account = _context5.sent;
 	
 							console.log('[getbalance][accounts]accounts = ', account[0].name);
-							_context4.next = 75;
+							_context5.next = 78;
 							break;
 	
-						case 72:
-							_context4.prev = 72;
-							_context4.t2 = _context4['catch'](64);
+						case 75:
+							_context5.prev = 75;
+							_context5.t2 = _context5['catch'](67);
 	
 							console.log("get address fail\n");
 	
-						case 75:
-							_context4.next = 77;
+						case 78:
+	
+							//sign random
+							sillyUIcontroll("imgWaitBTN");
+	
+							_context5.next = 81;
 							return (0, _soloApi.signTransaction)(random);
 	
-						case 77:
-							signObj = _context4.sent;
+						case 81:
+							signObj = _context5.sent;
 	
 							if (signObj.isConnect) {
 								if (!signObj.err) console.log("\n\nsignature:%s\n", signObj.signature);else console.log("signature err:%s\n", signObj.err);
@@ -513,30 +549,32 @@
 							console.log("Pubkey = %s\n", cybAddress);
 							console.log("Random= %s\n", random);
 							console.log("==================do verify the signature==================\n");
+							sillyUIcontroll("imgDone");
+							document.getElementById("account").innerText = account[0].name;
 	
-						case 82:
+						case 88:
 						case 'end':
-							return _context4.stop();
+							return _context5.stop();
 					}
 				}
-			}, _callee4, undefined, [[52, 61], [64, 72]]);
+			}, _callee5, undefined, [[55, 64], [67, 75]]);
 		}));
 	
 		return function (_x2) {
-			return _ref4.apply(this, arguments);
+			return _ref5.apply(this, arguments);
 		};
 	}();
 	
-	window.sign = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-		return _regenerator2.default.wrap(function _callee5$(_context5) {
+	window.sign = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
+		return _regenerator2.default.wrap(function _callee6$(_context6) {
 			while (1) {
-				switch (_context5.prev = _context5.next) {
+				switch (_context6.prev = _context6.next) {
 					case 0:
 					case 'end':
-						return _context5.stop();
+						return _context6.stop();
 				}
 			}
-		}, _callee5, undefined);
+		}, _callee6, undefined);
 	}));
 
 /***/ }),
@@ -3290,7 +3328,7 @@
 								signature: "",
 								err: ""
 							};
-							cmdSign = "80a0020034a1b84621ed2ecd968f5a010009030000000000000012133e8104000000000000000104066f776e65723203435942034359420500";
+							cmdSign = "80a0020034a1b84621ed2ecd968f5a010209030000000000000012133e8104000000000000000104066f776e65723203435942034359420500";
 							_context4.next = 4;
 							return (0, _soloIo.sendcmd)(cmdSign);
 	
@@ -3431,7 +3469,7 @@
 		fisrtPacket: "0001",
 		midPacket: "0002",
 		lastPacket: "0000",
-		pilotTimeout: 10,
+		pilotTimeout: 2,
 		normalTimeout: 5,
 		cmdOK: "9000",
 		cmdNG: "68",
