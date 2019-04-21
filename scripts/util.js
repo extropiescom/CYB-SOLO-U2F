@@ -19,7 +19,10 @@ export const commDefine = {
  			cmdNG:"68",
 			noDevice:"6805",
 			appID:"6802",
-			waitBtn:"6F00"
+			waitBtn:"6F00",
+			errToLong:"6700",
+			apduMaxLen:"510",
+			strMaxLen:"ff",
  			}
 export const pinState = {
 	notset:"03",
