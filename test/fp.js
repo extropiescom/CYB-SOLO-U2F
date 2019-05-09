@@ -1,5 +1,5 @@
-const { connect } = require('./device-io.js');
-const { rets } = require('./util.js');
+const { connect } = require('../src/index.js');
+const { rets } = require('../src/util.js');
 
 
 window.openDevice = async () => {
