@@ -5,7 +5,12 @@ export const errorCode = {
       fail:1,
       timeout: 5
  			}
- 
+
+export const rets = {
+	ok:0,
+	nok:1,
+	nodevice:2
+}
 export const commDefine = {
  			maxPacketLength: 50,
  			headerLength:8,
@@ -36,6 +41,41 @@ export const lifeCycle = {
 	factory:"04"
 	}
 
+export const cmdTable = {
+	getsn:"8064000000",
+	rand:"00840000"
+}
+
+export function check_res(res)
+{
+	let code;
+	if (res.length == 4 && res != commDefine.cmdOK) {
+		if (res == commDefine.noDevice || commDefine.appID) {
+			code = rets.nok;
+			return {code};
+		}
+		else {//only "9000", sometime it is possible
+			code = rets.ok;
+			return {code};
+		}
+	}
+	else if (res.length > 4) {
+		let resData = res;
+		let sw = res.substring(res.length - 4, res.length);
+		if (sw == commDefine.cmdOK) {
+			code = rets.ok;
+			resData = resData.substring(0, res.length - 4);	
+			return {code, result:{resData}};;
+		}
+		else
+		{//something happen, not right status
+			code = rets.nok;
+			return {code};
+		}
+			
+	}
+}
+
 export function padding(send_data, send_len)
 {
     for(var i=0;i<64-8-send_len;i++)
@@ -43,23 +83,5 @@ export function padding(send_data, send_len)
         send_data =  send_data+"1"
     }
     return send_data;
-}
-
-
-export function parseAddr(strAddr)
-{
-	 var arr=new Array();
-	 var addr = "";
-	 for(var i=0;i<strAddr.length;i=i+2)
-	 {
-	 		var el = strAddr.substring(i,i+2);
-	 		arr[i/2] = parseInt(el,16);
-	 }
-	 for(var j=0;j<strAddr.length/2;j++)
-	 {
-	 		addr = addr +  String.fromCharCode(arr[j]);
-	 }
-
-	 return addr;
 }
 

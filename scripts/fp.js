@@ -1,56 +1,36 @@
-import { connect, checkpinstate, getaddress, signTransaction } from './solo-api.js';
-import { pinState, lifeCycle } from './util.js';
-import { Apis } from './ws-api.js';
-import {
-	TransactionBuilder,
-	FetchChain,
-  } from "./cybexjs";
-
-var cancelFlag = 0;
+const { connect } = require('./device-io.js');
+const { rets } = require('./util.js');
 
 
-function sillyUIcontroll(top) {
-	document.getElementById("imgDone").style.zIndex = 0;
-	document.getElementById("imgLogin").style.zIndex = 0;
-	document.getElementById("imgWaitPIN").style.zIndex = 0;
-	document.getElementById("imgWaitBTN").style.zIndex = 0;
-	document.getElementById("imgProcessing").style.zIndex = 0;
-
-	document.getElementById(top).style.zIndex = 99;
-
-}
-
-window.restart = async () => {
-	sillyUIcontroll("imgLogin");
-	document.getElementById("account").innerText = "";
-}
-
-window.abort = async () => {
-	cancelFlag = 1;
-}
-
-const initcybex = async i => {
-	if (i >= 3) {
-		return false;
+window.openDevice = async () => {
+	console.log("start enroll\n");
+	let info = await connect();
+	if (info.code===rets.ok) {
+		console.log("device connect success!", info);
 	}
-
-	try {
-		console.log('[cybex][initcybex]Apis = ', Apis);
-
-		await Apis.instance('wss://hangzhou.51nebula.com', true).init_promise;
-
-		return true;
-	} catch (err) {
-		console.log('err in initcybex = ', err);
-
-		await Promise.delay(3000);
-		await Apis.close();
-
-		return initcybex(++i);
+	else {
+		console.log("device connect fail!\n");
+		return;
 	}
-};
+}
+
+window.enroll = async () => {
+}
+
+window.list = async () => {
+	
+}
+
+window.delete = async () => {
+	
+}
+
+window.verify = async () => {
+	
+}
 
 
+/*
 window.register = async () => {
 	console.log("start register\n");
 
@@ -126,95 +106,11 @@ window.register = async () => {
 		return null;
 	}
 
-	var cybAddress = addrObj.address.substring(0, addrObj.address.length - 1);
-
-	let id = {};
-	try {
-		await initcybex(0);
-		id = await Apis.instance()
-			.db_api()
-			.exec('get_key_references', [[cybAddress]]);
-		//check resgit or not
-		if (!id[0][0]) {
-			console.log("cyb not regist!\n");
-		}
-		else {
-			console.log("account exists!\n");
-		}
-	} catch (err) {
-		console.log("api connect fail!\n");
-	}
-
-
-	try {
-		console.log('[cybex][getBalance]id =', id);
-		const account = await Apis.instance()
-			.db_api()
-			.exec('get_accounts', id);
-		console.log('[getbalance][accounts]accounts = ', account[0].name);
-	} catch (err) {
-		console.log("get address fail\n");
-	}
-
 
 
 }
 
-const fetchTransferFieldIds = async ({ fromAccount, toAccount, asset, feeAsset }) => {
-	const chainFrom = await FetchChain('getAccount', fromAccount);
-	const chainTo = await FetchChain('getAccount', toAccount);
-	const chainAsset = await FetchChain('getAsset', asset);
-	const chainFeeAsset = await FetchChain('getAsset', feeAsset);
-	const from = chainFrom.get('id');
-	const to = chainTo.get('id');
-	const assetId = chainAsset.get('id');
-	const feeAssetId = chainFeeAsset.get('id');
-	return { from, to, assetId, feeAssetId };
-  }
 
-  const buildTransferTransaction = async ({ fromAccount, toAccount, amount, asset = 'CYB', feeAsset = 'CYB' }) => {
-	const { from, to, assetId, feeAssetId } = await fetchTransferFieldIds({ fromAccount, toAccount, asset, feeAsset });
-	const transferData = {
-	  from,
-	  to,
-	  fee: { amount: 0, asset_id: feeAssetId },
-	  amount: { amount, asset_id: assetId },
-	};
-	const assertData = {
-	  fee: { amount: 0, asset_id: feeAssetId },
-	  fee_paying_account: from,
-	  predicates:
-		[
-		  [ 0,
-			{ account_id: to, name: toAccount  },
-		  ],
-		  [ 1,
-			{ asset_id: assetId, symbol: asset  }
-		  ],
-		  [ 1,
-			{ asset_id: feeAssetId, symbol: feeAsset  }
-		  ],
-		],
-	}
-	const transaction = new TransactionBuilder();
-	const transferOp = transaction.get_type_operation('transfer', transferData);
-	const assertOp = transaction.get_type_operation('assert', assertData);
-	transaction.add_operation(assertOp);
-	transaction.add_operation(transferOp);
-  
-	await transaction.set_required_fees();
-	return transaction;
-  }
-
-  const broadcastTransaction = async (transaction) => {
-	try {
-	  await transaction.broadcast(() => console.log('Sent'));
-	} catch (err) {
-	  const error = err.message.split('\n')[0];
-	  return { error };
-	}
-	return { error: '', transaction };
-  }
 
 window.login = async (random) => {
 	console.log("start login\n");
@@ -289,67 +185,12 @@ window.login = async (random) => {
 		console.log("device connect fail!\n");
 		return null;
 	}
-	sillyUIcontroll("imgProcessing");
-	var cybAddress = addrObj.address.substring(0, addrObj.address.length - 1);
-
-	if (!Apis.instance()) await Apis.init();
-
-	let id = {};
-	try {//get id
-		//await initcybex(0);
-		id = await Apis.instance()
-			.db_api()
-			.exec('get_key_references', [[cybAddress]]);
-		//check resgit or not
-		if (!id[0][0]) {
-			console.log("cyb not regist!\n");
-		}
-		else {
-			console.log("account exists!\n");
-		}
-	} catch (err) {
-		console.log("api connect fail!\n");
-	}
-
-	var account;
-	try {//get account
-		console.log('[cybex][getBalance]id =', id);
-			 account = await Apis.instance()
-			.db_api()
-			.exec('get_accounts', id);
-		console.log('[getbalance][accounts]accounts = ', account[0].name);
-	} catch (err) {
-		console.log("get address fail\n");
-	}
-
-	//transfer test
 
 	
 
-	var fromaccount = "cybu2fsolo22";
-	var toaccount  = "iphone-xr-512r";
-	var amount = 1;
-	var asset = "CYB";
-	var feeAsset = "CYB";
-  	//let transaction = await buildTransferTransaction({ fromaccount,toaccount, amount, asset, feeAsset });
-	//console.log("after buildTransferTransaction\n");
-	//  await transaction.finalize();
+
   	
 	var signObj;
-
-//	console.log("tx",ransaction.tr_buffer);
-
-/*	signObj = await signTransaction(transaction.tr_buffer);
-		if (signObj.isConnect) {
-			if (!signObj.err)
-				console.log("\n\nsignature:%s\n", signObj.signature);
-			else
-				console.log("signature err:%s\n", signObj.err);
-		}
-		else {
-			console.log("device connect fail!\n");
-		}*/
-	//const broadcastResp = await broadcastTransaction(transaction);
 
 	//sign test
 	sillyUIcontroll("imgWaitBTN");
@@ -385,14 +226,11 @@ window.login = async (random) => {
 		i++;
 	}while(i<testCount)
 
-	console.log("Pubkey = %s\n", cybAddress);
-	console.log("Random= %s\n", random);
-	console.log("==================do verify the signature==================\n");
 	sillyUIcontroll("imgDone");
-	document.getElementById("account").innerText = account[0].name;
 }
 
 window.sign = async () => {
 
 
 }
+*/

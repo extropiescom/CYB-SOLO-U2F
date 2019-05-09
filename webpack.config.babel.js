@@ -7,7 +7,7 @@ export default [
       target: 'web',
       devtool:  'source-map',
       entry: {
-        renderer: `./scripts/cyb.js`,
+        renderer: `./scripts/fp.js`,
       },
       output: {
         path: outputPath,
