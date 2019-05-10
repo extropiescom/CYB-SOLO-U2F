@@ -1,15 +1,26 @@
-const { connect } = require('../src/index.js');
-const { rets } = require('../src/util.js');
+const { connect, rand, retCode} = require('../src/index.js');
 
 
 window.openDevice = async () => {
 	console.log("start enroll\n");
 	let info = await connect();
-	if (info.code===rets.ok) {
+	if (info.code===retCode.ok) {
 		console.log("device connect success!", info);
 	}
 	else {
-		console.log("device connect fail!\n");
+		console.log("device connect fail!\n",info);
+		return;
+	}
+}
+
+window.GetRandom = async () =>{
+	console.log("get rand\n");
+	let info = await rand();
+	if (info.code===retCode.ok) {
+		console.log("GetRandom success!", info);
+	}
+	else {
+		console.log("GetRandom fail!\n",info);
 		return;
 	}
 }

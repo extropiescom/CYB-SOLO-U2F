@@ -44,7 +44,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	var _regenerator = __webpack_require__(1);
 	
@@ -57,10 +57,9 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var _require = __webpack_require__(76),
-	    connect = _require.connect;
-	
-	var _require2 = __webpack_require__(77),
-	    rets = _require2.rets;
+	    connect = _require.connect,
+	    rand = _require.rand,
+	    retCode = _require.retCode;
 	
 	window.openDevice = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
 		var info;
@@ -75,7 +74,7 @@
 					case 3:
 						info = _context.sent;
 	
-						if (!(info.code === rets.ok)) {
+						if (!(info.code === retCode.ok)) {
 							_context.next = 8;
 							break;
 						}
@@ -85,63 +84,97 @@
 						break;
 	
 					case 8:
-						console.log("device connect fail!\n");
-						return _context.abrupt('return');
+						console.log("device connect fail!\n", info);
+						return _context.abrupt("return");
 	
 					case 10:
-					case 'end':
+					case "end":
 						return _context.stop();
 				}
 			}
 		}, _callee, undefined);
 	}));
 	
-	window.enroll = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+	window.GetRandom = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+		var info;
 		return _regenerator2.default.wrap(function _callee2$(_context2) {
 			while (1) {
 				switch (_context2.prev = _context2.next) {
 					case 0:
-					case 'end':
+						console.log("get rand\n");
+						_context2.next = 3;
+						return rand();
+	
+					case 3:
+						info = _context2.sent;
+	
+						if (!(info.code === retCode.ok)) {
+							_context2.next = 8;
+							break;
+						}
+	
+						console.log("GetRandom success!", info);
+						_context2.next = 10;
+						break;
+	
+					case 8:
+						console.log("GetRandom fail!\n", info);
+						return _context2.abrupt("return");
+	
+					case 10:
+					case "end":
 						return _context2.stop();
 				}
 			}
 		}, _callee2, undefined);
 	}));
 	
-	window.list = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+	window.enroll = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
 		return _regenerator2.default.wrap(function _callee3$(_context3) {
 			while (1) {
 				switch (_context3.prev = _context3.next) {
 					case 0:
-					case 'end':
+					case "end":
 						return _context3.stop();
 				}
 			}
 		}, _callee3, undefined);
 	}));
 	
-	window.delete = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+	window.list = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
 		return _regenerator2.default.wrap(function _callee4$(_context4) {
 			while (1) {
 				switch (_context4.prev = _context4.next) {
 					case 0:
-					case 'end':
+					case "end":
 						return _context4.stop();
 				}
 			}
 		}, _callee4, undefined);
 	}));
 	
-	window.verify = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+	window.delete = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
 		return _regenerator2.default.wrap(function _callee5$(_context5) {
 			while (1) {
 				switch (_context5.prev = _context5.next) {
 					case 0:
-					case 'end':
+					case "end":
 						return _context5.stop();
 				}
 			}
 		}, _callee5, undefined);
+	}));
+	
+	window.verify = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
+		return _regenerator2.default.wrap(function _callee6$(_context6) {
+			while (1) {
+				switch (_context6.prev = _context6.next) {
+					case 0:
+					case "end":
+						return _context6.stop();
+				}
+			}
+		}, _callee6, undefined);
 	}));
 	
 	/*
@@ -2829,7 +2862,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.connect = undefined;
+	exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.rand = exports.connect = exports.coins = exports.retCode = undefined;
 	
 	var _regenerator = __webpack_require__(1);
 	
@@ -2839,39 +2872,59 @@
 	
 	var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 	
-	var _util = __webpack_require__(77);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _require = __webpack_require__(77),
+	var _require = __webpack_require__(83),
 	    commDefine = _require.commDefine,
 	    rets = _require.rets,
 	    cmdTable = _require.cmdTable;
 	
-	var _require2 = __webpack_require__(78),
-	    sendcmd = _require2.sendcmd;
+	var _require2 = __webpack_require__(77),
+	    check_res = _require2.check_res,
+	    parseAddr = _require2.parseAddr;
+	
+	var _require3 = __webpack_require__(78),
+	    sendcmd = _require3.sendcmd;
+	
+	var retCode = exports.retCode = {
+		ok: 0,
+		nok: 1,
+		nodevice: 2
+	};
+	
+	var coins = exports.coins = {
+		CYB: "CYB",
+		BTC: "BTC"
+	};
 	
 	var connect = exports.connect = function () {
 		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-			var sn, code, cmd, res, info;
+			var sn, code, res, info;
 			return _regenerator2.default.wrap(function _callee$(_context) {
 				while (1) {
 					switch (_context.prev = _context.next) {
 						case 0:
 							sn = "";
-							code = rets.noDevice;
-							cmd = cmdTable.getsn;
-							_context.next = 5;
-							return sendcmd(cmd);
+							code = rets.nok;
+							_context.next = 4;
+							return sendcmd(cmdTable.getsn);
 	
-						case 5:
+						case 4:
 							res = _context.sent;
-							//"6805","6802","xx...xx9000"
-							info = (0, _util.check_res)(res);
+							info = check_res(res);
 	
-							console.log("resData", info);
 							code = info.code;
-							if (code === rets.ok) sn = info.result.resData.substring(8, 72);
+	
+							if (!(code != rets.ok)) {
+								_context.next = 9;
+								break;
+							}
+	
+							return _context.abrupt('return', { code: code });
+	
+						case 9:
+	
+							sn = info.result.resData.substring(8, 72);
 							return _context.abrupt('return', { code: code, result: { sn: sn } });
 	
 						case 11:
@@ -2886,62 +2939,37 @@
 			return _ref.apply(this, arguments);
 		};
 	}();
-	
-	var checkpinstate = exports.checkpinstate = function () {
+	var rand = exports.rand = function () {
 		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-			var PINObj, cmd, res, resData;
+			var random, code, res, info;
 			return _regenerator2.default.wrap(function _callee2$(_context2) {
 				while (1) {
 					switch (_context2.prev = _context2.next) {
 						case 0:
-							PINObj = {
-								isConnect: false,
-								state: "",
-								err: ""
-							};
-							cmd = "8064010000";
+							random = "";
+							code = rets.nok;
 							_context2.next = 4;
-							return sendcmd(cmd);
+							return sendcmd(cmdTable.rand);
 	
 						case 4:
 							res = _context2.sent;
+							info = check_res(res);
 	
-							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context2.next = 10;
+							code = info.code;
+	
+							if (!(code != rets.ok)) {
+								_context2.next = 9;
 								break;
 							}
 	
-							if (res == commDefine.noDevice || commDefine.appID) {
-								PINObj.isConnect = false;
-							} else {
-								PINObj.isConnect = true;
-								PINObj.err = res;
-							}
-							return _context2.abrupt('return', PINObj);
+							return _context2.abrupt('return', { code: code });
 	
-						case 10:
-							if (!(res.length > 4)) {
-								_context2.next = 20;
-								break;
-							}
+						case 9:
 	
-							resData = res;
+							random = info.result.resData.substring(0, 8);
+							return _context2.abrupt('return', { code: code, result: { random: random } });
 	
-							res = res.substring(res.length - 4, res.length);
-	
-							if (!(res == commDefine.cmdOK)) {
-								_context2.next = 19;
-								break;
-							}
-	
-							PINObj.isConnect = true;
-							PINObj.state = resData.substring(0, 2);
-							return _context2.abrupt('return', PINObj);
-	
-						case 19:
-							return _context2.abrupt('return', PINObj);
-	
-						case 20:
+						case 11:
 						case 'end':
 							return _context2.stop();
 					}
@@ -2949,88 +2977,32 @@
 			}, _callee2, undefined);
 		}));
 	
-		return function checkpinstate() {
+		return function rand() {
 			return _ref2.apply(this, arguments);
 		};
 	}();
 	
-	var getaddress = exports.getaddress = function () {
+	var checkpinstate = exports.checkpinstate = function () {
 		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-			var addrObj, cmdRecover, res, cmd, resData;
+			var code, state, res, info;
 			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
 					switch (_context3.prev = _context3.next) {
 						case 0:
-							addrObj = {
-								isConnect: false,
-								address: "",
-								err: ""
-							};
-							cmdRecover = "806002000c000000000100000080000000";
+							code = rets.nok;
+							state = void 0;
 							_context3.next = 4;
-							return sendcmd(cmdRecover);
+							return sendcmd(cmdTable.pinstate);
 	
 						case 4:
 							res = _context3.sent;
+							info = check_res(res);
 	
-							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context3.next = 8;
-								break;
-							}
+							code = info.code;
+							if (code === rets.ok) state = info.result.resData.substring(0, 2);
+							return _context3.abrupt('return', { code: code, result: { state: state } });
 	
-							if (res == commDefine.noDevice || commDefine.appID) {
-								addrObj.isConnect = false;
-							} else {
-								addrObj.isConnect = true;
-								addrObj.err = res;
-							}
-							return _context3.abrupt('return', addrObj);
-	
-						case 8:
-							cmd = "8062020100";
-							_context3.next = 11;
-							return sendcmd(cmd);
-	
-						case 11:
-							res = _context3.sent;
-	
-							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context3.next = 17;
-								break;
-							}
-	
-							if (res == commDefine.noDevice || commDefine.appID) {
-								addrObj.isConnect = false;
-							} else {
-								addrObj.isConnect = true;
-								addrObj.err = res;
-							}
-							return _context3.abrupt('return', addrObj);
-	
-						case 17:
-							if (!(res.length > 4)) {
-								_context3.next = 28;
-								break;
-							}
-	
-							resData = res;
-	
-							res = res.substring(res.length - 4, res.length);
-	
-							if (!(res == commDefine.cmdOK)) {
-								_context3.next = 27;
-								break;
-							}
-	
-							addrObj.isConnect = true;
-							addrObj.address = resData.substring(0, resData.length - 4);
-							addrObj.address = parseAddr(addrObj.address);
-							return _context3.abrupt('return', addrObj);
-	
-						case 27:
-							return _context3.abrupt('return', addrObj);
-	
-						case 28:
+						case 9:
 						case 'end':
 							return _context3.stop();
 					}
@@ -3038,17 +3010,85 @@
 			}, _callee3, undefined);
 		}));
 	
-		return function getaddress() {
+		return function checkpinstate() {
 			return _ref3.apply(this, arguments);
 		};
 	}();
 	
-	var signTransaction = exports.signTransaction = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(tx) {
-			var signObj, txLen, tmpLen, firstBlock, cmdSign, strTxLen, res, getBtn, resData;
+	//coin: coins.CYB
+	var getaddress = exports.getaddress = function () {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(coin) {
+			var i, cmd, res, info, address;
 			return _regenerator2.default.wrap(function _callee4$(_context4) {
 				while (1) {
 					switch (_context4.prev = _context4.next) {
+						case 0:
+							//coin: 币种缩写
+							//在cmdRecover中遍历传入币种名称, 得到指令
+							i = 0;
+							cmd = void 0;
+	
+							for (i = 0; i < 2; i++) {
+								if (coin === cmdRecover[0].name) cmd = cmdRecover[0].cmd;
+							}
+							_context4.next = 5;
+							return sendcmd(cmd);
+	
+						case 5:
+							res = _context4.sent;
+							info = check_res(res);
+	
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context4.next = 10;
+								break;
+							}
+	
+							return _context4.abrupt('return', { code: code });
+	
+						case 10:
+							_context4.next = 12;
+							return sendcmd(cmdTable.getaddress);
+	
+						case 12:
+							res = _context4.sent;
+	
+							info = check_res(res);
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context4.next = 17;
+								break;
+							}
+	
+							return _context4.abrupt('return', { code: code });
+	
+						case 17:
+							address = info.result.resData.substring(0, resData.length - 4);
+	
+							address = parseAddr(address);
+							return _context4.abrupt('return', { code: code, result: { address: address } });
+	
+						case 20:
+						case 'end':
+							return _context4.stop();
+					}
+				}
+			}, _callee4, undefined);
+		}));
+	
+		return function getaddress(_x) {
+			return _ref4.apply(this, arguments);
+		};
+	}();
+	
+	var signTransaction = exports.signTransaction = function () {
+		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(tx) {
+			var signObj, txLen, tmpLen, firstBlock, cmdSign, strTxLen, res, getBtn, resData;
+			return _regenerator2.default.wrap(function _callee5$(_context5) {
+				while (1) {
+					switch (_context5.prev = _context5.next) {
 						case 0:
 							signObj = {
 								isConnect: false,
@@ -3061,12 +3101,12 @@
 							console.log("enter sign txLen = %d\n", tx.length);
 	
 							if (!(txLen > 2000)) {
-								_context4.next = 7;
+								_context5.next = 7;
 								break;
 							}
 	
 							signObj.err = commDefine.errToLong;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 7:
 							firstBlock = 1;
@@ -3077,7 +3117,7 @@
 	
 						case 11:
 							if (!(tmpLen > 0)) {
-								_context4.next = 28;
+								_context5.next = 28;
 								break;
 							}
 	
@@ -3111,76 +3151,76 @@
 								console.log("lastBlock tmpLen=%d cmdSign = %s\n", tmpLen, cmdSign);
 							}
 	
-							_context4.next = 16;
+							_context5.next = 16;
 							return sendcmd(cmdSign);
 	
 						case 16:
-							res = _context4.sent;
+							res = _context5.sent;
 	
 							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context4.next = 26;
+								_context5.next = 26;
 								break;
 							}
 	
 							if (!(res == commDefine.noDevice || commDefine.appID)) {
-								_context4.next = 23;
+								_context5.next = 23;
 								break;
 							}
 	
 							signObj.isConnect = false;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 23:
 							signObj.isConnect = true;
 							signObj.err = res;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 26:
-							_context4.next = 11;
+							_context5.next = 11;
 							break;
 	
 						case 28:
 							getBtn = "80ae000000";
 	
 						case 29:
-							_context4.next = 31;
+							_context5.next = 31;
 							return sendcmd(getBtn);
 	
 						case 31:
-							res = _context4.sent;
+							res = _context5.sent;
 	
 						case 32:
 							if (res == commDefine.waitBtn) {
-								_context4.next = 29;
+								_context5.next = 29;
 								break;
 							}
 	
 						case 33:
 							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context4.next = 44;
+								_context5.next = 44;
 								break;
 							}
 	
 							if (!(res == commDefine.noDevice || commDefine.appID)) {
-								_context4.next = 39;
+								_context5.next = 39;
 								break;
 							}
 	
 							signObj.isConnect = false;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 39:
 							signObj.isConnect = true;
 							signObj.err = res;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 42:
-							_context4.next = 59;
+							_context5.next = 59;
 							break;
 	
 						case 44:
 							if (!(res.length > 4)) {
-								_context4.next = 56;
+								_context5.next = 56;
 								break;
 							}
 	
@@ -3189,49 +3229,49 @@
 							res = res.substring(res.length - 4, res.length);
 	
 							if (!(res == commDefine.cmdOK)) {
-								_context4.next = 53;
+								_context5.next = 53;
 								break;
 							}
 	
 							signObj.isConnect = true;
 							signObj.signature = resData.substring(0, resData.length - 4);
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 53:
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 54:
-							_context4.next = 59;
+							_context5.next = 59;
 							break;
 	
 						case 56:
 							if (!(res == commDefine.cmdOK)) {
-								_context4.next = 59;
+								_context5.next = 59;
 								break;
 							}
 	
 							signObj.isConnect = true;
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 59:
-							return _context4.abrupt('return', signObj);
+							return _context5.abrupt('return', signObj);
 	
 						case 60:
 						case 'end':
-							return _context4.stop();
+							return _context5.stop();
 					}
 				}
-			}, _callee4, undefined);
+			}, _callee5, undefined);
 		}));
 	
-		return function signTransaction(_x) {
-			return _ref4.apply(this, arguments);
+		return function signTransaction(_x2) {
+			return _ref5.apply(this, arguments);
 		};
 	}();
 
 /***/ }),
 /* 77 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
@@ -3240,53 +3280,10 @@
 	});
 	exports.check_res = check_res;
 	exports.padding = padding;
-	var vKHtag = exports.vKHtag = "3B7D8101";
 	
-	var errorCode = exports.errorCode = {
-		succuess: 0,
-		fail: 1,
-		timeout: 5
-	};
-	
-	var rets = exports.rets = {
-		ok: 0,
-		nok: 1,
-		nodevice: 2
-	};
-	var commDefine = exports.commDefine = {
-		maxPacketLength: 50,
-		headerLength: 8,
-		packetControlLength: 6,
-		fisrtPacket: "0001",
-		midPacket: "0002",
-		lastPacket: "0000",
-		pilotTimeout: 2,
-		normalTimeout: 5,
-		cmdOK: "9000",
-		cmdNG: "68",
-		noDevice: "6805",
-		appID: "6802",
-		waitBtn: "6F00",
-		errToLong: "6700",
-		apduMaxLen: "510",
-		strMaxLen: "ff"
-	};
-	var pinState = exports.pinState = {
-		notset: "03",
-		locked: "02",
-		login: "01",
-		logout: "00"
-	};
-	var lifeCycle = exports.lifeCycle = {
-		init: "01",
-		user: "02",
-		factory: "04"
-	};
-	
-	var cmdTable = exports.cmdTable = {
-		getsn: "8064000000",
-		rand: "00840000"
-	};
+	var _require = __webpack_require__(83),
+	    rets = _require.rets,
+	    commDefine = _require.commDefine;
 	
 	function check_res(res) {
 		var code = void 0;
@@ -3305,7 +3302,7 @@
 			if (sw == commDefine.cmdOK) {
 				code = rets.ok;
 				resData = resData.substring(0, res.length - 4);
-				return { code: code, result: { resData: resData } };;
+				return { code: code, result: { resData: resData } };
 			} else {
 				//something happen, not right status
 				code = rets.nok;
@@ -3344,13 +3341,21 @@
 	
 	var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 	
-	var _util = __webpack_require__(77);
-	
-	var _b = __webpack_require__(79);
-	
-	var _u2f = __webpack_require__(80);
-	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var _require = __webpack_require__(77),
+	    padding = _require.padding;
+	
+	var _require2 = __webpack_require__(83),
+	    vKHtag = _require2.vKHtag,
+	    commDefine = _require2.commDefine;
+	
+	var _require3 = __webpack_require__(79),
+	    B64_encode = _require3.B64_encode,
+	    B64_decode = _require3.B64_decode;
+	
+	var _require4 = __webpack_require__(80),
+	    sign = _require4.sign;
 	
 	var isFinal = 0;
 	
@@ -3360,17 +3365,17 @@
 		if (!response.errorCode) {
 			if (!isFinal) {
 				console.log("not final\n");
-				res = _util.commDefine.cmdOK;
+				res = commDefine.cmdOK;
 				return res;
 			}
 			var rv = response.signatureData;
-			res = (0, _b.B64_decode)(rv).join('');
+			res = B64_decode(rv).join('');
 			res = res.substring(5, res.length);
 			console.log("final res %s\n", res);
 		} else {
 			var strcode = response.errorCode.toString(16);
 			if (strcode.length % 2 != 0) strcode = "0" + strcode;
-			res = _util.commDefine.cmdNG + strcode;
+			res = commDefine.cmdNG + strcode;
 			console.log("error code =%s \n", res);
 		}
 		return res;
@@ -3401,51 +3406,51 @@
 							}
 	
 							//if(send_len<=commDefine.maxPacketLength - commDefine.headerLength - commDefine.packetControlLength)
-							if (send_len <= _util.commDefine.maxPacketLength) {
+							if (send_len <= commDefine.maxPacketLength) {
 								// if less then 50 send and get response back
 								console.log("final case \n");
 								send_len = send_len / 2;
 								strSendLen = send_len.toString(16);
 								if (strSendLen.length % 2 != 0) strSendLen = "0" + strSendLen;
 	
-								pacBuf = strSendLen + _util.commDefine.lastPacket + send_buf;
-								pacBuf = (0, _util.padding)(pacBuf, send_len * 2 + _util.commDefine.packetControlLength);
+								pacBuf = strSendLen + commDefine.lastPacket + send_buf;
+								pacBuf = padding(pacBuf, send_len * 2 + commDefine.packetControlLength);
 								send_len = 0;
 								isFinal = 1;
 							}
 							//if(send_len>commDefine.maxPacketLength - commDefine.headerLength - commDefine.packetControlLength)
-							if (send_len > _util.commDefine.maxPacketLength) {
+							if (send_len > commDefine.maxPacketLength) {
 								//if more then 50 send first 50 and -50
 								console.log("mid case \n");
-								tmpLen = _util.commDefine.maxPacketLength / 2;
+								tmpLen = commDefine.maxPacketLength / 2;
 	
 								strSendLen = tmpLen.toString(16);
 								if (strSendLen.length % 2 != 0) strSendLen = "0" + strSendLen;
 	
 								if (mutiFirst == 1) {
 									// first in multi packet index = 1
-									tmpFirstBuf = send_buf.substring(0, _util.commDefine.maxPacketLength);
+									tmpFirstBuf = send_buf.substring(0, commDefine.maxPacketLength);
 	
-									pacBuf = strSendLen + _util.commDefine.fisrtPacket + tmpFirstBuf;
+									pacBuf = strSendLen + commDefine.fisrtPacket + tmpFirstBuf;
 									mutiFirst = 0;
 								} else {
-									tmpMidBuf = send_buf.substring(0, _util.commDefine.maxPacketLength);
+									tmpMidBuf = send_buf.substring(0, commDefine.maxPacketLength);
 	
-									pacBuf = strSendLen + _util.commDefine.midPacket + tmpMidBuf;
+									pacBuf = strSendLen + commDefine.midPacket + tmpMidBuf;
 								}
-								pacBuf = (0, _util.padding)(pacBuf, _util.commDefine.maxPacketLength + _util.commDefine.packetControlLength);
-								send_buf = send_buf.substring(_util.commDefine.maxPacketLength, send_len);
-								send_len = send_len - _util.commDefine.maxPacketLength;
+								pacBuf = padding(pacBuf, commDefine.maxPacketLength + commDefine.packetControlLength);
+								send_buf = send_buf.substring(commDefine.maxPacketLength, send_len);
+								send_len = send_len - commDefine.maxPacketLength;
 								isFinal = 0;
 							}
 	
-							pacBuf = _util.vKHtag + pacBuf;
+							pacBuf = vKHtag + pacBuf;
 							console.log("pacBuf %s \n", pacBuf);
 							console.log("send len = %d", send_len);
 	
-							vKHb64 = (0, _b.B64_encode)(pacBuf, 64); //real buffer
+							vKHb64 = B64_encode(pacBuf, 64); //real buffer
 	
-							vKHb32 = (0, _b.B64_encode)(pacBuf, 32);
+							vKHb32 = B64_encode(pacBuf, 32);
 							key = {};
 	
 							key["version"] = "U2F_V2";
@@ -3453,14 +3458,14 @@
 							self = undefined;
 							_context.next = 19;
 							return new _promise2.default(function (resolve, reject) {
-								(0, _u2f.sign)(location.origin, vKHb32, [key], function (response) {
+								sign(location.origin, vKHb32, [key], function (response) {
 									res = cmdCallback(response);
 									resolve(res);
-								}, _util.commDefine.pilotTimeout);
+								}, commDefine.pilotTimeout);
 							});
 	
 						case 19:
-							if (!(res.length == 4 && res != _util.commDefine.cmdOK)) {
+							if (!(res.length == 4 && res != commDefine.cmdOK)) {
 								_context.next = 21;
 								break;
 							}
@@ -4339,6 +4344,74 @@
 	  return $JSON.stringify.apply($JSON, arguments);
 	};
 
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var vKHtag = exports.vKHtag = "3B7D8101";
+	
+	var errorCode = exports.errorCode = {
+	    succuess: 0,
+	    fail: 1,
+	    timeout: 5
+	};
+	var rets = exports.rets = {
+	    ok: 0,
+	    nok: 1,
+	    nodevice: 2
+	};
+	
+	var codeSwTable = exports.codeSwTable = [{ sw: "6805", code: 2 }, { sw: "6802", code: 2 }, { sw: "9000", code: 0 }, { sw: "6e00", code: 1 }, { sw: "6d00", code: 1 }, { sw: "6100", code: 5 }, { sw: "6c00", code: 4 }, { sw: "6f00", code: 3 }];
+	
+	var commDefine = exports.commDefine = {
+	    maxPacketLength: 50,
+	    headerLength: 8,
+	    packetControlLength: 6,
+	    fisrtPacket: "0001",
+	    midPacket: "0002",
+	    lastPacket: "0000",
+	    pilotTimeout: 2,
+	    normalTimeout: 5,
+	    cmdOK: "9000",
+	    cmdNG: "68",
+	    noDevice: "6805",
+	    appID: "6802",
+	    waitBtn: "6F00",
+	    errToLong: "6700",
+	    apduMaxLen: "510",
+	    strMaxLen: "ff"
+	};
+	var pinState = exports.pinState = {
+	    notset: "03",
+	    locked: "02",
+	    login: "01",
+	    logout: "00"
+	};
+	var lifeCycle = exports.lifeCycle = {
+	    init: "01",
+	    user: "02",
+	    factory: "04"
+	};
+	
+	var cmdTable = exports.cmdTable = {
+	    getsn: "8064000000",
+	    rand: "00840000",
+	    pinstate: "8064010000",
+	    cmdRecover: [{
+	        name: "CYB",
+	        cmd: "806002000c000000000100000080000000"
+	    }, {
+	        name: "BTC",
+	        cmd: "806002000c000000000100000080000000"
+	    }],
+	    getaddress: "8062020100"
+	};
 
 /***/ })
 /******/ ]);

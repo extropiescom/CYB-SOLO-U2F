@@ -1,100 +1,88 @@
-import { check_res } from './util.js';
-
-const { commDefine, rets,cmdTable } = require('./util.js');
+const {commDefine, rets,cmdTable} = require("./constants");
+const { check_res,parseAddr } = require('./util.js');
 const { sendcmd } = require('./u2f-io.js');
+
+export const retCode = {
+	ok: 0,
+	nok: 1,
+	nodevice: 2
+}
+
+export const coins = {
+	CYB : "CYB",
+	BTC : "BTC"
+}
 
 export const connect = async () => {
 
 	let sn = "";
-	let code = rets.noDevice;
-	var cmd = cmdTable.getsn;
-	var res = await sendcmd(cmd);//"6805","6802","xx...xx9000"
+	let code = rets.nok;
+
+	var res = await sendcmd(cmdTable.getsn);
 	let info = check_res(res);
-	console.log("resData",info);
 	code = info.code;
-	if(code===rets.ok)
-		sn =info.result.resData.substring(8,72);
-	return {code, result:{sn}}
+	if(code!=rets.ok)
+		return {code};
+
+	sn =info.result.resData.substring(8,72);
+	return {code, result:{sn}};
+
+}
+export const rand = async () => {
+
+	let random = "";
+	let code = rets.nok;
+	
+	var res = await sendcmd(cmdTable.rand);
+	let info = check_res(res);
+	code = info.code;
+	if(code!=rets.ok)
+		return {code};
+
+	random =info.result.resData.substring(0,8);
+	return {code, result:{random}};
 
 }
 
 export const checkpinstate = async () => {
-	var PINObj = {
-		isConnect: false,
-		state: "",
-		err: ""
-	};
-	var cmd = "8064010000";
-	var res = await sendcmd(cmd);
-	if (res.length == 4 && res != commDefine.cmdOK) {
-		if (res == commDefine.noDevice || commDefine.appID) {
-			PINObj.isConnect = false;
-		}
-		else {
-			PINObj.isConnect = true;
-			PINObj.err = res;
-		}
-		return PINObj;
-	}
-	else if (res.length > 4) {
-		var resData = res;
-		res = res.substring(res.length - 4, res.length);
-		if (res == commDefine.cmdOK) {
-			PINObj.isConnect = true;
-			PINObj.state = resData.substring(0, 2);
-			return PINObj;
-		}
-		else {
-			return PINObj;
-		}
-	}
+	let code = rets.nok;
+	let state;
+	let res = await sendcmd(cmdTable.pinstate);
+	let info = check_res(res);
+	code = info.code;
+	if(code===rets.ok)
+		state =info.result.resData.substring(0,2);
+	return {code, result:{state}};
 }
 
-export const getaddress = async () => {
-	var addrObj = {
-		isConnect: false,
-		address: "",
-		err: ""
-	};
-	var cmdRecover = "806002000c000000000100000080000000";
-	var res = await sendcmd(cmdRecover);
-	if (res.length == 4 && res != commDefine.cmdOK) {
-		if (res == commDefine.noDevice || commDefine.appID) {
-			addrObj.isConnect = false;
-		}
-		else {
-			addrObj.isConnect = true;
-			addrObj.err = res;
-		}
-		return addrObj;
+
+//coin: coins.CYB
+export const getaddress = async (coin) => {
+	//coin: 币种缩写
+	//在cmdRecover中遍历传入币种名称, 得到指令
+	let i =0;
+	let cmd;
+	for(i=0;i<2;i++)
+	{
+		if(coin===cmdRecover[0].name)
+			cmd = cmdRecover[0].cmd;
 	}
-
-
-	var cmd = "8062020100";
 	var res = await sendcmd(cmd);
-	if (res.length == 4 && res != commDefine.cmdOK) {
-		if (res == commDefine.noDevice || commDefine.appID) {
-			addrObj.isConnect = false;
-		}
-		else {
-			addrObj.isConnect = true;
-			addrObj.err = res;
-		}
-		return addrObj;
-	}
-	else if (res.length > 4) {
-		var resData = res;
-		res = res.substring(res.length - 4, res.length);
-		if (res == commDefine.cmdOK) {
-			addrObj.isConnect = true;
-			addrObj.address = resData.substring(0, resData.length - 4);
-			addrObj.address = parseAddr(addrObj.address);
-			return addrObj;
-		}
-		else {
-			return addrObj;
-		}
-	}
+	let info = check_res(res);
+	code = info.code;
+	if(info.code!=rets.ok)
+		return {code};
+
+	var res = await sendcmd(cmdTable.getaddress);
+	info = check_res(res);
+	code = info.code;
+	if(info.code!=rets.ok)
+		return {code};
+	let address = info.result.resData.substring(0, resData.length - 4);
+	address = parseAddr(address);
+	return {code, result:{address}};
+	
+
 }
 
 export const signTransaction = async (tx) => {

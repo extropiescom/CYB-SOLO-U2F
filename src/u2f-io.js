@@ -1,6 +1,7 @@
-import {vKHtag,commDefine,padding} from './util.js'
-import {B64_encode,B64_decode} from './b64.js'
-import {sign} from './u2f'
+const {padding} = require('./util.js');
+const {vKHtag,commDefine} = require("./constants");
+const {B64_encode,B64_decode} = require('./b64.js');
+const {sign} = require('./u2f');
 
 var isFinal = 0;
 
