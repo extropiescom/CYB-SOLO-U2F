@@ -7,14 +7,17 @@ The API call the chrome u2f api which is designed for FIDO U2F authenticator, US
 |.
 |--app
 |----dist //test web page and resource, as well as the packed js
-|------test.html //test web page
+|------test_fp.html //test fingprint function
+|------test_wallet.html //test of wallet
 |------render.js //packed js
 |--src
 |----b64.js //base64 encode and decode
 |----index.js //api implement
 |----u2f-io.js //logic layer above u2f transfer layer
 |----u2f.js // google u2f api interface
-|----utils.js //const define and assist functions
+|----utils.js //assist functions
+|----constants.js //const define 
+|----log.js //colorful and condition log print
 |--test
 |----fp.js //test for fingerprint function
 |----wallet.js //test for solo wallet
@@ -50,9 +53,28 @@ npm run dev
         }
     ]
 ```
-The you could start the debug.
+Then you could start the debug. If you want to swith the wallet or fingerprint test, two modifications are needed:
+```
+// webpack.config.babel.js
+export default [
+    {
+      target: 'web',
+      devtool:  'source-map',
+      entry: {
+        renderer: `./test/wallet.js`, //or fp.js
+        ......
+```
+```
+//.vscode/launch.json
+            ...
+            name": "u2f test",
+            "url": "https://192.168.3.26/CYB-SOLO-U2F/test_wallet.html",//or test_fp.html
+            "webRoot": "${workspaceFolder}"
+            ...
+```
 
-4. If you don't use VSCODE. Juts visit you website like url above in your chrome and use console to debug.
+
+4. If you don't use VSCODE. Juts config the webpack and visit you website like url above in your chrome and use console to debug.
 
 
 ## Trouble shooting
