@@ -1,11 +1,13 @@
 const {commDefine, rets,cmdTable} = require("./constants");
-const { check_res,parseAddr } = require('./util.js');
+const { check_res,parseAddr,get_tx_len } = require('./util.js');
 const { sendcmd } = require('./u2f-io.js');
 
 export const retCode = {
 	ok: 0,
 	nok: 1,
-	nodevice: 2
+	nodevice: 2,
+	wait:3,
+	notsupprot:10
 }
 
 export const coins = {
@@ -28,21 +30,38 @@ export const connect = async () => {
 	return {code, result:{sn}};
 
 }
+export const commtest = async () => {
+
+	let random = "";
+	let code = rets.nok;
+	let testData = "112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00"
+	var res = await sendcmd(cmdTable.commtest+"80"+testData);
+	let info = check_res(res);
+	code = info.code;
+	if(code!=rets.ok)
+		return {code};
+
+	random =info.result.resData.substring(0,16);
+	return {code, result:{random}};
+
+}
+
 export const rand = async () => {
 
 	let random = "";
 	let code = rets.nok;
-	
+
 	var res = await sendcmd(cmdTable.rand);
 	let info = check_res(res);
 	code = info.code;
 	if(code!=rets.ok)
 		return {code};
 
-	random =info.result.resData.substring(0,8);
+	random =info.result.resData.substring(0,16);
 	return {code, result:{random}};
 
 }
+
 
 export const checkpinstate = async () => {
 	let code = rets.nok;
@@ -58,136 +77,50 @@ export const checkpinstate = async () => {
 
 //coin: coins.CYB
 export const getaddress = async (coin) => {
-	//coin: 币种缩写
-	//在cmdRecover中遍历传入币种名称, 得到指令
-	let i =0;
-	let cmd;
-	for(i=0;i<2;i++)
-	{
-		if(coin===cmdRecover[0].name)
-			cmd = cmdRecover[0].cmd;
-	}
-	var res = await sendcmd(cmd);
+	let cmd = cmdTable.cmdRecover[coin];
+	let code;
+	if(!cmd)
+		return {code: retCode.notsupprot};
+	let res = await sendcmd(cmd);
 	let info = check_res(res);
 	code = info.code;
 	if(info.code!=rets.ok)
 		return {code};
 
-	var res = await sendcmd(cmdTable.getaddress);
+	res = await sendcmd(cmdTable.getaddress);
 	info = check_res(res);
 	code = info.code;
 	if(info.code!=rets.ok)
 		return {code};
-	let address = info.result.resData.substring(0, resData.length - 4);
+	let address = info.result.resData.substring(0, info.result.resData.length - 4);
 	address = parseAddr(address);
 	return {code, result:{address}};
 	
 
 }
 
-export const signTransaction = async (tx) => {
-	var signObj = {
-		isConnect: false,
-		signature: "",
-		err: ""
-	};
-	
-	var txLen = tx.length;
-	var tmpLen = txLen;
-	console.log("enter sign txLen = %d\n", tx.length);
+export const signTransaction = async (coin,tx) => {
 
-	if (txLen > 2000) {
-		signObj.err = commDefine.errToLong;
-		return signObj;
+	window.log.w("enter sign txLen = %d\n", tx.length);
+	let code = rets.nok;
+	if (tx.length > 255) {
+		return {code};
 	}
 	
-	var firstBlock = 1;
-	var cmdSign="";
-	var strTxLen = "";
-	console.log("before while tmpLen = %d\n", tmpLen);
-	while(tmpLen>0)
-	{
-		console.log("in while tmpLen = %d\n", tmpLen);
-		if(tmpLen>commDefine.apduMaxLen)
-		{
-			strTxLen=commDefine.strMaxLen;
-			console.log("strTxLen = %s \n", strTxLen);
-			if(firstBlock==1)
-			{
-				console.log("firstBlock\n");
-				firstBlock = 0;
-				cmdSign = "80a00201" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-				tx = tx.substring(commDefine.apduMaxLen,tx.length);
-				tmpLen = tmpLen - commDefine.apduMaxLen;
-				console.log("firstBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-			}
-			else{
-				console.log("midBlock\n");
-				strTxLen=commDefine.apduMaxLen.toString(16);
-				cmdSign = "80a00202" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-				tx = tx.substring(commDefine.apduMaxLen,tx.length);
-				tmpLen = tmpLen - commDefine.apduMaxLen;
-				console.log("midBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-			}
-		}
-		else
-		{
-			console.log("lastBlock\n");
-			tmpLen = tmpLen/2;
-			strTxLen = tmpLen.toString(16);
-			if (strTxLen.length % 2 != 0)
-				strTxLen = "0" + strTxLen;
-			console.log("strTxLen = %s \n", strTxLen);
-			cmdSign = "80a00200" + strTxLen + tx;
-			tmpLen = 0;
-			console.log("lastBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-		}
+	var res = await sendcmd(cmdTable.sign[coin]+get_tx_len(tx)+tx);
+	let info = check_res(res);
+	code = info.code;
+	if(info.code!=rets.ok)
+		return {code};
 
-		var res = await sendcmd(cmdSign);
-		if (res.length == 4 && res != commDefine.cmdOK) {
-			if (res == commDefine.noDevice || commDefine.appID) {
-				signObj.isConnect = false;
-				return signObj;
-			}
-			else {
-				signObj.isConnect = true;
-				signObj.err = res;
-				return signObj;
-			}
-		}
-	}
-
-	var getBtn = "80ae000000";
 	do {
-		res = await sendcmd(getBtn);
-	} while (res == commDefine.waitBtn)
+		res = await sendcmd(cmdTable.getbtn);
+		info = check_res(res);
+	} while (info.code==retCode.wait)
 
-	if (res.length == 4 && res != commDefine.cmdOK) {
-		if (res == commDefine.noDevice || commDefine.appID) {
-			signObj.isConnect = false;
-			return signObj;
-		}
-		else {
-			signObj.isConnect = true;
-			signObj.err = res;
-			return signObj;
-		}
-	}
-	else if (res.length > 4) {
-		var resData = res;
-		res = res.substring(res.length - 4, res.length);
-		if (res == commDefine.cmdOK) {
-			signObj.isConnect = true;
-			signObj.signature = resData.substring(0, resData.length - 4);
-			return signObj;
-		}
-		else {
-			return signObj;
-		}
-	} else if (res == commDefine.cmdOK) {
-		signObj.isConnect = true;
-		return signObj;
-	}
+	if(info.code!=rets.ok)
+		return { code };
 
-	return signObj;
+	let sign = info.result.resData.substring(0, info.result.resData.length - 4);
+	return {code, result:{ sign } };
 }

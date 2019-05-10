@@ -11,17 +11,17 @@ export const rets = {
     nodevice: 2
 }
 
+export const fetchBase = 1000;
+
 export const codeSwTable = 
-    [
-        {sw:"6805",code:2},
-        {sw:"6802",code:2},
-        {sw:"9000",code:0},
-        {sw:"6e00",code:1},
-        {sw:"6d00",code:1},
-        {sw:"6100",code:5},
-        {sw:"6c00",code:4},
-        {sw:"6f00",code:3}
-    ]
+    {
+        sw6805:2,
+        sw6802:2,
+        sw9000:0,
+        sw6e00:1,
+        sw6d00:1,
+        sw6f00:3
+    }
 
 
 export const commDefine = {
@@ -56,17 +56,17 @@ export const lifeCycle = {
 
 export const cmdTable = {
     getsn: "8064000000",
-    rand: "00840000",
+    rand: "0084000008",
     pinstate: "8064010000",
-    cmdRecover: [
-        {
-            name: "CYB",
-            cmd: "806002000c000000000100000080000000"
-        },
-        {
-            name: "BTC",
-            cmd: "806002000c000000000100000080000000"
-        }
-    ],
-    getaddress: "8062020100"
+    cmdRecover: {
+        CYB: "806002000c000000000100000080000000",
+        BTC: "806002000c000000000100000080000000"
+    },
+    getaddress: "8062020100",
+    commtest:"00850000",
+    sign:{
+        CYB: "80a00200",
+        BTC: "80a00200"
+    },
+    getbtn: "80ae000000"
 }

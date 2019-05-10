@@ -1,26 +1,38 @@
-const { connect, rand, retCode} = require('../src/index.js');
+const { connect, rand, commtest,retCode} = require('../src/index.js');
 
 
 window.openDevice = async () => {
-	console.log("start enroll\n");
+	window.log.i("start enroll\n");
 	let info = await connect();
 	if (info.code===retCode.ok) {
-		console.log("device connect success!", info);
+		window.log.i("device connect success!", info);
 	}
 	else {
-		console.log("device connect fail!\n",info);
+		window.log.i("device connect fail!\n",info);
 		return;
 	}
 }
 
 window.GetRandom = async () =>{
-	console.log("get rand\n");
+	window.log.i("get rand\n");
 	let info = await rand();
 	if (info.code===retCode.ok) {
-		console.log("GetRandom success!", info);
+		window.log.i("GetRandom success!", info);
 	}
 	else {
-		console.log("GetRandom fail!\n",info);
+		window.log.i("GetRandom fail!\n",info);
+		return;
+	}
+}
+
+window.CommTest= async () =>{
+	window.log.i("get rand\n");
+	let info = await commtest();
+	if (info.code===retCode.ok) {
+		window.log.i("GetRandom success!", info);
+	}
+	else {
+		window.log.i("GetRandom fail!\n",info);
 		return;
 	}
 }
@@ -43,25 +55,25 @@ window.verify = async () => {
 
 /*
 window.register = async () => {
-	console.log("start register\n");
+	window.log.i("start register\n");
 
 	var devObj = await connect();
 	if (devObj.isConnect) {
 		if (!devObj.err) {
-			console.log("device connect success!\n");
-			console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
+			window.log.i("device connect success!\n");
+			window.log.i("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
 		}
 		else
-			console.log("connect:%s\n", devObj.err);
+			window.log.i("connect:%s\n", devObj.err);
 	}
 	else {
-		console.log("device connect fail!\n");
+		window.log.i("device connect fail!\n");
 		alert("Please connect WOOKONG SOLO!\n");
 		return null;
 	}
 
 	if (devObj.lifecycle != lifeCycle.user) {
-		console.log("please init your device by wookong solo client first!\n");
+		window.log.i("please init your device by wookong solo client first!\n");
 		return null;
 	}
 
@@ -72,35 +84,35 @@ window.register = async () => {
 			if (!PINObj.err) {
 				switch (PINObj.state) {
 					case pinState.logout:
-						console.log("pin logout\n");
+						window.log.i("pin logout\n");
 						document.getElementById("imgLogin").style.zIndex = 0;
 						document.getElementById("imgWaitPIN").style.zIndex = 99;
 						break;
 					case pinState.login:
-						console.log("pin login\n");
+						window.log.i("pin login\n");
 						break;
 					case pinState.locked:
 						{
-							console.log("pin locked\n");
+							window.log.i("pin locked\n");
 							return null;
 						}
 					case pinState.notset:
 						{
-							console.log("pin notset\n");
+							window.log.i("pin notset\n");
 							return null;
 						}
 				}
 			} else
-				console.log("checkpinstate:%s\n", PINObj.err);
+				window.log.i("checkpinstate:%s\n", PINObj.err);
 
 		}
 		else {
-			console.log("device connect fail!\n");
+			window.log.i("device connect fail!\n");
 			return null;
 		}
 		if (cancelFlag == 1) {
 			cancelFlag = 0;
-			console.log("operation aborted!\n");
+			window.log.i("operation aborted!\n");
 			return null;
 		}
 	} while (PINObj.state != pinState.login)
@@ -108,12 +120,12 @@ window.register = async () => {
 	var addrObj = await getaddress();
 	if (addrObj.isConnect) {
 		if (!addrObj.err)
-			console.log("CYB address:%s\n", addrObj.address);
+			window.log.i("CYB address:%s\n", addrObj.address);
 		else
-			console.log("getaddress:%s\n", addrObj.err);
+			window.log.i("getaddress:%s\n", addrObj.err);
 	}
 	else {
-		console.log("device connect fail!\n");
+		window.log.i("device connect fail!\n");
 		return null;
 	}
 
@@ -124,25 +136,25 @@ window.register = async () => {
 
 
 window.login = async (random) => {
-	console.log("start login\n");
+	window.log.i("start login\n");
 	
 	var devObj = await connect();
 	if (devObj.isConnect) {
 		if (!devObj.err) {
-			console.log("device connect success!\n");
-			console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
+			window.log.i("device connect success!\n");
+			window.log.i("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
 		}
 		else
-			console.log("connect:%s\n", devObj.err);
+			window.log.i("connect:%s\n", devObj.err);
 	}
 	else {
-		console.log("device connect fail!\n");
+		window.log.i("device connect fail!\n");
 		window.alert("Please connect WOOKONG SOLO!\n");
 		return null;
 	}
 
 	if (devObj.lifecycle != lifeCycle.user) {
-		console.log("please init your device by wookong solo client first!\n");
+		window.log.i("please init your device by wookong solo client first!\n");
 		return null;
 	}
 
@@ -153,34 +165,34 @@ window.login = async (random) => {
 			if (!PINObj.err) {
 				switch (PINObj.state) {
 					case pinState.logout:
-						console.log("pin logout\n");
+						window.log.i("pin logout\n");
 						sillyUIcontroll("imgWaitPIN");
 						break;
 					case pinState.login:
-						console.log("pin login\n");
+						window.log.i("pin login\n");
 						break;
 					case pinState.locked:
 						{
-							console.log("pin locked\n");
+							window.log.i("pin locked\n");
 							return null;
 						}
 					case pinState.notset:
 						{
-							console.log("pin notset\n");
+							window.log.i("pin notset\n");
 							return null;
 						}
 				}
 			} else
-				console.log("checkpinstate:%s\n", PINObj.err);
+				window.log.i("checkpinstate:%s\n", PINObj.err);
 
 		}
 		else {
-			console.log("device connect fail!\n");
+			window.log.i("device connect fail!\n");
 			return null;
 		}
 		if (cancelFlag == 1) {
 			cancelFlag = 0;
-			console.log("operation aborted!\n");
+			window.log.i("operation aborted!\n");
 			return null;
 		}
 	} while (PINObj.state != pinState.login)
@@ -188,12 +200,12 @@ window.login = async (random) => {
 	var addrObj = await getaddress();
 	if (addrObj.isConnect) {
 		if (!addrObj.err)
-			console.log("CYB address:%s\n", addrObj.address);
+			window.log.i("CYB address:%s\n", addrObj.address);
 		else
-			console.log("getaddress:%s\n", addrObj.err);
+			window.log.i("getaddress:%s\n", addrObj.err);
 	}
 	else {
-		console.log("device connect fail!\n");
+		window.log.i("device connect fail!\n");
 		return null;
 	}
 
@@ -205,7 +217,7 @@ window.login = async (random) => {
 
 	//sign test
 	sillyUIcontroll("imgWaitBTN");
-	console.log("before sign\n");
+	window.log.i("before sign\n");
 	var txTransfer = "f24412812423440b8a5c02242c0100000000000000d60a0300ad0a0e6970686f6e652d78722d3531326b010003435942010003435942000000e80300000000000000d60aad0a010000000000000000000000";
 	//var txLimitOrderCreate = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fded4134c89732d8b52c7f5c02242c0100000000000000b60a03010003435942012f0455534454010003435942000001370000000000000000b60a01000000000000000001000000000000002f0e407f5c000000"
 	//var txLimitOrderCancel = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fded91341f66da4a552e7f5c0224640000000000000000b60a01010003435942000002050000000000000000b60a898d9a040000";
@@ -227,12 +239,12 @@ window.login = async (random) => {
 		signObj = await signTransaction(testTxs[i]);
 		if (signObj.isConnect) {
 			if (!signObj.err)
-				console.log("\n\nsignature:%s\n", signObj.signature);
+				window.log.i("\n\nsignature:%s\n", signObj.signature);
 			else
-				console.log("signature err:%s\n", signObj.err);
+				window.log.i("signature err:%s\n", signObj.err);
 		}
 		else {
-			console.log("device connect fail!\n");
+			window.log.i("device connect fail!\n");
 		}
 		i++;
 	}while(i<testCount)

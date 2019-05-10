@@ -59,328 +59,169 @@
 	var _require = __webpack_require__(76),
 	    connect = _require.connect,
 	    rand = _require.rand,
-	    retCode = _require.retCode;
+	    checkpinstate = _require.checkpinstate,
+	    getaddress = _require.getaddress,
+	    signTransaction = _require.signTransaction,
+	    retCode = _require.retCode,
+	    coins = _require.coins;
 	
 	window.openDevice = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-		var info;
-		return _regenerator2.default.wrap(function _callee$(_context) {
-			while (1) {
-				switch (_context.prev = _context.next) {
-					case 0:
-						console.log("start enroll\n");
-						_context.next = 3;
-						return connect();
+	    var info;
+	    return _regenerator2.default.wrap(function _callee$(_context) {
+	        while (1) {
+	            switch (_context.prev = _context.next) {
+	                case 0:
+	                    window.log.i("start openDevice\n");
+	                    _context.next = 3;
+	                    return connect();
 	
-					case 3:
-						info = _context.sent;
+	                case 3:
+	                    info = _context.sent;
 	
-						if (!(info.code === retCode.ok)) {
-							_context.next = 8;
-							break;
-						}
+	                    if (!(info.code === retCode.ok)) {
+	                        _context.next = 8;
+	                        break;
+	                    }
 	
-						console.log("device connect success!", info);
-						_context.next = 10;
-						break;
+	                    window.log.i("device connect success!", info);
+	                    _context.next = 10;
+	                    break;
 	
-					case 8:
-						console.log("device connect fail!\n", info);
-						return _context.abrupt("return");
+	                case 8:
+	                    window.log.e("device connect fail!\n", info);
+	                    return _context.abrupt("return");
 	
-					case 10:
-					case "end":
-						return _context.stop();
-				}
-			}
-		}, _callee, undefined);
+	                case 10:
+	                case "end":
+	                    return _context.stop();
+	            }
+	        }
+	    }, _callee, undefined);
 	}));
 	
-	window.GetRandom = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-		var info;
-		return _regenerator2.default.wrap(function _callee2$(_context2) {
-			while (1) {
-				switch (_context2.prev = _context2.next) {
-					case 0:
-						console.log("get rand\n");
-						_context2.next = 3;
-						return rand();
+	window.CheckPINState = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+	    var info;
+	    return _regenerator2.default.wrap(function _callee2$(_context2) {
+	        while (1) {
+	            switch (_context2.prev = _context2.next) {
+	                case 0:
+	                    window.log.i("check pin state\n");
+	                    info = void 0;
 	
-					case 3:
-						info = _context2.sent;
+	                case 2:
+	                    _context2.next = 4;
+	                    return checkpinstate();
 	
-						if (!(info.code === retCode.ok)) {
-							_context2.next = 8;
-							break;
-						}
+	                case 4:
+	                    info = _context2.sent;
 	
-						console.log("GetRandom success!", info);
-						_context2.next = 10;
-						break;
+	                    if (!(info.code === retCode.ok)) {
+	                        _context2.next = 15;
+	                        break;
+	                    }
 	
-					case 8:
-						console.log("GetRandom fail!\n", info);
-						return _context2.abrupt("return");
+	                    if (!(info.result.state == 0)) {
+	                        _context2.next = 11;
+	                        break;
+	                    }
 	
-					case 10:
-					case "end":
-						return _context2.stop();
-				}
-			}
-		}, _callee2, undefined);
+	                    window.log.i("please unlock!\n");
+	                    return _context2.abrupt("continue", 17);
+	
+	                case 11:
+	                    window.log.i("unlock success!\n");
+	                    return _context2.abrupt("return");
+	
+	                case 13:
+	                    _context2.next = 17;
+	                    break;
+	
+	                case 15:
+	                    window.log.e("device connect fail!", info);
+	                    return _context2.abrupt("return");
+	
+	                case 17:
+	                    if (1) {
+	                        _context2.next = 2;
+	                        break;
+	                    }
+	
+	                case 18:
+	                case "end":
+	                    return _context2.stop();
+	            }
+	        }
+	    }, _callee2, undefined);
 	}));
 	
-	window.enroll = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-		return _regenerator2.default.wrap(function _callee3$(_context3) {
-			while (1) {
-				switch (_context3.prev = _context3.next) {
-					case 0:
-					case "end":
-						return _context3.stop();
-				}
-			}
-		}, _callee3, undefined);
+	window.GetAddress = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+	    var info;
+	    return _regenerator2.default.wrap(function _callee3$(_context3) {
+	        while (1) {
+	            switch (_context3.prev = _context3.next) {
+	                case 0:
+	                    window.log.i("start getaddress\n");
+	                    _context3.next = 3;
+	                    return getaddress(coins.CYB);
+	
+	                case 3:
+	                    info = _context3.sent;
+	
+	                    if (!(info.code === retCode.ok)) {
+	                        _context3.next = 8;
+	                        break;
+	                    }
+	
+	                    window.log.i("device address success!", info);
+	                    _context3.next = 10;
+	                    break;
+	
+	                case 8:
+	                    window.log.e("device connect fail!\n", info);
+	                    return _context3.abrupt("return");
+	
+	                case 10:
+	                case "end":
+	                    return _context3.stop();
+	            }
+	        }
+	    }, _callee3, undefined);
 	}));
 	
-	window.list = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-		return _regenerator2.default.wrap(function _callee4$(_context4) {
-			while (1) {
-				switch (_context4.prev = _context4.next) {
-					case 0:
-					case "end":
-						return _context4.stop();
-				}
-			}
-		}, _callee4, undefined);
-	}));
+	window.SignTransaction = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+	    var tx, info;
+	    return _regenerator2.default.wrap(function _callee4$(_context4) {
+	        while (1) {
+	            switch (_context4.prev = _context4.next) {
+	                case 0:
+	                    window.log.i("start sign\n");
+	                    tx = "f24412812423440b8a5c02242c0100000000000000d60a0300ad0a0e6970686f6e652d78722d3531326b010003435942010003435942000000e80300000000000000d60aad0a010000000000000000000000";
+	                    _context4.next = 4;
+	                    return signTransaction(coins.CYB, tx);
 	
-	window.delete = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
-		return _regenerator2.default.wrap(function _callee5$(_context5) {
-			while (1) {
-				switch (_context5.prev = _context5.next) {
-					case 0:
-					case "end":
-						return _context5.stop();
-				}
-			}
-		}, _callee5, undefined);
-	}));
+	                case 4:
+	                    info = _context4.sent;
 	
-	window.verify = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6() {
-		return _regenerator2.default.wrap(function _callee6$(_context6) {
-			while (1) {
-				switch (_context6.prev = _context6.next) {
-					case 0:
-					case "end":
-						return _context6.stop();
-				}
-			}
-		}, _callee6, undefined);
-	}));
+	                    if (!(info.code === retCode.ok)) {
+	                        _context4.next = 9;
+	                        break;
+	                    }
 	
-	/*
-	window.register = async () => {
-		console.log("start register\n");
-
-		var devObj = await connect();
-		if (devObj.isConnect) {
-			if (!devObj.err) {
-				console.log("device connect success!\n");
-				console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
-			}
-			else
-				console.log("connect:%s\n", devObj.err);
-		}
-		else {
-			console.log("device connect fail!\n");
-			alert("Please connect WOOKONG SOLO!\n");
-			return null;
-		}
-
-		if (devObj.lifecycle != lifeCycle.user) {
-			console.log("please init your device by wookong solo client first!\n");
-			return null;
-		}
-
-		var PINObj;
-		do {
-			PINObj = await checkpinstate();
-			if (PINObj.isConnect) {
-				if (!PINObj.err) {
-					switch (PINObj.state) {
-						case pinState.logout:
-							console.log("pin logout\n");
-							document.getElementById("imgLogin").style.zIndex = 0;
-							document.getElementById("imgWaitPIN").style.zIndex = 99;
-							break;
-						case pinState.login:
-							console.log("pin login\n");
-							break;
-						case pinState.locked:
-							{
-								console.log("pin locked\n");
-								return null;
-							}
-						case pinState.notset:
-							{
-								console.log("pin notset\n");
-								return null;
-							}
-					}
-				} else
-					console.log("checkpinstate:%s\n", PINObj.err);
-
-			}
-			else {
-				console.log("device connect fail!\n");
-				return null;
-			}
-			if (cancelFlag == 1) {
-				cancelFlag = 0;
-				console.log("operation aborted!\n");
-				return null;
-			}
-		} while (PINObj.state != pinState.login)
-
-		var addrObj = await getaddress();
-		if (addrObj.isConnect) {
-			if (!addrObj.err)
-				console.log("CYB address:%s\n", addrObj.address);
-			else
-				console.log("getaddress:%s\n", addrObj.err);
-		}
-		else {
-			console.log("device connect fail!\n");
-			return null;
-		}
-
-
-
-	}
-
-
-
-	window.login = async (random) => {
-		console.log("start login\n");
-		
-		var devObj = await connect();
-		if (devObj.isConnect) {
-			if (!devObj.err) {
-				console.log("device connect success!\n");
-				console.log("version:%s,sn:%s,net:%s,lifecycle:%s\n", devObj.version, devObj.sn, devObj.net, devObj.lifecycle);
-			}
-			else
-				console.log("connect:%s\n", devObj.err);
-		}
-		else {
-			console.log("device connect fail!\n");
-			window.alert("Please connect WOOKONG SOLO!\n");
-			return null;
-		}
-
-		if (devObj.lifecycle != lifeCycle.user) {
-			console.log("please init your device by wookong solo client first!\n");
-			return null;
-		}
-
-		var PINObj;
-		do {
-			PINObj = await checkpinstate();
-			if (PINObj.isConnect) {
-				if (!PINObj.err) {
-					switch (PINObj.state) {
-						case pinState.logout:
-							console.log("pin logout\n");
-							sillyUIcontroll("imgWaitPIN");
-							break;
-						case pinState.login:
-							console.log("pin login\n");
-							break;
-						case pinState.locked:
-							{
-								console.log("pin locked\n");
-								return null;
-							}
-						case pinState.notset:
-							{
-								console.log("pin notset\n");
-								return null;
-							}
-					}
-				} else
-					console.log("checkpinstate:%s\n", PINObj.err);
-
-			}
-			else {
-				console.log("device connect fail!\n");
-				return null;
-			}
-			if (cancelFlag == 1) {
-				cancelFlag = 0;
-				console.log("operation aborted!\n");
-				return null;
-			}
-		} while (PINObj.state != pinState.login)
-
-		var addrObj = await getaddress();
-		if (addrObj.isConnect) {
-			if (!addrObj.err)
-				console.log("CYB address:%s\n", addrObj.address);
-			else
-				console.log("getaddress:%s\n", addrObj.err);
-		}
-		else {
-			console.log("device connect fail!\n");
-			return null;
-		}
-
-		
-
-
-	  	
-		var signObj;
-
-		//sign test
-		sillyUIcontroll("imgWaitBTN");
-		console.log("before sign\n");
-		var txTransfer = "f24412812423440b8a5c02242c0100000000000000d60a0300ad0a0e6970686f6e652d78722d3531326b010003435942010003435942000000e80300000000000000d60aad0a010000000000000000000000";
-		//var txLimitOrderCreate = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fded4134c89732d8b52c7f5c02242c0100000000000000b60a03010003435942012f0455534454010003435942000001370000000000000000b60a01000000000000000001000000000000002f0e407f5c000000"
-		//var txLimitOrderCancel = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fded91341f66da4a552e7f5c0224640000000000000000b60a01010003435942000002050000000000000000b60a898d9a040000";
-		//var txBalanceClaim = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fdedce34407d6c66932f7f5c0224c80000000000000000b60a0200ad0a0e6970686f6e652d78722d3531326b010003435942000025000000000000000000b60a9701034926dea8b5eb03e6687e6ee0119c3ea177334992979687587f214356bfc20aa001000000000000000000";
-		//var txWithDraw = "ab1a36b889e21d2803219d379d10d39ff282b0399934946b1d5b799ceeb9fded3043d136578e4b7b7f5c02242c0100000000000000b60a030084010c6a6164652d67617465776179011709544553542e555344540100034359420000003c0400000000000000b60a840101000000000000001701035a027af0635db6dc87a66b6e64cf6c0e79df1ccf98f888680c91242ed7a2cb890363bdfe6f66b4071f3b451f12046748ecd5e8e5467955e0a7c6ab121dfe95ce3708faeaf85169010050a49829d9838646c5b6cfd3668187d975b18a6f5743e7cbfed0187de06e39bceec86417248c4be942986e585541b9f22dbc8db968b90b40dd97aa13d87735ed8411cf80f46a8cb2989af37ec7b3d56ab60000";
-
-		var testTxs=new Array();
-		testTxs[0] = txTransfer;
-		//testTxs[1] = txLimitOrderCreate;
-		//testTxs[2] = txLimitOrderCancel;
-		//testTxs[3] = txBalanceClaim;
-		//testTxs[4] = txWithDraw;
-
-		
-		var testCount = 1;
-		var i = 0;
-		do
-		{
-			signObj = await signTransaction(testTxs[i]);
-			if (signObj.isConnect) {
-				if (!signObj.err)
-					console.log("\n\nsignature:%s\n", signObj.signature);
-				else
-					console.log("signature err:%s\n", signObj.err);
-			}
-			else {
-				console.log("device connect fail!\n");
-			}
-			i++;
-		}while(i<testCount)
-
-		sillyUIcontroll("imgDone");
-	}
-
-	window.sign = async () => {
-
-
-	}
-	*/
+	                    window.log.i("device sign success!", info);
+	                    _context4.next = 11;
+	                    break;
+	
+	                case 9:
+	                    window.log.e("device sign fail!\n", info);
+	                    return _context4.abrupt("return");
+	
+	                case 11:
+	                case "end":
+	                    return _context4.stop();
+	            }
+	        }
+	    }, _callee4, undefined);
+	}));
 
 /***/ }),
 /* 1 */
@@ -2862,7 +2703,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.rand = exports.connect = exports.coins = exports.retCode = undefined;
+	exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.rand = exports.commtest = exports.connect = exports.coins = exports.retCode = undefined;
 	
 	var _regenerator = __webpack_require__(1);
 	
@@ -2874,22 +2715,25 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _require = __webpack_require__(83),
+	var _require = __webpack_require__(77),
 	    commDefine = _require.commDefine,
 	    rets = _require.rets,
 	    cmdTable = _require.cmdTable;
 	
-	var _require2 = __webpack_require__(77),
+	var _require2 = __webpack_require__(78),
 	    check_res = _require2.check_res,
-	    parseAddr = _require2.parseAddr;
+	    parseAddr = _require2.parseAddr,
+	    get_tx_len = _require2.get_tx_len;
 	
-	var _require3 = __webpack_require__(78),
+	var _require3 = __webpack_require__(79),
 	    sendcmd = _require3.sendcmd;
 	
 	var retCode = exports.retCode = {
 		ok: 0,
 		nok: 1,
-		nodevice: 2
+		nodevice: 2,
+		wait: 3,
+		notsupprot: 10
 	};
 	
 	var coins = exports.coins = {
@@ -2939,37 +2783,38 @@
 			return _ref.apply(this, arguments);
 		};
 	}();
-	var rand = exports.rand = function () {
+	var commtest = exports.commtest = function () {
 		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-			var random, code, res, info;
+			var random, code, testData, res, info;
 			return _regenerator2.default.wrap(function _callee2$(_context2) {
 				while (1) {
 					switch (_context2.prev = _context2.next) {
 						case 0:
 							random = "";
 							code = rets.nok;
-							_context2.next = 4;
-							return sendcmd(cmdTable.rand);
+							testData = "112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00";
+							_context2.next = 5;
+							return sendcmd(cmdTable.commtest + "80" + testData);
 	
-						case 4:
+						case 5:
 							res = _context2.sent;
 							info = check_res(res);
 	
 							code = info.code;
 	
 							if (!(code != rets.ok)) {
-								_context2.next = 9;
+								_context2.next = 10;
 								break;
 							}
 	
 							return _context2.abrupt('return', { code: code });
 	
-						case 9:
+						case 10:
 	
-							random = info.result.resData.substring(0, 8);
+							random = info.result.resData.substring(0, 16);
 							return _context2.abrupt('return', { code: code, result: { random: random } });
 	
-						case 11:
+						case 12:
 						case 'end':
 							return _context2.stop();
 					}
@@ -2977,32 +2822,42 @@
 			}, _callee2, undefined);
 		}));
 	
-		return function rand() {
+		return function commtest() {
 			return _ref2.apply(this, arguments);
 		};
 	}();
 	
-	var checkpinstate = exports.checkpinstate = function () {
+	var rand = exports.rand = function () {
 		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-			var code, state, res, info;
+			var random, code, res, info;
 			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
 					switch (_context3.prev = _context3.next) {
 						case 0:
+							random = "";
 							code = rets.nok;
-							state = void 0;
 							_context3.next = 4;
-							return sendcmd(cmdTable.pinstate);
+							return sendcmd(cmdTable.rand);
 	
 						case 4:
 							res = _context3.sent;
 							info = check_res(res);
 	
 							code = info.code;
-							if (code === rets.ok) state = info.result.resData.substring(0, 2);
-							return _context3.abrupt('return', { code: code, result: { state: state } });
+	
+							if (!(code != rets.ok)) {
+								_context3.next = 9;
+								break;
+							}
+	
+							return _context3.abrupt('return', { code: code });
 	
 						case 9:
+	
+							random = info.result.resData.substring(0, 16);
+							return _context3.abrupt('return', { code: code, result: { random: random } });
+	
+						case 11:
 						case 'end':
 							return _context3.stop();
 					}
@@ -3010,67 +2865,32 @@
 			}, _callee3, undefined);
 		}));
 	
-		return function checkpinstate() {
+		return function rand() {
 			return _ref3.apply(this, arguments);
 		};
 	}();
 	
-	//coin: coins.CYB
-	var getaddress = exports.getaddress = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(coin) {
-			var i, cmd, res, info, address;
+	var checkpinstate = exports.checkpinstate = function () {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+			var code, state, res, info;
 			return _regenerator2.default.wrap(function _callee4$(_context4) {
 				while (1) {
 					switch (_context4.prev = _context4.next) {
 						case 0:
-							//coin: 币种缩写
-							//在cmdRecover中遍历传入币种名称, 得到指令
-							i = 0;
-							cmd = void 0;
+							code = rets.nok;
+							state = void 0;
+							_context4.next = 4;
+							return sendcmd(cmdTable.pinstate);
 	
-							for (i = 0; i < 2; i++) {
-								if (coin === cmdRecover[0].name) cmd = cmdRecover[0].cmd;
-							}
-							_context4.next = 5;
-							return sendcmd(cmd);
-	
-						case 5:
+						case 4:
 							res = _context4.sent;
 							info = check_res(res);
 	
 							code = info.code;
+							if (code === rets.ok) state = info.result.resData.substring(0, 2);
+							return _context4.abrupt('return', { code: code, result: { state: state } });
 	
-							if (!(info.code != rets.ok)) {
-								_context4.next = 10;
-								break;
-							}
-	
-							return _context4.abrupt('return', { code: code });
-	
-						case 10:
-							_context4.next = 12;
-							return sendcmd(cmdTable.getaddress);
-	
-						case 12:
-							res = _context4.sent;
-	
-							info = check_res(res);
-							code = info.code;
-	
-							if (!(info.code != rets.ok)) {
-								_context4.next = 17;
-								break;
-							}
-	
-							return _context4.abrupt('return', { code: code });
-	
-						case 17:
-							address = info.result.resData.substring(0, resData.length - 4);
-	
-							address = parseAddr(address);
-							return _context4.abrupt('return', { code: code, result: { address: address } });
-	
-						case 20:
+						case 9:
 						case 'end':
 							return _context4.stop();
 					}
@@ -3078,185 +2898,70 @@
 			}, _callee4, undefined);
 		}));
 	
-		return function getaddress(_x) {
+		return function checkpinstate() {
 			return _ref4.apply(this, arguments);
 		};
 	}();
 	
-	var signTransaction = exports.signTransaction = function () {
-		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(tx) {
-			var signObj, txLen, tmpLen, firstBlock, cmdSign, strTxLen, res, getBtn, resData;
+	//coin: coins.CYB
+	var getaddress = exports.getaddress = function () {
+		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(coin) {
+			var cmd, code, res, info, address;
 			return _regenerator2.default.wrap(function _callee5$(_context5) {
 				while (1) {
 					switch (_context5.prev = _context5.next) {
 						case 0:
-							signObj = {
-								isConnect: false,
-								signature: "",
-								err: ""
-							};
-							txLen = tx.length;
-							tmpLen = txLen;
+							cmd = cmdTable.cmdRecover[coin];
+							code = void 0;
 	
-							console.log("enter sign txLen = %d\n", tx.length);
-	
-							if (!(txLen > 2000)) {
-								_context5.next = 7;
+							if (cmd) {
+								_context5.next = 4;
 								break;
 							}
 	
-							signObj.err = commDefine.errToLong;
-							return _context5.abrupt('return', signObj);
+							return _context5.abrupt('return', { code: retCode.notsupprot });
 	
-						case 7:
-							firstBlock = 1;
-							cmdSign = "";
-							strTxLen = "";
+						case 4:
+							_context5.next = 6;
+							return sendcmd(cmd);
 	
-							console.log("before while tmpLen = %d\n", tmpLen);
+						case 6:
+							res = _context5.sent;
+							info = check_res(res);
+	
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context5.next = 11;
+								break;
+							}
+	
+							return _context5.abrupt('return', { code: code });
 	
 						case 11:
-							if (!(tmpLen > 0)) {
-								_context5.next = 28;
-								break;
-							}
+							_context5.next = 13;
+							return sendcmd(cmdTable.getaddress);
 	
-							console.log("in while tmpLen = %d\n", tmpLen);
-							if (tmpLen > commDefine.apduMaxLen) {
-								strTxLen = commDefine.strMaxLen;
-								console.log("strTxLen = %s \n", strTxLen);
-								if (firstBlock == 1) {
-									console.log("firstBlock\n");
-									firstBlock = 0;
-									cmdSign = "80a00201" + strTxLen + tx.substring(0, commDefine.apduMaxLen);
-									tx = tx.substring(commDefine.apduMaxLen, tx.length);
-									tmpLen = tmpLen - commDefine.apduMaxLen;
-									console.log("firstBlock tmpLen=%d cmdSign = %s\n", tmpLen, cmdSign);
-								} else {
-									console.log("midBlock\n");
-									strTxLen = commDefine.apduMaxLen.toString(16);
-									cmdSign = "80a00202" + strTxLen + tx.substring(0, commDefine.apduMaxLen);
-									tx = tx.substring(commDefine.apduMaxLen, tx.length);
-									tmpLen = tmpLen - commDefine.apduMaxLen;
-									console.log("midBlock tmpLen=%d cmdSign = %s\n", tmpLen, cmdSign);
-								}
-							} else {
-								console.log("lastBlock\n");
-								tmpLen = tmpLen / 2;
-								strTxLen = tmpLen.toString(16);
-								if (strTxLen.length % 2 != 0) strTxLen = "0" + strTxLen;
-								console.log("strTxLen = %s \n", strTxLen);
-								cmdSign = "80a00200" + strTxLen + tx;
-								tmpLen = 0;
-								console.log("lastBlock tmpLen=%d cmdSign = %s\n", tmpLen, cmdSign);
-							}
-	
-							_context5.next = 16;
-							return sendcmd(cmdSign);
-	
-						case 16:
+						case 13:
 							res = _context5.sent;
 	
-							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context5.next = 26;
+							info = check_res(res);
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context5.next = 18;
 								break;
 							}
 	
-							if (!(res == commDefine.noDevice || commDefine.appID)) {
-								_context5.next = 23;
-								break;
-							}
+							return _context5.abrupt('return', { code: code });
 	
-							signObj.isConnect = false;
-							return _context5.abrupt('return', signObj);
+						case 18:
+							address = info.result.resData.substring(0, info.result.resData.length - 4);
 	
-						case 23:
-							signObj.isConnect = true;
-							signObj.err = res;
-							return _context5.abrupt('return', signObj);
+							address = parseAddr(address);
+							return _context5.abrupt('return', { code: code, result: { address: address } });
 	
-						case 26:
-							_context5.next = 11;
-							break;
-	
-						case 28:
-							getBtn = "80ae000000";
-	
-						case 29:
-							_context5.next = 31;
-							return sendcmd(getBtn);
-	
-						case 31:
-							res = _context5.sent;
-	
-						case 32:
-							if (res == commDefine.waitBtn) {
-								_context5.next = 29;
-								break;
-							}
-	
-						case 33:
-							if (!(res.length == 4 && res != commDefine.cmdOK)) {
-								_context5.next = 44;
-								break;
-							}
-	
-							if (!(res == commDefine.noDevice || commDefine.appID)) {
-								_context5.next = 39;
-								break;
-							}
-	
-							signObj.isConnect = false;
-							return _context5.abrupt('return', signObj);
-	
-						case 39:
-							signObj.isConnect = true;
-							signObj.err = res;
-							return _context5.abrupt('return', signObj);
-	
-						case 42:
-							_context5.next = 59;
-							break;
-	
-						case 44:
-							if (!(res.length > 4)) {
-								_context5.next = 56;
-								break;
-							}
-	
-							resData = res;
-	
-							res = res.substring(res.length - 4, res.length);
-	
-							if (!(res == commDefine.cmdOK)) {
-								_context5.next = 53;
-								break;
-							}
-	
-							signObj.isConnect = true;
-							signObj.signature = resData.substring(0, resData.length - 4);
-							return _context5.abrupt('return', signObj);
-	
-						case 53:
-							return _context5.abrupt('return', signObj);
-	
-						case 54:
-							_context5.next = 59;
-							break;
-	
-						case 56:
-							if (!(res == commDefine.cmdOK)) {
-								_context5.next = 59;
-								break;
-							}
-	
-							signObj.isConnect = true;
-							return _context5.abrupt('return', signObj);
-	
-						case 59:
-							return _context5.abrupt('return', signObj);
-	
-						case 60:
+						case 21:
 						case 'end':
 							return _context5.stop();
 					}
@@ -3264,13 +2969,168 @@
 			}, _callee5, undefined);
 		}));
 	
-		return function signTransaction(_x2) {
+		return function getaddress(_x) {
 			return _ref5.apply(this, arguments);
+		};
+	}();
+	
+	var signTransaction = exports.signTransaction = function () {
+		var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(coin, tx) {
+			var code, res, info, sign;
+			return _regenerator2.default.wrap(function _callee6$(_context6) {
+				while (1) {
+					switch (_context6.prev = _context6.next) {
+						case 0:
+	
+							window.log.w("enter sign txLen = %d\n", tx.length);
+							code = rets.nok;
+	
+							if (!(tx.length > 255)) {
+								_context6.next = 4;
+								break;
+							}
+	
+							return _context6.abrupt('return', { code: code });
+	
+						case 4:
+							_context6.next = 6;
+							return sendcmd(cmdTable.sign[coin] + get_tx_len(tx) + tx);
+	
+						case 6:
+							res = _context6.sent;
+							info = check_res(res);
+	
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context6.next = 11;
+								break;
+							}
+	
+							return _context6.abrupt('return', { code: code });
+	
+						case 11:
+							_context6.next = 13;
+							return sendcmd(cmdTable.getbtn);
+	
+						case 13:
+							res = _context6.sent;
+	
+							info = check_res(res);
+	
+						case 15:
+							if (info.code == retCode.wait) {
+								_context6.next = 11;
+								break;
+							}
+	
+						case 16:
+							if (!(info.code != rets.ok)) {
+								_context6.next = 18;
+								break;
+							}
+	
+							return _context6.abrupt('return', { code: code });
+	
+						case 18:
+							sign = info.result.resData.substring(0, info.result.resData.length - 4);
+							return _context6.abrupt('return', { code: code, result: { sign: sign } });
+	
+						case 20:
+						case 'end':
+							return _context6.stop();
+					}
+				}
+			}, _callee6, undefined);
+		}));
+	
+		return function signTransaction(_x2, _x3) {
+			return _ref6.apply(this, arguments);
 		};
 	}();
 
 /***/ }),
 /* 77 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	var vKHtag = exports.vKHtag = "3B7D8101";
+	
+	var errorCode = exports.errorCode = {
+	    succuess: 0,
+	    fail: 1,
+	    timeout: 5
+	};
+	var rets = exports.rets = {
+	    ok: 0,
+	    nok: 1,
+	    nodevice: 2
+	};
+	
+	var fetchBase = exports.fetchBase = 1000;
+	
+	var codeSwTable = exports.codeSwTable = {
+	    sw6805: 2,
+	    sw6802: 2,
+	    sw9000: 0,
+	    sw6e00: 1,
+	    sw6d00: 1,
+	    sw6f00: 3
+	};
+	
+	var commDefine = exports.commDefine = {
+	    maxPacketLength: 50,
+	    headerLength: 8,
+	    packetControlLength: 6,
+	    fisrtPacket: "0001",
+	    midPacket: "0002",
+	    lastPacket: "0000",
+	    pilotTimeout: 2,
+	    normalTimeout: 5,
+	    cmdOK: "9000",
+	    cmdNG: "68",
+	    noDevice: "6805",
+	    appID: "6802",
+	    waitBtn: "6F00",
+	    errToLong: "6700",
+	    apduMaxLen: "510",
+	    strMaxLen: "ff"
+	};
+	var pinState = exports.pinState = {
+	    notset: "03",
+	    locked: "02",
+	    login: "01",
+	    logout: "00"
+	};
+	var lifeCycle = exports.lifeCycle = {
+	    init: "01",
+	    user: "02",
+	    factory: "04"
+	};
+	
+	var cmdTable = exports.cmdTable = {
+	    getsn: "8064000000",
+	    rand: "0084000008",
+	    pinstate: "8064010000",
+	    cmdRecover: {
+	        CYB: "806002000c000000000100000080000000",
+	        BTC: "806002000c000000000100000080000000"
+	    },
+	    getaddress: "8062020100",
+	    commtest: "00850000",
+	    sign: {
+	        CYB: "80a00200",
+	        BTC: "80a00200"
+	    },
+	    getbtn: "80ae000000"
+	};
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3278,22 +3138,97 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
+	exports.gen_multi = gen_multi;
+	exports.get_tx_len = get_tx_len;
 	exports.check_res = check_res;
 	exports.padding = padding;
+	exports.parseAddr = parseAddr;
 	
-	var _require = __webpack_require__(83),
+	var _require = __webpack_require__(77),
 	    rets = _require.rets,
-	    commDefine = _require.commDefine;
+	    commDefine = _require.commDefine,
+	    codeSwTable = _require.codeSwTable;
+	
+	function convert_code(sw) {
+		window.log.w("sw%s", sw);
+		var code = rets.nok;
+		if (sw.substring(0, 2) == "61") {
+			code = fetchBase + parseInt(sw.substring(2, 2));
+			return;
+		}
+	
+		code = codeSwTable["sw" + sw.toLowerCase()];
+		return code;
+	}
+	//when tx >256
+	function gen_multi() {
+		/*
+	 var txLen = tx.length;
+	 var tmpLen = txLen;
+	 var firstBlock = 1;
+	 var cmdSign="";
+	 var strTxLen = "";
+	 window.log.w("before while tmpLen = %d\n", tmpLen);
+	 while(tmpLen>0)
+	 {
+	 	window.log.w("in while tmpLen = %d\n", tmpLen);
+	 	if(tmpLen>commDefine.apduMaxLen)
+	 	{
+	 		strTxLen=commDefine.strMaxLen;
+	 		window.log.w("strTxLen = %s \n", strTxLen);
+	 		if(firstBlock==1)
+	 		{
+	 			window.log.w("firstBlock\n");
+	 			firstBlock = 0;
+	 			cmdSign = "80a00201" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
+	 			tx = tx.substring(commDefine.apduMaxLen,tx.length);
+	 			tmpLen = tmpLen - commDefine.apduMaxLen;
+	 			window.log.w("firstBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
+	 		}
+	 		else{
+	 			window.log.w("midBlock\n");
+	 			strTxLen=commDefine.apduMaxLen.toString(16);
+	 			cmdSign = "80a00202" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
+	 			tx = tx.substring(commDefine.apduMaxLen,tx.length);
+	 			tmpLen = tmpLen - commDefine.apduMaxLen;
+	 			window.log.w("midBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
+	 		}
+	 	}
+	 	else
+	 	{
+	 		window.log.w("lastBlock\n");
+	 		tmpLen = tmpLen/2;
+	 		strTxLen = tmpLen.toString(16);
+	 		if (strTxLen.length % 2 != 0)
+	 			strTxLen = "0" + strTxLen;
+	 		window.log.w("strTxLen = %s \n", strTxLen);
+	 		cmdSign = "80a00200" + strTxLen + tx;
+	 		tmpLen = 0;
+	 		window.log.w("lastBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
+	 	}
+	  */
+	
+	}
+	
+	function get_tx_len(tx) {
+		var tmpLen = tx.length / 2;
+		var strTxLen = tmpLen.toString(16);
+		if (strTxLen.length % 2 != 0) strTxLen = "0" + strTxLen;
+		return strTxLen;
+	}
 	
 	function check_res(res) {
-		var code = void 0;
-		if (res.length == 4 && res != commDefine.cmdOK) {
-			if (res == commDefine.noDevice || commDefine.appID) {
-				code = rets.nok;
+		var code = rets.nok;
+		window.log.w("res lenth %d, res %s", res.length, res);
+		if (res.length == 4) {
+			//not 9000
+			if (res != commDefine.cmdOK) {
+				code = convert_code(res);
 				return { code: code };
 			} else {
-				//only "9000", sometime it is possible
+				//"9000"
 				code = rets.ok;
+				window.log.w("code", code);
 				return { code: code };
 			}
 		} else if (res.length > 4) {
@@ -3309,6 +3244,7 @@
 				return { code: code };
 			}
 		}
+		return { code: code };
 	}
 	
 	function padding(send_data, send_len) {
@@ -3317,9 +3253,23 @@
 		}
 		return send_data;
 	}
+	
+	function parseAddr(strAddr) {
+		var arr = new Array();
+		var addr = "";
+		for (var i = 0; i < strAddr.length; i = i + 2) {
+			var el = strAddr.substring(i, i + 2);
+			arr[i / 2] = parseInt(el, 16);
+		}
+		for (var j = 0; j < strAddr.length / 2; j++) {
+			addr = addr + String.fromCharCode(arr[j]);
+		}
+	
+		return addr;
+	}
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -3343,40 +3293,41 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var _require = __webpack_require__(77),
+	var _require = __webpack_require__(78),
 	    padding = _require.padding;
 	
-	var _require2 = __webpack_require__(83),
+	var _require2 = __webpack_require__(77),
 	    vKHtag = _require2.vKHtag,
 	    commDefine = _require2.commDefine;
 	
-	var _require3 = __webpack_require__(79),
+	var _require3 = __webpack_require__(80),
 	    B64_encode = _require3.B64_encode,
 	    B64_decode = _require3.B64_decode;
 	
-	var _require4 = __webpack_require__(80),
+	var _require4 = __webpack_require__(81),
 	    sign = _require4.sign;
 	
+	__webpack_require__(84);
 	var isFinal = 0;
 	
 	function cmdCallback(response) {
 		var res;
-		console.log("cmdCallback response.errorCode = %d\n", response.errorCode);
+		window.log.d("cmdCallback response.errorCode = %d\n", response.errorCode);
 		if (!response.errorCode) {
 			if (!isFinal) {
-				console.log("not final\n");
+				window.log.d("not final\n");
 				res = commDefine.cmdOK;
 				return res;
 			}
 			var rv = response.signatureData;
 			res = B64_decode(rv).join('');
 			res = res.substring(5, res.length);
-			console.log("final res %s\n", res);
+			window.log.d("final res %s\n", res);
 		} else {
 			var strcode = response.errorCode.toString(16);
 			if (strcode.length % 2 != 0) strcode = "0" + strcode;
 			res = commDefine.cmdNG + strcode;
-			console.log("error code =%s \n", res);
+			window.log.d("error code =%s \n", res);
 		}
 		return res;
 	}
@@ -3393,8 +3344,8 @@
 							send_len = send_buf.length;
 	
 							//final callback
-							console.log("enter sendcmd\n");
-							console.log("len =%d, send_buf = %s\n", send_buf.length, send_buf);
+							window.log.d("enter sendcmd\n");
+							window.log.d("len =%d, send_buf = %s\n", send_buf.length, send_buf);
 							//org send_buf	
 							//header(8) +len(2) + 00 + packet_type(2) + data(50)
 							//each packet 50 chars
@@ -3408,7 +3359,7 @@
 							//if(send_len<=commDefine.maxPacketLength - commDefine.headerLength - commDefine.packetControlLength)
 							if (send_len <= commDefine.maxPacketLength) {
 								// if less then 50 send and get response back
-								console.log("final case \n");
+								window.log.d("final case \n");
 								send_len = send_len / 2;
 								strSendLen = send_len.toString(16);
 								if (strSendLen.length % 2 != 0) strSendLen = "0" + strSendLen;
@@ -3421,7 +3372,7 @@
 							//if(send_len>commDefine.maxPacketLength - commDefine.headerLength - commDefine.packetControlLength)
 							if (send_len > commDefine.maxPacketLength) {
 								//if more then 50 send first 50 and -50
-								console.log("mid case \n");
+								window.log.d("mid case \n");
 								tmpLen = commDefine.maxPacketLength / 2;
 	
 								strSendLen = tmpLen.toString(16);
@@ -3445,8 +3396,8 @@
 							}
 	
 							pacBuf = vKHtag + pacBuf;
-							console.log("pacBuf %s \n", pacBuf);
-							console.log("send len = %d", send_len);
+							window.log.d("pacBuf %s \n", pacBuf);
+							window.log.d("send len = %d", send_len);
 	
 							vKHb64 = B64_encode(pacBuf, 64); //real buffer
 	
@@ -3493,7 +3444,7 @@
 	}();
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -3588,7 +3539,7 @@
 	}
 
 /***/ }),
-/* 80 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	//Copyright 2014-2015 Google Inc. All rights reserved.
@@ -3607,7 +3558,7 @@
 	 * @type {Object}
 	 */
 	
-	var _stringify = __webpack_require__(81);
+	var _stringify = __webpack_require__(82);
 	
 	var _stringify2 = _interopRequireDefault(_stringify);
 	
@@ -4329,13 +4280,13 @@
 	};
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	module.exports = { "default": __webpack_require__(82), __esModule: true };
+	module.exports = { "default": __webpack_require__(83), __esModule: true };
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var core = __webpack_require__(16);
@@ -4346,71 +4297,62 @@
 
 
 /***/ }),
-/* 83 */
+/* 84 */
 /***/ (function(module, exports) {
 
 	"use strict";
 	
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	var vKHtag = exports.vKHtag = "3B7D8101";
+	var __isDebug__ = true;
+	var __isTop__ = true;
+	window.log = {
+		/** 输出红色日志 */
+		e: function e() {
+			if (__isDebug__ && arguments.length > 0) {
+				var arr = Array.prototype.slice.call(arguments);
+				this.__log("E", 'red', arr);
+			}
+		},
 	
-	var errorCode = exports.errorCode = {
-	    succuess: 0,
-	    fail: 1,
-	    timeout: 5
-	};
-	var rets = exports.rets = {
-	    ok: 0,
-	    nok: 1,
-	    nodevice: 2
-	};
+		/** 输出黄色日志 */
+		w: function w() {
+			if (__isDebug__ && arguments.length > 0) {
+				var arr = Array.prototype.slice.call(arguments);
+				this.__log("W", '#FFA500', arr);
+			}
+		},
 	
-	var codeSwTable = exports.codeSwTable = [{ sw: "6805", code: 2 }, { sw: "6802", code: 2 }, { sw: "9000", code: 0 }, { sw: "6e00", code: 1 }, { sw: "6d00", code: 1 }, { sw: "6100", code: 5 }, { sw: "6c00", code: 4 }, { sw: "6f00", code: 3 }];
+		/** 输出绿色日志 */
+		i: function i() {
+			if (__isTop__ && arguments.length > 0) {
+				var arr = Array.prototype.slice.call(arguments);
+				this.__log("I", '#00FF00', arr);
+			}
+		},
 	
-	var commDefine = exports.commDefine = {
-	    maxPacketLength: 50,
-	    headerLength: 8,
-	    packetControlLength: 6,
-	    fisrtPacket: "0001",
-	    midPacket: "0002",
-	    lastPacket: "0000",
-	    pilotTimeout: 2,
-	    normalTimeout: 5,
-	    cmdOK: "9000",
-	    cmdNG: "68",
-	    noDevice: "6805",
-	    appID: "6802",
-	    waitBtn: "6F00",
-	    errToLong: "6700",
-	    apduMaxLen: "510",
-	    strMaxLen: "ff"
-	};
-	var pinState = exports.pinState = {
-	    notset: "03",
-	    locked: "02",
-	    login: "01",
-	    logout: "00"
-	};
-	var lifeCycle = exports.lifeCycle = {
-	    init: "01",
-	    user: "02",
-	    factory: "04"
-	};
+		/** 输出黑色正常日志 */
+		d: function d() {
+			if (__isDebug__ && arguments.length > 0) {
+				var arr = Array.prototype.slice.call(arguments);
+				this.__log("D", '#000000', arr);
+			}
+		},
 	
-	var cmdTable = exports.cmdTable = {
-	    getsn: "8064000000",
-	    rand: "00840000",
-	    pinstate: "8064010000",
-	    cmdRecover: [{
-	        name: "CYB",
-	        cmd: "806002000c000000000100000080000000"
-	    }, {
-	        name: "BTC",
-	        cmd: "806002000c000000000100000080000000"
-	    }],
-	    getaddress: "8062020100"
+		/**
+	 * @param tagStr 没有标签时默认显示的
+	 * @param color 日志颜色
+	 * @param arr 日志参数
+	 */
+		__log: function __log(tagStr, color, arr) {
+			var tag = arr[0];
+			if (typeof tag == "string" || tag == null || tag == undefined) {
+				arr[0] = "%c " + arr[0];
+				arr.splice(1, 0, "color:" + color);
+			} else {
+				arr.splice(0, 0, "%c " + tagStr + " : ");
+				arr.splice(1, 0, "color:" + color);
+			}
+			console.log.apply(console, arr);
+		}
 	};
 
 /***/ })
