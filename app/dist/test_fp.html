@@ -1,17 +1,23 @@
 <head>
       <meta charset="utf-8">
       <script src="./renderer.js"></script>
+      <script src="./index.js"></script>
       <title>Fingerprint test</title>
 </head>
 
+
 <body width="100%" height="100%">
-<div>
-      <button onclick="openDevice()">openDevice</button>
-      <button onclick="GetRandom()">GetRandom</button>
-      <button onclick="CommTest()">commtest</button>
-      <button onclick="openDevice()">verify</button>
-      <button onclick="openDevice()">delete</button>
-</div>
+      <div>
+            <button onclick="fpEnroll()">Enroll</button>
+            <button onclick="fpVerify()">Verify</button>
+            <br>
+            <button onclick="setTimer(op)">StartGetState</button>
+            <button onclick="clearTimer()">StopGetState</button>
+            <br>
+            <button onclick="fpList()">List</button>
+            <button onclick="fpDelete()">Delete</button>
+            <button onclick="fpGetID()">GetID</button>
+      </div>
 </body>
 
 </html>

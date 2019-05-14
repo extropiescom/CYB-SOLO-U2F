@@ -1,49 +1,84 @@
-const {commDefine, rets,cmdTable} = require("./constants");
-const { check_res,parseAddr,get_tx_len } = require('./util.js');
+import { fp_ops } from "./constants";
+
+const { rets, cmdTable } = require("./constants");
+const { getResult, parseAddr, getTxLen,getHexID} = require('./util.js');
 const { sendcmd } = require('./u2f-io.js');
 
 export const retCode = {
 	ok: 0,
 	nok: 1,
 	nodevice: 2,
-	wait:3,
-	notsupprot:10
+	wait: 3,
+	notsupprot: 10
 }
 
 export const coins = {
-	CYB : "CYB",
-	BTC : "BTC"
+	CYB: "CYB",
+	BTC: "BTC"
 }
 
-export const connect = async () => {
-
-	let sn = "";
-	let code = rets.nok;
-
-	var res = await sendcmd(cmdTable.getsn);
-	let info = check_res(res);
-	code = info.code;
-	if(code!=rets.ok)
-		return {code};
-
-	sn =info.result.resData.substring(8,72);
-	return {code, result:{sn}};
+const enroll = async (fpID) => {
+	let code = getResult(
+		await sendcmd(cmdTable.fp.fpenroll)
+	).code;
+	return { code };
 
 }
-export const commtest = async () => {
+const verify = async (fpID, amount) => {
+	let code = getResult(
+		await sendcmd(cmdTable.fp.fpverify)
+	).code;
+	return { code };
+	
+}
 
-	let random = "";
-	let code = rets.nok;
-	let testData = "112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00"
-	var res = await sendcmd(cmdTable.commtest+"80"+testData);
-	let info = check_res(res);
-	code = info.code;
-	if(code!=rets.ok)
-		return {code};
+const getstate = async (op) => {
+	let info = getResult(
+		await sendcmd(cmdTable.fp.fpstate)
+	);
+	if (info.code != rets.ok)
+		return { code:info.code };
+	let state;
+	let id;
+	if(op===fp_ops.enroll){
+		state = info.result.resData.substring(0, 2);
+		return { code:info.code, result: { state } };
+	}
+	if(op===fp_ops.verify){
+		id = {index:info.result.resData.substring(2, 2), uid:info.result.resData.substring(4, 64)};	
+		return { code:info.code, result:{ state: info.result.resData.substring(0, 2), id } };
+	}
+	return { code:info.code };
+	
+}
 
-	random =info.result.resData.substring(0,16);
-	return {code, result:{random}};
+const del = async (fpID, isAll) => {
+	let code = getResult(
+		await sendcmd(cmdTable.fp.fpdelete_all)
+	).code;
+	return { code };
+}
 
+const list = async () => {
+	let info = getResult(
+		await sendcmd(cmdTable.fp.fplist)
+	);
+	if (info.code != rets.ok)
+		return { code: info.code};
+	let maxAmount = info.result.resData.substring(0, 2);
+	let fpTable = {maxAmount:10, table:info.result.resData.substring(2, 20)};
+	return { code:info.code, result:{fpTable} };
+}
+
+const getid = async (fpID, amount) => {
+	let hexid = getHexID(fpID.toString());
+	let info = getResult(
+		await sendcmd(cmdTable.fp.fpgetid+hexid)
+	);
+	if (info.code != rets.ok)
+		return { code: info.code};
+	let uid = { uid:info.result.resData.substring(0, 64)};
+	return { code:info.code, result:{uid} };
 }
 
 export const rand = async () => {
@@ -51,27 +86,46 @@ export const rand = async () => {
 	let random = "";
 	let code = rets.nok;
 
-	var res = await sendcmd(cmdTable.rand);
-	let info = check_res(res);
-	code = info.code;
-	if(code!=rets.ok)
-		return {code};
+	var res;
+	do {
+		res = await sendcmd(cmdTable.rand);
+	} while (1)
 
-	random =info.result.resData.substring(0,16);
-	return {code, result:{random}};
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	random = info.result.resData.substring(0, 2);
+	return { code, result: { random } };
 
 }
 
+export const getinfo = async () => {
+
+	let sn = "";
+	let code = rets.nok;
+
+	var res = await sendcmd(cmdTable.solo.getsn);
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	sn = info.result.resData.substring(8, 72);
+	return { code, result: { sn } };
+
+}
 
 export const checkpinstate = async () => {
 	let code = rets.nok;
 	let state;
 	let res = await sendcmd(cmdTable.pinstate);
-	let info = check_res(res);
+	let info = getResult(res);
 	code = info.code;
-	if(code===rets.ok)
-		state =info.result.resData.substring(0,2);
-	return {code, result:{state}};
+	if (code === rets.ok)
+		state = info.result.resData.substring(0, 2);
+	return { code, result: { state } };
 }
 
 
@@ -79,48 +133,52 @@ export const checkpinstate = async () => {
 export const getaddress = async (coin) => {
 	let cmd = cmdTable.cmdRecover[coin];
 	let code;
-	if(!cmd)
-		return {code: retCode.notsupprot};
+	if (!cmd)
+		return { code: retCode.notsupprot };
 	let res = await sendcmd(cmd);
-	let info = check_res(res);
+	let info = getResult(res);
 	code = info.code;
-	if(info.code!=rets.ok)
-		return {code};
+	if (info.code != rets.ok)
+		return { code };
 
 	res = await sendcmd(cmdTable.getaddress);
-	info = check_res(res);
+	info = getResult(res);
 	code = info.code;
-	if(info.code!=rets.ok)
-		return {code};
+	if (info.code != rets.ok)
+		return { code };
 	let address = info.result.resData.substring(0, info.result.resData.length - 4);
 	address = parseAddr(address);
-	return {code, result:{address}};
-	
+	return { code, result: { address } };
+
 
 }
 
-export const signTransaction = async (coin,tx) => {
+export const signTransaction = async (coin, tx) => {
 
 	window.log.w("enter sign txLen = %d\n", tx.length);
 	let code = rets.nok;
 	if (tx.length > 255) {
-		return {code};
+		return { code };
 	}
-	
-	var res = await sendcmd(cmdTable.sign[coin]+get_tx_len(tx)+tx);
-	let info = check_res(res);
+
+	var res = await sendcmd(cmdTable.sign[coin] + getTxLen(tx) + tx);
+	let info = getResult(res);
 	code = info.code;
-	if(info.code!=rets.ok)
-		return {code};
+	if (info.code != rets.ok)
+		return { code };
 
 	do {
 		res = await sendcmd(cmdTable.getbtn);
-		info = check_res(res);
-	} while (info.code==retCode.wait)
+		info = getResult(res);
+	} while (info.code == retCode.wait)
 
-	if(info.code!=rets.ok)
+	if (info.code != rets.ok)
 		return { code };
 
 	let sign = info.result.resData.substring(0, info.result.resData.length - 4);
-	return {code, result:{ sign } };
+	return { code, result: { sign } };
 }
+
+const fpapi = { enroll, verify, getstate, del, list, getid }
+const solo = { getinfo, checkpinstate, getaddress, signTransaction }
+export { fpapi, solo }

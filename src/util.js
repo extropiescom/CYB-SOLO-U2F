@@ -9,68 +9,27 @@ function convert_code(sw) {
 	}
 
 	code = codeSwTable["sw" + sw.toLowerCase()];
+	if (!code)
+		code = 10;
 	return code;
 }
-//when tx >256
-export function gen_multi() {
-	/*
-	var txLen = tx.length;
-	var tmpLen = txLen;
-	var firstBlock = 1;
-	var cmdSign="";
-	var strTxLen = "";
-	window.log.w("before while tmpLen = %d\n", tmpLen);
-	while(tmpLen>0)
-	{
-		window.log.w("in while tmpLen = %d\n", tmpLen);
-		if(tmpLen>commDefine.apduMaxLen)
-		{
-			strTxLen=commDefine.strMaxLen;
-			window.log.w("strTxLen = %s \n", strTxLen);
-			if(firstBlock==1)
-			{
-				window.log.w("firstBlock\n");
-				firstBlock = 0;
-				cmdSign = "80a00201" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-				tx = tx.substring(commDefine.apduMaxLen,tx.length);
-				tmpLen = tmpLen - commDefine.apduMaxLen;
-				window.log.w("firstBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-			}
-			else{
-				window.log.w("midBlock\n");
-				strTxLen=commDefine.apduMaxLen.toString(16);
-				cmdSign = "80a00202" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-				tx = tx.substring(commDefine.apduMaxLen,tx.length);
-				tmpLen = tmpLen - commDefine.apduMaxLen;
-				window.log.w("midBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-			}
-		}
-		else
-		{
-			window.log.w("lastBlock\n");
-			tmpLen = tmpLen/2;
-			strTxLen = tmpLen.toString(16);
-			if (strTxLen.length % 2 != 0)
-				strTxLen = "0" + strTxLen;
-			window.log.w("strTxLen = %s \n", strTxLen);
-			cmdSign = "80a00200" + strTxLen + tx;
-			tmpLen = 0;
-			window.log.w("lastBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-		}
-	 */
 
-}
-
-export function get_tx_len(tx)
-{
-	let tmpLen = tx.length/2;
+export function getTxLen(tx) {
+	let tmpLen = tx.length / 2;
 	let strTxLen = tmpLen.toString(16);
 	if (strTxLen.length % 2 != 0)
 		strTxLen = "0" + strTxLen;
 	return strTxLen;
 }
 
-export function check_res(res) {
+export function getHexID(id) {
+	let hexid = id.toString(16);
+	if (hexid.length % 2 != 0)
+		hexid = "0" + hexid;
+	return hexid;
+}
+
+export function getResult(res) {
 	let code = rets.nok;
 	window.log.w("res lenth %d, res %s", res.length, res);
 	if (res.length == 4) {//not 9000
@@ -102,9 +61,14 @@ export function check_res(res) {
 	return { code };
 }
 
+export function rand() {
+	let stack = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+	return stack.splice(parseInt(Math.random() * stack.length), 1)[0];
+}
+
 export function padding(send_data, send_len) {
 	for (var i = 0; i < 64 - 8 - send_len; i++) {
-		send_data = send_data + "1"
+		send_data = send_data + rand();
 	}
 	return send_data;
 }

@@ -13,15 +13,16 @@ export const rets = {
 
 export const fetchBase = 1000;
 
-export const codeSwTable = 
-    {
-        sw6805:2,
-        sw6802:2,
-        sw9000:0,
-        sw6e00:1,
-        sw6d00:1,
-        sw6f00:3
-    }
+export const codeSwTable =
+{
+    sw6805: 2,
+    sw6802: 2,
+    sw9000: 0,
+    sw6e00: 1,
+    sw6d00: 1,
+    sw6f00: 3,
+    sw6993: 9
+}
 
 
 export const commDefine = {
@@ -54,19 +55,49 @@ export const lifeCycle = {
     factory: "04"
 }
 
+export const fp_state = {
+    wait: "E0",
+    good: "E4",
+    bad: "E6",
+    fast: "E7",
+    done: "E1",
+    match: "F1",
+    notmatch: "F2",
+    matchwait: "F0",
+    matchfast: "F4"
+}
+
+export const fp_ops = {
+    enroll:"enroll",
+    verify:"verify"
+}
+
 export const cmdTable = {
-    getsn: "8064000000",
-    rand: "0084000008",
-    pinstate: "8064010000",
-    cmdRecover: {
-        CYB: "806002000c000000000100000080000000",
-        BTC: "806002000c000000000100000080000000"
+    solo: {
+        getsn: "8064000000",
+        rand: "0084000008",
+        pinstate: "8064010000",
+        cmdRecover: {
+            CYB: "806002000c000000000100000080000000",
+            BTC: "806002000c000000000100000080000000"
+        },
+        getaddress: "8062020100",
+        commtest: "00850000",
+        sign: {
+            CYB: "80a00200",
+            BTC: "80a00200"
+        },
+        getbtn: "80ae000000",
+
     },
-    getaddress: "8062020100",
-    commtest:"00850000",
-    sign:{
-        CYB: "80a00200",
-        BTC: "80a00200"
-    },
-    getbtn: "80ae000000"
+    fp: {
+        fpenroll: "00f1000000",
+        fpverify: "00f2000000",
+        fpstate: "00f3000000",
+        fplist: "00f4000000",
+        fpdelete: "00f5010000",
+        fpdelete_all: "00f5000000",
+        fpgetid: "00f6000001"
+    }
+
 }

@@ -100,7 +100,7 @@ export const sendcmd = async (send_buf) => {
 			sign(location.origin, vKHb32, [key], (response) => {
 				res = cmdCallback(response);
 				resolve(res);
-			}, commDefine.pilotTimeout);
+			}, commDefine.normalTimeout);
 		});
 
 

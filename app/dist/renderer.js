@@ -44,7 +44,7 @@
 /* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	var _regenerator = __webpack_require__(1);
 	
@@ -57,171 +57,169 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var _require = __webpack_require__(76),
-	    connect = _require.connect,
-	    rand = _require.rand,
-	    checkpinstate = _require.checkpinstate,
-	    getaddress = _require.getaddress,
-	    signTransaction = _require.signTransaction,
-	    retCode = _require.retCode,
-	    coins = _require.coins;
+	    fpapi = _require.fpapi;
 	
-	window.openDevice = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-	    var info;
-	    return _regenerator2.default.wrap(function _callee$(_context) {
-	        while (1) {
-	            switch (_context.prev = _context.next) {
-	                case 0:
-	                    window.log.i("start openDevice\n");
-	                    _context.next = 3;
-	                    return connect();
+	window.Enroll = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(fpID, callback) {
+			return _regenerator2.default.wrap(function _callee$(_context) {
+				while (1) {
+					switch (_context.prev = _context.next) {
+						case 0:
+							_context.t0 = callback;
+							_context.next = 3;
+							return fpapi.enroll(fpID);
 	
-	                case 3:
-	                    info = _context.sent;
+						case 3:
+							_context.t1 = _context.sent;
+							(0, _context.t0)(_context.t1);
 	
-	                    if (!(info.code === retCode.ok)) {
-	                        _context.next = 8;
-	                        break;
-	                    }
+						case 5:
+						case 'end':
+							return _context.stop();
+					}
+				}
+			}, _callee, undefined);
+		}));
 	
-	                    window.log.i("device connect success!", info);
-	                    _context.next = 10;
-	                    break;
+		return function (_x, _x2) {
+			return _ref.apply(this, arguments);
+		};
+	}();
 	
-	                case 8:
-	                    window.log.e("device connect fail!\n", info);
-	                    return _context.abrupt("return");
+	window.Verify = function () {
+		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(fpID, amount, callback) {
+			return _regenerator2.default.wrap(function _callee2$(_context2) {
+				while (1) {
+					switch (_context2.prev = _context2.next) {
+						case 0:
+							_context2.t0 = callback;
+							_context2.next = 3;
+							return fpapi.verify(fpID, amount);
 	
-	                case 10:
-	                case "end":
-	                    return _context.stop();
-	            }
-	        }
-	    }, _callee, undefined);
-	}));
+						case 3:
+							_context2.t1 = _context2.sent;
+							(0, _context2.t0)(_context2.t1);
 	
-	window.CheckPINState = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-	    var info;
-	    return _regenerator2.default.wrap(function _callee2$(_context2) {
-	        while (1) {
-	            switch (_context2.prev = _context2.next) {
-	                case 0:
-	                    window.log.i("check pin state\n");
-	                    info = void 0;
+						case 5:
+						case 'end':
+							return _context2.stop();
+					}
+				}
+			}, _callee2, undefined);
+		}));
 	
-	                case 2:
-	                    _context2.next = 4;
-	                    return checkpinstate();
+		return function (_x3, _x4, _x5) {
+			return _ref2.apply(this, arguments);
+		};
+	}();
 	
-	                case 4:
-	                    info = _context2.sent;
+	window.GetState = function () {
+		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(op, callback) {
+			return _regenerator2.default.wrap(function _callee3$(_context3) {
+				while (1) {
+					switch (_context3.prev = _context3.next) {
+						case 0:
+							_context3.t0 = callback;
+							_context3.next = 3;
+							return fpapi.getstate(op);
 	
-	                    if (!(info.code === retCode.ok)) {
-	                        _context2.next = 15;
-	                        break;
-	                    }
+						case 3:
+							_context3.t1 = _context3.sent;
+							(0, _context3.t0)(_context3.t1);
 	
-	                    if (!(info.result.state == 0)) {
-	                        _context2.next = 11;
-	                        break;
-	                    }
+						case 5:
+						case 'end':
+							return _context3.stop();
+					}
+				}
+			}, _callee3, undefined);
+		}));
 	
-	                    window.log.i("please unlock!\n");
-	                    return _context2.abrupt("continue", 17);
+		return function (_x6, _x7) {
+			return _ref3.apply(this, arguments);
+		};
+	}();
 	
-	                case 11:
-	                    window.log.i("unlock success!\n");
-	                    return _context2.abrupt("return");
+	window.GetID = function () {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(fpID, callback) {
+			return _regenerator2.default.wrap(function _callee4$(_context4) {
+				while (1) {
+					switch (_context4.prev = _context4.next) {
+						case 0:
+							_context4.t0 = callback;
+							_context4.next = 3;
+							return fpapi.getid(fpID);
 	
-	                case 13:
-	                    _context2.next = 17;
-	                    break;
+						case 3:
+							_context4.t1 = _context4.sent;
+							(0, _context4.t0)(_context4.t1);
 	
-	                case 15:
-	                    window.log.e("device connect fail!", info);
-	                    return _context2.abrupt("return");
+						case 5:
+						case 'end':
+							return _context4.stop();
+					}
+				}
+			}, _callee4, undefined);
+		}));
 	
-	                case 17:
-	                    if (1) {
-	                        _context2.next = 2;
-	                        break;
-	                    }
+		return function (_x8, _x9) {
+			return _ref4.apply(this, arguments);
+		};
+	}();
 	
-	                case 18:
-	                case "end":
-	                    return _context2.stop();
-	            }
-	        }
-	    }, _callee2, undefined);
-	}));
+	window.GetList = function () {
+		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(callback) {
+			return _regenerator2.default.wrap(function _callee5$(_context5) {
+				while (1) {
+					switch (_context5.prev = _context5.next) {
+						case 0:
+							_context5.t0 = callback;
+							_context5.next = 3;
+							return fpapi.list();
 	
-	window.GetAddress = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-	    var info;
-	    return _regenerator2.default.wrap(function _callee3$(_context3) {
-	        while (1) {
-	            switch (_context3.prev = _context3.next) {
-	                case 0:
-	                    window.log.i("start getaddress\n");
-	                    _context3.next = 3;
-	                    return getaddress(coins.CYB);
+						case 3:
+							_context5.t1 = _context5.sent;
+							(0, _context5.t0)(_context5.t1);
 	
-	                case 3:
-	                    info = _context3.sent;
+						case 5:
+						case 'end':
+							return _context5.stop();
+					}
+				}
+			}, _callee5, undefined);
+		}));
 	
-	                    if (!(info.code === retCode.ok)) {
-	                        _context3.next = 8;
-	                        break;
-	                    }
+		return function (_x10) {
+			return _ref5.apply(this, arguments);
+		};
+	}();
 	
-	                    window.log.i("device address success!", info);
-	                    _context3.next = 10;
-	                    break;
+	window.Delete = function () {
+		var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(fpID, isAll, callback) {
+			return _regenerator2.default.wrap(function _callee6$(_context6) {
+				while (1) {
+					switch (_context6.prev = _context6.next) {
+						case 0:
+							_context6.t0 = callback;
+							_context6.next = 3;
+							return fpapi.del(fpID, isAll);
 	
-	                case 8:
-	                    window.log.e("device connect fail!\n", info);
-	                    return _context3.abrupt("return");
+						case 3:
+							_context6.t1 = _context6.sent;
+							(0, _context6.t0)(_context6.t1);
 	
-	                case 10:
-	                case "end":
-	                    return _context3.stop();
-	            }
-	        }
-	    }, _callee3, undefined);
-	}));
+						case 5:
+						case 'end':
+							return _context6.stop();
+					}
+				}
+			}, _callee6, undefined);
+		}));
 	
-	window.SignTransaction = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-	    var tx, info;
-	    return _regenerator2.default.wrap(function _callee4$(_context4) {
-	        while (1) {
-	            switch (_context4.prev = _context4.next) {
-	                case 0:
-	                    window.log.i("start sign\n");
-	                    tx = "f24412812423440b8a5c02242c0100000000000000d60a0300ad0a0e6970686f6e652d78722d3531326b010003435942010003435942000000e80300000000000000d60aad0a010000000000000000000000";
-	                    _context4.next = 4;
-	                    return signTransaction(coins.CYB, tx);
-	
-	                case 4:
-	                    info = _context4.sent;
-	
-	                    if (!(info.code === retCode.ok)) {
-	                        _context4.next = 9;
-	                        break;
-	                    }
-	
-	                    window.log.i("device sign success!", info);
-	                    _context4.next = 11;
-	                    break;
-	
-	                case 9:
-	                    window.log.e("device sign fail!\n", info);
-	                    return _context4.abrupt("return");
-	
-	                case 11:
-	                case "end":
-	                    return _context4.stop();
-	            }
-	        }
-	    }, _callee4, undefined);
-	}));
+		return function (_x11, _x12, _x13) {
+			return _ref6.apply(this, arguments);
+		};
+	}();
 
 /***/ }),
 /* 1 */
@@ -2698,12 +2696,12 @@
 /* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.rand = exports.commtest = exports.connect = exports.coins = exports.retCode = undefined;
+	exports.solo = exports.fpapi = exports.signTransaction = exports.getaddress = exports.checkpinstate = exports.getinfo = exports.rand = exports.coins = exports.retCode = undefined;
 	
 	var _regenerator = __webpack_require__(1);
 	
@@ -2713,17 +2711,19 @@
 	
 	var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 	
+	var _constants = __webpack_require__(77);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var _require = __webpack_require__(77),
-	    commDefine = _require.commDefine,
 	    rets = _require.rets,
 	    cmdTable = _require.cmdTable;
 	
 	var _require2 = __webpack_require__(78),
-	    check_res = _require2.check_res,
+	    getResult = _require2.getResult,
 	    parseAddr = _require2.parseAddr,
-	    get_tx_len = _require2.get_tx_len;
+	    getTxLen = _require2.getTxLen,
+	    getHexID = _require2.getHexID;
 	
 	var _require3 = __webpack_require__(79),
 	    sendcmd = _require3.sendcmd;
@@ -2741,313 +2741,510 @@
 		BTC: "BTC"
 	};
 	
-	var connect = exports.connect = function () {
-		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-			var sn, code, res, info;
+	var enroll = function () {
+		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(fpID) {
+			var code;
 			return _regenerator2.default.wrap(function _callee$(_context) {
 				while (1) {
 					switch (_context.prev = _context.next) {
 						case 0:
-							sn = "";
-							code = rets.nok;
-							_context.next = 4;
-							return sendcmd(cmdTable.getsn);
+							_context.t0 = getResult;
+							_context.next = 3;
+							return sendcmd(cmdTable.fp.fpenroll);
 	
-						case 4:
-							res = _context.sent;
-							info = check_res(res);
+						case 3:
+							_context.t1 = _context.sent;
+							code = (0, _context.t0)(_context.t1).code;
+							return _context.abrupt("return", { code: code });
 	
-							code = info.code;
-	
-							if (!(code != rets.ok)) {
-								_context.next = 9;
-								break;
-							}
-	
-							return _context.abrupt('return', { code: code });
-	
-						case 9:
-	
-							sn = info.result.resData.substring(8, 72);
-							return _context.abrupt('return', { code: code, result: { sn: sn } });
-	
-						case 11:
-						case 'end':
+						case 6:
+						case "end":
 							return _context.stop();
 					}
 				}
 			}, _callee, undefined);
 		}));
 	
-		return function connect() {
+		return function enroll(_x) {
 			return _ref.apply(this, arguments);
 		};
 	}();
-	var commtest = exports.commtest = function () {
-		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
-			var random, code, testData, res, info;
+	var verify = function () {
+		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(fpID, amount) {
+			var code;
 			return _regenerator2.default.wrap(function _callee2$(_context2) {
 				while (1) {
 					switch (_context2.prev = _context2.next) {
 						case 0:
-							random = "";
-							code = rets.nok;
-							testData = "112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00";
-							_context2.next = 5;
-							return sendcmd(cmdTable.commtest + "80" + testData);
+							_context2.t0 = getResult;
+							_context2.next = 3;
+							return sendcmd(cmdTable.fp.fpverify);
 	
-						case 5:
-							res = _context2.sent;
-							info = check_res(res);
+						case 3:
+							_context2.t1 = _context2.sent;
+							code = (0, _context2.t0)(_context2.t1).code;
+							return _context2.abrupt("return", { code: code });
 	
-							code = info.code;
-	
-							if (!(code != rets.ok)) {
-								_context2.next = 10;
-								break;
-							}
-	
-							return _context2.abrupt('return', { code: code });
-	
-						case 10:
-	
-							random = info.result.resData.substring(0, 16);
-							return _context2.abrupt('return', { code: code, result: { random: random } });
-	
-						case 12:
-						case 'end':
+						case 6:
+						case "end":
 							return _context2.stop();
 					}
 				}
 			}, _callee2, undefined);
 		}));
 	
-		return function commtest() {
+		return function verify(_x2, _x3) {
 			return _ref2.apply(this, arguments);
 		};
 	}();
 	
-	var rand = exports.rand = function () {
-		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
-			var random, code, res, info;
+	var getstate = function () {
+		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(op) {
+			var info, state, id;
 			return _regenerator2.default.wrap(function _callee3$(_context3) {
 				while (1) {
 					switch (_context3.prev = _context3.next) {
 						case 0:
-							random = "";
-							code = rets.nok;
-							_context3.next = 4;
-							return sendcmd(cmdTable.rand);
+							_context3.t0 = getResult;
+							_context3.next = 3;
+							return sendcmd(cmdTable.fp.fpstate);
 	
-						case 4:
-							res = _context3.sent;
-							info = check_res(res);
+						case 3:
+							_context3.t1 = _context3.sent;
+							info = (0, _context3.t0)(_context3.t1);
 	
-							code = info.code;
-	
-							if (!(code != rets.ok)) {
-								_context3.next = 9;
+							if (!(info.code != rets.ok)) {
+								_context3.next = 7;
 								break;
 							}
 	
-							return _context3.abrupt('return', { code: code });
+							return _context3.abrupt("return", { code: info.code });
 	
-						case 9:
+						case 7:
+							state = void 0;
+							id = void 0;
 	
-							random = info.result.resData.substring(0, 16);
-							return _context3.abrupt('return', { code: code, result: { random: random } });
+							if (!(op === _constants.fp_ops.enroll)) {
+								_context3.next = 12;
+								break;
+							}
 	
-						case 11:
-						case 'end':
+							state = info.result.resData.substring(0, 2);
+							return _context3.abrupt("return", { code: info.code, result: { state: state } });
+	
+						case 12:
+							if (!(op === _constants.fp_ops.verify)) {
+								_context3.next = 15;
+								break;
+							}
+	
+							id = { index: info.result.resData.substring(2, 2), uid: info.result.resData.substring(4, 64) };
+							return _context3.abrupt("return", { code: info.code, result: { state: info.result.resData.substring(0, 2), id: id } });
+	
+						case 15:
+							return _context3.abrupt("return", { code: info.code });
+	
+						case 16:
+						case "end":
 							return _context3.stop();
 					}
 				}
 			}, _callee3, undefined);
 		}));
 	
-		return function rand() {
+		return function getstate(_x4) {
 			return _ref3.apply(this, arguments);
 		};
 	}();
 	
-	var checkpinstate = exports.checkpinstate = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
-			var code, state, res, info;
+	var del = function () {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(fpID, isAll) {
+			var code;
 			return _regenerator2.default.wrap(function _callee4$(_context4) {
 				while (1) {
 					switch (_context4.prev = _context4.next) {
 						case 0:
-							code = rets.nok;
-							state = void 0;
-							_context4.next = 4;
-							return sendcmd(cmdTable.pinstate);
+							_context4.t0 = getResult;
+							_context4.next = 3;
+							return sendcmd(cmdTable.fp.fpdelete_all);
 	
-						case 4:
-							res = _context4.sent;
-							info = check_res(res);
+						case 3:
+							_context4.t1 = _context4.sent;
+							code = (0, _context4.t0)(_context4.t1).code;
+							return _context4.abrupt("return", { code: code });
 	
-							code = info.code;
-							if (code === rets.ok) state = info.result.resData.substring(0, 2);
-							return _context4.abrupt('return', { code: code, result: { state: state } });
-	
-						case 9:
-						case 'end':
+						case 6:
+						case "end":
 							return _context4.stop();
 					}
 				}
 			}, _callee4, undefined);
 		}));
 	
-		return function checkpinstate() {
+		return function del(_x5, _x6) {
 			return _ref4.apply(this, arguments);
 		};
 	}();
 	
-	//coin: coins.CYB
-	var getaddress = exports.getaddress = function () {
-		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(coin) {
-			var cmd, code, res, info, address;
+	var list = function () {
+		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5() {
+			var info, maxAmount, fpTable;
 			return _regenerator2.default.wrap(function _callee5$(_context5) {
 				while (1) {
 					switch (_context5.prev = _context5.next) {
 						case 0:
-							cmd = cmdTable.cmdRecover[coin];
-							code = void 0;
+							_context5.t0 = getResult;
+							_context5.next = 3;
+							return sendcmd(cmdTable.fp.fplist);
 	
-							if (cmd) {
-								_context5.next = 4;
-								break;
-							}
-	
-							return _context5.abrupt('return', { code: retCode.notsupprot });
-	
-						case 4:
-							_context5.next = 6;
-							return sendcmd(cmd);
-	
-						case 6:
-							res = _context5.sent;
-							info = check_res(res);
-	
-							code = info.code;
+						case 3:
+							_context5.t1 = _context5.sent;
+							info = (0, _context5.t0)(_context5.t1);
 	
 							if (!(info.code != rets.ok)) {
-								_context5.next = 11;
+								_context5.next = 7;
 								break;
 							}
 	
-							return _context5.abrupt('return', { code: code });
+							return _context5.abrupt("return", { code: info.code });
 	
-						case 11:
-							_context5.next = 13;
-							return sendcmd(cmdTable.getaddress);
+						case 7:
+							maxAmount = info.result.resData.substring(0, 2);
+							fpTable = { maxAmount: 10, table: info.result.resData.substring(2, 20) };
+							return _context5.abrupt("return", { code: info.code, result: { fpTable: fpTable } });
 	
-						case 13:
-							res = _context5.sent;
-	
-							info = check_res(res);
-							code = info.code;
-	
-							if (!(info.code != rets.ok)) {
-								_context5.next = 18;
-								break;
-							}
-	
-							return _context5.abrupt('return', { code: code });
-	
-						case 18:
-							address = info.result.resData.substring(0, info.result.resData.length - 4);
-	
-							address = parseAddr(address);
-							return _context5.abrupt('return', { code: code, result: { address: address } });
-	
-						case 21:
-						case 'end':
+						case 10:
+						case "end":
 							return _context5.stop();
 					}
 				}
 			}, _callee5, undefined);
 		}));
 	
-		return function getaddress(_x) {
+		return function list() {
 			return _ref5.apply(this, arguments);
 		};
 	}();
 	
-	var signTransaction = exports.signTransaction = function () {
-		var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(coin, tx) {
-			var code, res, info, sign;
+	var getid = function () {
+		var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(fpID, amount) {
+			var hexid, info, uid;
 			return _regenerator2.default.wrap(function _callee6$(_context6) {
 				while (1) {
 					switch (_context6.prev = _context6.next) {
 						case 0:
-	
-							window.log.w("enter sign txLen = %d\n", tx.length);
-							code = rets.nok;
-	
-							if (!(tx.length > 255)) {
-								_context6.next = 4;
-								break;
-							}
-	
-							return _context6.abrupt('return', { code: code });
+							hexid = getHexID(fpID.toString());
+							_context6.t0 = getResult;
+							_context6.next = 4;
+							return sendcmd(cmdTable.fp.fpgetid + hexid);
 	
 						case 4:
-							_context6.next = 6;
-							return sendcmd(cmdTable.sign[coin] + get_tx_len(tx) + tx);
-	
-						case 6:
-							res = _context6.sent;
-							info = check_res(res);
-	
-							code = info.code;
+							_context6.t1 = _context6.sent;
+							info = (0, _context6.t0)(_context6.t1);
 	
 							if (!(info.code != rets.ok)) {
-								_context6.next = 11;
+								_context6.next = 8;
 								break;
 							}
 	
-							return _context6.abrupt('return', { code: code });
+							return _context6.abrupt("return", { code: info.code });
 	
-						case 11:
-							_context6.next = 13;
-							return sendcmd(cmdTable.getbtn);
+						case 8:
+							uid = { uid: info.result.resData.substring(0, 64) };
+							return _context6.abrupt("return", { code: info.code, result: { uid: uid } });
 	
-						case 13:
-							res = _context6.sent;
-	
-							info = check_res(res);
-	
-						case 15:
-							if (info.code == retCode.wait) {
-								_context6.next = 11;
-								break;
-							}
-	
-						case 16:
-							if (!(info.code != rets.ok)) {
-								_context6.next = 18;
-								break;
-							}
-	
-							return _context6.abrupt('return', { code: code });
-	
-						case 18:
-							sign = info.result.resData.substring(0, info.result.resData.length - 4);
-							return _context6.abrupt('return', { code: code, result: { sign: sign } });
-	
-						case 20:
-						case 'end':
+						case 10:
+						case "end":
 							return _context6.stop();
 					}
 				}
 			}, _callee6, undefined);
 		}));
 	
-		return function signTransaction(_x2, _x3) {
+		return function getid(_x7, _x8) {
 			return _ref6.apply(this, arguments);
 		};
 	}();
+	
+	var rand = exports.rand = function () {
+		var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7() {
+			var random, code, res, info;
+			return _regenerator2.default.wrap(function _callee7$(_context7) {
+				while (1) {
+					switch (_context7.prev = _context7.next) {
+						case 0:
+							random = "";
+							code = rets.nok;
+	
+						case 2:
+							_context7.next = 4;
+							return sendcmd(cmdTable.rand);
+	
+						case 4:
+							res = _context7.sent;
+	
+						case 5:
+							if (1) {
+								_context7.next = 2;
+								break;
+							}
+	
+						case 6:
+							info = getResult(res);
+	
+							code = info.code;
+	
+							if (!(code != rets.ok)) {
+								_context7.next = 10;
+								break;
+							}
+	
+							return _context7.abrupt("return", { code: code });
+	
+						case 10:
+	
+							random = info.result.resData.substring(0, 2);
+							return _context7.abrupt("return", { code: code, result: { random: random } });
+	
+						case 12:
+						case "end":
+							return _context7.stop();
+					}
+				}
+			}, _callee7, undefined);
+		}));
+	
+		return function rand() {
+			return _ref7.apply(this, arguments);
+		};
+	}();
+	
+	var getinfo = exports.getinfo = function () {
+		var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8() {
+			var sn, code, res, info;
+			return _regenerator2.default.wrap(function _callee8$(_context8) {
+				while (1) {
+					switch (_context8.prev = _context8.next) {
+						case 0:
+							sn = "";
+							code = rets.nok;
+							_context8.next = 4;
+							return sendcmd(cmdTable.solo.getsn);
+	
+						case 4:
+							res = _context8.sent;
+							info = getResult(res);
+	
+							code = info.code;
+	
+							if (!(code != rets.ok)) {
+								_context8.next = 9;
+								break;
+							}
+	
+							return _context8.abrupt("return", { code: code });
+	
+						case 9:
+	
+							sn = info.result.resData.substring(8, 72);
+							return _context8.abrupt("return", { code: code, result: { sn: sn } });
+	
+						case 11:
+						case "end":
+							return _context8.stop();
+					}
+				}
+			}, _callee8, undefined);
+		}));
+	
+		return function getinfo() {
+			return _ref8.apply(this, arguments);
+		};
+	}();
+	
+	var checkpinstate = exports.checkpinstate = function () {
+		var _ref9 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee9() {
+			var code, state, res, info;
+			return _regenerator2.default.wrap(function _callee9$(_context9) {
+				while (1) {
+					switch (_context9.prev = _context9.next) {
+						case 0:
+							code = rets.nok;
+							state = void 0;
+							_context9.next = 4;
+							return sendcmd(cmdTable.pinstate);
+	
+						case 4:
+							res = _context9.sent;
+							info = getResult(res);
+	
+							code = info.code;
+							if (code === rets.ok) state = info.result.resData.substring(0, 2);
+							return _context9.abrupt("return", { code: code, result: { state: state } });
+	
+						case 9:
+						case "end":
+							return _context9.stop();
+					}
+				}
+			}, _callee9, undefined);
+		}));
+	
+		return function checkpinstate() {
+			return _ref9.apply(this, arguments);
+		};
+	}();
+	
+	//coin: coins.CYB
+	var getaddress = exports.getaddress = function () {
+		var _ref10 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee10(coin) {
+			var cmd, code, res, info, address;
+			return _regenerator2.default.wrap(function _callee10$(_context10) {
+				while (1) {
+					switch (_context10.prev = _context10.next) {
+						case 0:
+							cmd = cmdTable.cmdRecover[coin];
+							code = void 0;
+	
+							if (cmd) {
+								_context10.next = 4;
+								break;
+							}
+	
+							return _context10.abrupt("return", { code: retCode.notsupprot });
+	
+						case 4:
+							_context10.next = 6;
+							return sendcmd(cmd);
+	
+						case 6:
+							res = _context10.sent;
+							info = getResult(res);
+	
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context10.next = 11;
+								break;
+							}
+	
+							return _context10.abrupt("return", { code: code });
+	
+						case 11:
+							_context10.next = 13;
+							return sendcmd(cmdTable.getaddress);
+	
+						case 13:
+							res = _context10.sent;
+	
+							info = getResult(res);
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context10.next = 18;
+								break;
+							}
+	
+							return _context10.abrupt("return", { code: code });
+	
+						case 18:
+							address = info.result.resData.substring(0, info.result.resData.length - 4);
+	
+							address = parseAddr(address);
+							return _context10.abrupt("return", { code: code, result: { address: address } });
+	
+						case 21:
+						case "end":
+							return _context10.stop();
+					}
+				}
+			}, _callee10, undefined);
+		}));
+	
+		return function getaddress(_x9) {
+			return _ref10.apply(this, arguments);
+		};
+	}();
+	
+	var signTransaction = exports.signTransaction = function () {
+		var _ref11 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee11(coin, tx) {
+			var code, res, info, sign;
+			return _regenerator2.default.wrap(function _callee11$(_context11) {
+				while (1) {
+					switch (_context11.prev = _context11.next) {
+						case 0:
+	
+							window.log.w("enter sign txLen = %d\n", tx.length);
+							code = rets.nok;
+	
+							if (!(tx.length > 255)) {
+								_context11.next = 4;
+								break;
+							}
+	
+							return _context11.abrupt("return", { code: code });
+	
+						case 4:
+							_context11.next = 6;
+							return sendcmd(cmdTable.sign[coin] + getTxLen(tx) + tx);
+	
+						case 6:
+							res = _context11.sent;
+							info = getResult(res);
+	
+							code = info.code;
+	
+							if (!(info.code != rets.ok)) {
+								_context11.next = 11;
+								break;
+							}
+	
+							return _context11.abrupt("return", { code: code });
+	
+						case 11:
+							_context11.next = 13;
+							return sendcmd(cmdTable.getbtn);
+	
+						case 13:
+							res = _context11.sent;
+	
+							info = getResult(res);
+	
+						case 15:
+							if (info.code == retCode.wait) {
+								_context11.next = 11;
+								break;
+							}
+	
+						case 16:
+							if (!(info.code != rets.ok)) {
+								_context11.next = 18;
+								break;
+							}
+	
+							return _context11.abrupt("return", { code: code });
+	
+						case 18:
+							sign = info.result.resData.substring(0, info.result.resData.length - 4);
+							return _context11.abrupt("return", { code: code, result: { sign: sign } });
+	
+						case 20:
+						case "end":
+							return _context11.stop();
+					}
+				}
+			}, _callee11, undefined);
+		}));
+	
+		return function signTransaction(_x10, _x11) {
+			return _ref11.apply(this, arguments);
+		};
+	}();
+	
+	var fpapi = { enroll: enroll, verify: verify, getstate: getstate, del: del, list: list, getid: getid };
+	var solo = { getinfo: getinfo, checkpinstate: checkpinstate, getaddress: getaddress, signTransaction: signTransaction };
+	exports.fpapi = fpapi;
+	exports.solo = solo;
 
 /***/ }),
 /* 77 */
@@ -3079,7 +3276,8 @@
 	    sw9000: 0,
 	    sw6e00: 1,
 	    sw6d00: 1,
-	    sw6f00: 3
+	    sw6f00: 3,
+	    sw6993: 9
 	};
 	
 	var commDefine = exports.commDefine = {
@@ -3112,21 +3310,51 @@
 	    factory: "04"
 	};
 	
+	var fp_state = exports.fp_state = {
+	    wait: "E0",
+	    good: "E4",
+	    bad: "E6",
+	    fast: "E7",
+	    done: "E1",
+	    match: "F1",
+	    notmatch: "F2",
+	    matchwait: "F0",
+	    matchfast: "F4"
+	};
+	
+	var fp_ops = exports.fp_ops = {
+	    enroll: "enroll",
+	    verify: "verify"
+	};
+	
 	var cmdTable = exports.cmdTable = {
-	    getsn: "8064000000",
-	    rand: "0084000008",
-	    pinstate: "8064010000",
-	    cmdRecover: {
-	        CYB: "806002000c000000000100000080000000",
-	        BTC: "806002000c000000000100000080000000"
+	    solo: {
+	        getsn: "8064000000",
+	        rand: "0084000008",
+	        pinstate: "8064010000",
+	        cmdRecover: {
+	            CYB: "806002000c000000000100000080000000",
+	            BTC: "806002000c000000000100000080000000"
+	        },
+	        getaddress: "8062020100",
+	        commtest: "00850000",
+	        sign: {
+	            CYB: "80a00200",
+	            BTC: "80a00200"
+	        },
+	        getbtn: "80ae000000"
+	
 	    },
-	    getaddress: "8062020100",
-	    commtest: "00850000",
-	    sign: {
-	        CYB: "80a00200",
-	        BTC: "80a00200"
-	    },
-	    getbtn: "80ae000000"
+	    fp: {
+	        fpenroll: "00f1000000",
+	        fpverify: "00f2000000",
+	        fpstate: "00f3000000",
+	        fplist: "00f4000000",
+	        fpdelete: "00f5010000",
+	        fpdelete_all: "00f5000000",
+	        fpgetid: "00f6000001"
+	    }
+	
 	};
 
 /***/ }),
@@ -3138,9 +3366,10 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.gen_multi = gen_multi;
-	exports.get_tx_len = get_tx_len;
-	exports.check_res = check_res;
+	exports.getTxLen = getTxLen;
+	exports.getHexID = getHexID;
+	exports.getResult = getResult;
+	exports.rand = rand;
 	exports.padding = padding;
 	exports.parseAddr = parseAddr;
 	
@@ -3158,66 +3387,24 @@
 		}
 	
 		code = codeSwTable["sw" + sw.toLowerCase()];
+		if (!code) code = 10;
 		return code;
 	}
-	//when tx >256
-	function gen_multi() {
-		/*
-	 var txLen = tx.length;
-	 var tmpLen = txLen;
-	 var firstBlock = 1;
-	 var cmdSign="";
-	 var strTxLen = "";
-	 window.log.w("before while tmpLen = %d\n", tmpLen);
-	 while(tmpLen>0)
-	 {
-	 	window.log.w("in while tmpLen = %d\n", tmpLen);
-	 	if(tmpLen>commDefine.apduMaxLen)
-	 	{
-	 		strTxLen=commDefine.strMaxLen;
-	 		window.log.w("strTxLen = %s \n", strTxLen);
-	 		if(firstBlock==1)
-	 		{
-	 			window.log.w("firstBlock\n");
-	 			firstBlock = 0;
-	 			cmdSign = "80a00201" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-	 			tx = tx.substring(commDefine.apduMaxLen,tx.length);
-	 			tmpLen = tmpLen - commDefine.apduMaxLen;
-	 			window.log.w("firstBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-	 		}
-	 		else{
-	 			window.log.w("midBlock\n");
-	 			strTxLen=commDefine.apduMaxLen.toString(16);
-	 			cmdSign = "80a00202" + strTxLen + tx.substring(0,commDefine.apduMaxLen);
-	 			tx = tx.substring(commDefine.apduMaxLen,tx.length);
-	 			tmpLen = tmpLen - commDefine.apduMaxLen;
-	 			window.log.w("midBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-	 		}
-	 	}
-	 	else
-	 	{
-	 		window.log.w("lastBlock\n");
-	 		tmpLen = tmpLen/2;
-	 		strTxLen = tmpLen.toString(16);
-	 		if (strTxLen.length % 2 != 0)
-	 			strTxLen = "0" + strTxLen;
-	 		window.log.w("strTxLen = %s \n", strTxLen);
-	 		cmdSign = "80a00200" + strTxLen + tx;
-	 		tmpLen = 0;
-	 		window.log.w("lastBlock tmpLen=%d cmdSign = %s\n",tmpLen,cmdSign);
-	 	}
-	  */
 	
-	}
-	
-	function get_tx_len(tx) {
+	function getTxLen(tx) {
 		var tmpLen = tx.length / 2;
 		var strTxLen = tmpLen.toString(16);
 		if (strTxLen.length % 2 != 0) strTxLen = "0" + strTxLen;
 		return strTxLen;
 	}
 	
-	function check_res(res) {
+	function getHexID(id) {
+		var hexid = id.toString(16);
+		if (hexid.length % 2 != 0) hexid = "0" + hexid;
+		return hexid;
+	}
+	
+	function getResult(res) {
 		var code = rets.nok;
 		window.log.w("res lenth %d, res %s", res.length, res);
 		if (res.length == 4) {
@@ -3247,9 +3434,14 @@
 		return { code: code };
 	}
 	
+	function rand() {
+		var stack = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+		return stack.splice(parseInt(Math.random() * stack.length), 1)[0];
+	}
+	
 	function padding(send_data, send_len) {
 		for (var i = 0; i < 64 - 8 - send_len; i++) {
-			send_data = send_data + "1";
+			send_data = send_data + rand();
 		}
 		return send_data;
 	}
@@ -3412,7 +3604,7 @@
 								sign(location.origin, vKHb32, [key], function (response) {
 									res = cmdCallback(response);
 									resolve(res);
-								}, commDefine.pilotTimeout);
+								}, commDefine.normalTimeout);
 							});
 	
 						case 19:

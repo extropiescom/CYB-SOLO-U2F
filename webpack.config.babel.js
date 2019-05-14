@@ -7,7 +7,7 @@ export default [
       target: 'web',
       devtool:  'source-map',
       entry: {
-        renderer: `./test/wallet.js`,
+        renderer: `./test/fp.js`,
       },
       output: {
         path: outputPath,
