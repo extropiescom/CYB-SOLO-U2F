@@ -1,4 +1,4 @@
-import { fp_ops } from "./constants";
+import { fp_ops, fp_state } from "./constants";
 
 const { rets, cmdTable } = require("./constants");
 const { getResult, parseAddr, getTxLen,getHexID} = require('./util.js');
@@ -16,8 +16,9 @@ export const coins = {
 	CYB: "CYB",
 	BTC: "BTC"
 }
-
+let lastState;
 const enroll = async (fpID) => {
+	lastState = "";
 	let code = getResult(
 		await sendcmd(cmdTable.fp.fpenroll)
 	).code;
@@ -25,6 +26,7 @@ const enroll = async (fpID) => {
 
 }
 const verify = async (fpID, amount) => {
+	lastState = "";
 	let code = getResult(
 		await sendcmd(cmdTable.fp.fpverify)
 	).code;
@@ -42,11 +44,18 @@ const getstate = async (op) => {
 	let id;
 	if(op===fp_ops.enroll){
 		state = info.result.resData.substring(0, 2);
+		if(state==lastState)
+		{	state = fp_state.idle;
+			return { code:info.code, result: { state } };
+		}
+		lastState = state;
 		return { code:info.code, result: { state } };
+		
 	}
 	if(op===fp_ops.verify){
-		id = {index:info.result.resData.substring(2, 2), uid:info.result.resData.substring(4, 64)};	
-		return { code:info.code, result:{ state: info.result.resData.substring(0, 2), id } };
+		id = {index:info.result.resData.substring(2, 4), uid:info.result.resData.substring(4, 68)};	
+		state = info.result.resData.substring(0, 2);
+		return { code:info.code, result:{ state, id } };
 	}
 	return { code:info.code };
 	
@@ -66,7 +75,7 @@ const list = async () => {
 	if (info.code != rets.ok)
 		return { code: info.code};
 	let maxAmount = info.result.resData.substring(0, 2);
-	let fpTable = {maxAmount:10, table:info.result.resData.substring(2, 20)};
+	let fpTable = {maxAmount:10, table:info.result.resData.substring(2, 22)};
 	return { code:info.code, result:{fpTable} };
 }
 
@@ -79,6 +88,14 @@ const getid = async (fpID, amount) => {
 		return { code: info.code};
 	let uid = { uid:info.result.resData.substring(0, 64)};
 	return { code:info.code, result:{uid} };
+}
+
+const abort = async () => {
+	lastState = "";
+	let code = getResult(
+		await sendcmd(cmdTable.fp.fpabort)
+	).code;
+	return { code };
 }
 
 export const rand = async () => {
@@ -179,6 +196,6 @@ export const signTransaction = async (coin, tx) => {
 	return { code, result: { sign } };
 }
 
-const fpapi = { enroll, verify, getstate, del, list, getid }
+const fpapi = { enroll, verify, getstate, del, list, getid,abort }
 const solo = { getinfo, checkpinstate, getaddress, signTransaction }
 export { fpapi, solo }

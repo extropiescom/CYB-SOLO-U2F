@@ -25,4 +25,7 @@ window.Delete = async (fpID,isAll,callback) => {
 	callback(await fpapi.del(fpID,isAll));
 }
 
+window.Abort = async (callback) => {
+	callback(await fpapi.abort());
+}
 

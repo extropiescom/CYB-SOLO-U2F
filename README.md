@@ -9,7 +9,8 @@ The API call the chrome u2f api which is designed for FIDO U2F authenticator, US
 |----dist //test web page and resource, as well as the packed js
 |------test_fp.html //test fingprint function
 |------test_wallet.html //test of wallet
-|------render.js //packed js
+|------index.js //es4 wrapper of renderer.js for fp
+|------renderer.js //packed js
 |--src
 |----b64.js //base64 encode and decode
 |----index.js //api implement

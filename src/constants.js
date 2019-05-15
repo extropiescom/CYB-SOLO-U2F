@@ -64,7 +64,8 @@ export const fp_state = {
     match: "F1",
     notmatch: "F2",
     matchwait: "F0",
-    matchfast: "F4"
+    matchfast: "F4",
+    idle:"FF"
 }
 
 export const fp_ops = {
@@ -97,7 +98,8 @@ export const cmdTable = {
         fplist: "00f4000000",
         fpdelete: "00f5010000",
         fpdelete_all: "00f5000000",
-        fpgetid: "00f6000001"
+        fpgetid: "00f6000001",
+        fpabort: "00f7000000"
     }
 
 }

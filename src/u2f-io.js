@@ -9,10 +9,10 @@ var isFinal = 0;
 
 function cmdCallback(response) {
 	var res;
-	window.log.d("cmdCallback response.errorCode = %d\n", response.errorCode);
+	//window.log.d("cmdCallback response.errorCode = %d\n", response.errorCode);
 	if (!response.errorCode) {
 		if (!isFinal) {
-			window.log.d("not final\n");
+			//window.log.d("not final\n");
 			res = commDefine.cmdOK;
 			return res;
 		}
@@ -26,7 +26,7 @@ function cmdCallback(response) {
 		if (strcode.length % 2 != 0)
 			strcode = "0" + strcode;
 		res = commDefine.cmdNG + strcode;
-		window.log.d("error code =%s \n", res);
+		//window.log.d("error code =%s \n", res);
 	}
 	return res;
 }
@@ -41,7 +41,7 @@ export const sendcmd = async (send_buf) => {
 	var send_len = send_buf.length;
 	var pacBuf;
 	//final callback
-	window.log.d("enter sendcmd\n");
+	//window.log.d("enter sendcmd\n");
 	window.log.d("len =%d, send_buf = %s\n", send_buf.length, send_buf);
 	//org send_buf	
 	//header(8) +len(2) + 00 + packet_type(2) + data(50)
