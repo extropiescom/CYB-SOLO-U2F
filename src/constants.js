@@ -99,7 +99,8 @@ export const cmdTable = {
         fpdelete: "00f5010000",
         fpdelete_all: "00f5000000",
         fpgetid: "00f6000001",
-        fpabort: "00f7000000"
+        fpabort: "00f7000000",
+        fpsn: "8030000011"
     }
 
 }

@@ -97,6 +97,20 @@ const abort = async () => {
 	).code;
 	return { code };
 }
+const getsn = async () => {
+
+	let sn = "";
+	let code = rets.nok;
+
+	var res = await sendcmd(cmdTable.fp.fpsn);
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	sn = info.result.resData.substring(18, 36);
+	return { code, result: { sn } };
+}
 
 export const rand = async () => {
 
@@ -117,6 +131,8 @@ export const rand = async () => {
 	return { code, result: { random } };
 
 }
+
+
 
 export const getinfo = async () => {
 
@@ -196,6 +212,6 @@ export const signTransaction = async (coin, tx) => {
 	return { code, result: { sign } };
 }
 
-const fpapi = { enroll, verify, getstate, del, list, getid,abort }
+const fpapi = { enroll, verify, getstate, del, list, getid, abort,getsn }
 const solo = { getinfo, checkpinstate, getaddress, signTransaction }
 export { fpapi, solo }

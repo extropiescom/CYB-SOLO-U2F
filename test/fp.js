@@ -13,8 +13,8 @@ window.GetState = async (op,callback) =>{
 	callback(await fpapi.getstate(op));
 }
 
-window.GetID = async (fpID,callback) =>{
-	callback(await fpapi.getid(fpID));
+window.GetID = async (callback) =>{
+	callback(await fpapi.getid());
 }
 
 window.GetList = async (callback) => {
@@ -27,5 +27,9 @@ window.Delete = async (fpID,isAll,callback) => {
 
 window.Abort = async (callback) => {
 	callback(await fpapi.abort());
+}
+
+window.GetSN = async (callback) => {
+	callback(await fpapi.getsn());
 }
 

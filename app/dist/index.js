@@ -122,6 +122,16 @@ const fpGetID = async (nID) => {
     return info;
 }
 
+const fpGetSN = async () => {
+    const info = await new Promise((resolve) => {
+        GetSN((info) => {
+            resolve(info)
+        })
+    });
+    console.log("fpSN", info);
+    return info;
+}
+
 
 const fpDelete = async (nID, isALL) => {
     const info = await new Promise((resolve) => {

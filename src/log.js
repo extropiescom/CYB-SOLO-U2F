@@ -1,4 +1,4 @@
-let __isDebug__ = false;
+let __isDebug__ = true;
 let __isTop__ = true;
 window.log = {
 	/** 输出红色日志 */
