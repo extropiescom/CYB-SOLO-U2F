@@ -13,8 +13,8 @@ window.GetState = async (op,callback) =>{
 	callback(await fpapi.getstate(op));
 }
 
-window.GetID = async (callback) =>{
-	callback(await fpapi.getid());
+window.GetID = async (nID, callback) =>{
+	callback(await fpapi.getid(nID));
 }
 
 window.GetList = async (callback) => {

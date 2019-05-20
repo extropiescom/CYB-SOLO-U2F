@@ -141,14 +141,14 @@
 	}();
 	
 	window.GetID = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(callback) {
+		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(nID, callback) {
 			return _regenerator2.default.wrap(function _callee4$(_context4) {
 				while (1) {
 					switch (_context4.prev = _context4.next) {
 						case 0:
 							_context4.t0 = callback;
 							_context4.next = 3;
-							return fpapi.getid();
+							return fpapi.getid(nID);
 	
 						case 3:
 							_context4.t1 = _context4.sent;
@@ -162,7 +162,7 @@
 			}, _callee4, undefined);
 		}));
 	
-		return function (_x8) {
+		return function (_x8, _x9) {
 			return _ref4.apply(this, arguments);
 		};
 	}();
@@ -189,7 +189,7 @@
 			}, _callee5, undefined);
 		}));
 	
-		return function (_x9) {
+		return function (_x10) {
 			return _ref5.apply(this, arguments);
 		};
 	}();
@@ -216,7 +216,7 @@
 			}, _callee6, undefined);
 		}));
 	
-		return function (_x10, _x11, _x12) {
+		return function (_x11, _x12, _x13) {
 			return _ref6.apply(this, arguments);
 		};
 	}();
@@ -243,7 +243,7 @@
 			}, _callee7, undefined);
 		}));
 	
-		return function (_x13) {
+		return function (_x14) {
 			return _ref7.apply(this, arguments);
 		};
 	}();
@@ -270,7 +270,7 @@
 			}, _callee8, undefined);
 		}));
 	
-		return function (_x14) {
+		return function (_x15) {
 			return _ref8.apply(this, arguments);
 		};
 	}();
@@ -4637,7 +4637,7 @@
 
 	"use strict";
 	
-	var __isDebug__ = true;
+	var __isDebug__ = false;
 	var __isTop__ = true;
 	window.log = {
 		/** 输出红色日志 */
