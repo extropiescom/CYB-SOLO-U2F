@@ -153,7 +153,7 @@ export const getinfo = async () => {
 export const checkpinstate = async () => {
 	let code = rets.nok;
 	let state;
-	let res = await sendcmd(cmdTable.pinstate);
+	let res = await sendcmd(cmdTable.solo.pinstate);
 	let info = getResult(res);
 	code = info.code;
 	if (code === rets.ok)
@@ -164,7 +164,7 @@ export const checkpinstate = async () => {
 
 //coin: coins.CYB
 export const getaddress = async (coin) => {
-	let cmd = cmdTable.cmdRecover[coin];
+	let cmd = cmdTable.solo.cmdRecover[coin];
 	let code;
 	if (!cmd)
 		return { code: retCode.notsupprot };
@@ -174,7 +174,7 @@ export const getaddress = async (coin) => {
 	if (info.code != rets.ok)
 		return { code };
 
-	res = await sendcmd(cmdTable.getaddress);
+	res = await sendcmd(cmdTable.solo.getaddress);
 	info = getResult(res);
 	code = info.code;
 	if (info.code != rets.ok)
@@ -194,14 +194,14 @@ export const signTransaction = async (coin, tx) => {
 		return { code };
 	}
 
-	var res = await sendcmd(cmdTable.sign[coin] + getTxLen(tx) + tx);
+	var res = await sendcmd(cmdTable.solo.sign[coin] + getTxLen(tx) + tx);
 	let info = getResult(res);
 	code = info.code;
 	if (info.code != rets.ok)
 		return { code };
 
 	do {
-		res = await sendcmd(cmdTable.getbtn);
+		res = await sendcmd(cmdTable.solo.getbtn);
 		info = getResult(res);
 	} while (info.code == retCode.wait)
 

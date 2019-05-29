@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "u2f test",
-            "url": "https://192.168.3.26/CYB-SOLO-U2F/test_fp.html",
+            "url": "https://10.18.22.134/CYB-SOLO-U2F/test_wallet.html",
             "webRoot": "${workspaceFolder}"
         }
     ]

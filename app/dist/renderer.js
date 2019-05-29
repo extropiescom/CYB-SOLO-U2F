@@ -57,223 +57,158 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var _require = __webpack_require__(76),
-	    fpapi = _require.fpapi;
+	    solo = _require.solo,
+	    coins = _require.coins;
 	
-	window.Enroll = function () {
-		var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(fpID, callback) {
-			return _regenerator2.default.wrap(function _callee$(_context) {
-				while (1) {
-					switch (_context.prev = _context.next) {
-						case 0:
-							_context.t0 = callback;
-							_context.next = 3;
-							return fpapi.enroll(fpID);
+	var _require2 = __webpack_require__(77),
+	    rets = _require2.rets;
 	
-						case 3:
-							_context.t1 = _context.sent;
-							(0, _context.t0)(_context.t1);
+	window.openDevice = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
+	    var info;
+	    return _regenerator2.default.wrap(function _callee$(_context) {
+	        while (1) {
+	            switch (_context.prev = _context.next) {
+	                case 0:
+	                    window.log.i("start openDevice\n");
+	                    _context.next = 3;
+	                    return solo.getinfo();
 	
-						case 5:
-						case 'end':
-							return _context.stop();
-					}
-				}
-			}, _callee, undefined);
-		}));
+	                case 3:
+	                    info = _context.sent;
 	
-		return function (_x, _x2) {
-			return _ref.apply(this, arguments);
-		};
-	}();
+	                    window.log.i("device connect return!", info);
 	
-	window.Verify = function () {
-		var _ref2 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(fpID, amount, callback) {
-			return _regenerator2.default.wrap(function _callee2$(_context2) {
-				while (1) {
-					switch (_context2.prev = _context2.next) {
-						case 0:
-							_context2.t0 = callback;
-							_context2.next = 3;
-							return fpapi.verify(fpID, amount);
+	                case 5:
+	                case 'end':
+	                    return _context.stop();
+	            }
+	        }
+	    }, _callee, undefined);
+	}));
 	
-						case 3:
-							_context2.t1 = _context2.sent;
-							(0, _context2.t0)(_context2.t1);
+	window.CheckPINState = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2() {
+	    var info;
+	    return _regenerator2.default.wrap(function _callee2$(_context2) {
+	        while (1) {
+	            switch (_context2.prev = _context2.next) {
+	                case 0:
+	                    window.log.i("check pin state\n");
+	                    info = void 0;
 	
-						case 5:
-						case 'end':
-							return _context2.stop();
-					}
-				}
-			}, _callee2, undefined);
-		}));
+	                case 2:
+	                    _context2.next = 4;
+	                    return solo.checkpinstate();
 	
-		return function (_x3, _x4, _x5) {
-			return _ref2.apply(this, arguments);
-		};
-	}();
+	                case 4:
+	                    info = _context2.sent;
 	
-	window.GetState = function () {
-		var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(op, callback) {
-			return _regenerator2.default.wrap(function _callee3$(_context3) {
-				while (1) {
-					switch (_context3.prev = _context3.next) {
-						case 0:
-							_context3.t0 = callback;
-							_context3.next = 3;
-							return fpapi.getstate(op);
+	                    if (!(info.code === rets.ok)) {
+	                        _context2.next = 15;
+	                        break;
+	                    }
 	
-						case 3:
-							_context3.t1 = _context3.sent;
-							(0, _context3.t0)(_context3.t1);
+	                    if (!(info.result.state == 0)) {
+	                        _context2.next = 11;
+	                        break;
+	                    }
 	
-						case 5:
-						case 'end':
-							return _context3.stop();
-					}
-				}
-			}, _callee3, undefined);
-		}));
+	                    window.log.i("please unlock!\n");
+	                    return _context2.abrupt('continue', 17);
 	
-		return function (_x6, _x7) {
-			return _ref3.apply(this, arguments);
-		};
-	}();
+	                case 11:
+	                    window.log.i("unlock success!\n");
+	                    return _context2.abrupt('return');
 	
-	window.GetID = function () {
-		var _ref4 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4(nID, callback) {
-			return _regenerator2.default.wrap(function _callee4$(_context4) {
-				while (1) {
-					switch (_context4.prev = _context4.next) {
-						case 0:
-							_context4.t0 = callback;
-							_context4.next = 3;
-							return fpapi.getid(nID);
+	                case 13:
+	                    _context2.next = 17;
+	                    break;
 	
-						case 3:
-							_context4.t1 = _context4.sent;
-							(0, _context4.t0)(_context4.t1);
+	                case 15:
+	                    window.log.e("device connect fail!", info);
+	                    return _context2.abrupt('return');
 	
-						case 5:
-						case 'end':
-							return _context4.stop();
-					}
-				}
-			}, _callee4, undefined);
-		}));
+	                case 17:
+	                    if (1) {
+	                        _context2.next = 2;
+	                        break;
+	                    }
 	
-		return function (_x8, _x9) {
-			return _ref4.apply(this, arguments);
-		};
-	}();
+	                case 18:
+	                case 'end':
+	                    return _context2.stop();
+	            }
+	        }
+	    }, _callee2, undefined);
+	}));
 	
-	window.GetList = function () {
-		var _ref5 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee5(callback) {
-			return _regenerator2.default.wrap(function _callee5$(_context5) {
-				while (1) {
-					switch (_context5.prev = _context5.next) {
-						case 0:
-							_context5.t0 = callback;
-							_context5.next = 3;
-							return fpapi.list();
+	window.GetAddress = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3() {
+	    var info;
+	    return _regenerator2.default.wrap(function _callee3$(_context3) {
+	        while (1) {
+	            switch (_context3.prev = _context3.next) {
+	                case 0:
+	                    window.log.i("start getaddress\n");
+	                    _context3.next = 3;
+	                    return solo.getaddress(coins.CYB);
 	
-						case 3:
-							_context5.t1 = _context5.sent;
-							(0, _context5.t0)(_context5.t1);
+	                case 3:
+	                    info = _context3.sent;
 	
-						case 5:
-						case 'end':
-							return _context5.stop();
-					}
-				}
-			}, _callee5, undefined);
-		}));
+	                    if (!(info.code === rets.ok)) {
+	                        _context3.next = 8;
+	                        break;
+	                    }
 	
-		return function (_x10) {
-			return _ref5.apply(this, arguments);
-		};
-	}();
+	                    window.log.i("device address success!", info);
+	                    _context3.next = 10;
+	                    break;
 	
-	window.Delete = function () {
-		var _ref6 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee6(fpID, isAll, callback) {
-			return _regenerator2.default.wrap(function _callee6$(_context6) {
-				while (1) {
-					switch (_context6.prev = _context6.next) {
-						case 0:
-							_context6.t0 = callback;
-							_context6.next = 3;
-							return fpapi.del(fpID, isAll);
+	                case 8:
+	                    window.log.e("device connect fail!\n", info);
+	                    return _context3.abrupt('return');
 	
-						case 3:
-							_context6.t1 = _context6.sent;
-							(0, _context6.t0)(_context6.t1);
+	                case 10:
+	                case 'end':
+	                    return _context3.stop();
+	            }
+	        }
+	    }, _callee3, undefined);
+	}));
 	
-						case 5:
-						case 'end':
-							return _context6.stop();
-					}
-				}
-			}, _callee6, undefined);
-		}));
+	window.SignTransaction = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee4() {
+	    var tx, info;
+	    return _regenerator2.default.wrap(function _callee4$(_context4) {
+	        while (1) {
+	            switch (_context4.prev = _context4.next) {
+	                case 0:
+	                    window.log.i("start sign\n");
+	                    tx = "26e9bf2206a1d15c7e5b0100e8030000000000000080af0280af020a00000000000000000001040a7a68616e6773793133330343594203435942050500";
+	                    _context4.next = 4;
+	                    return solo.signTransaction(coins.CYB, tx);
 	
-		return function (_x11, _x12, _x13) {
-			return _ref6.apply(this, arguments);
-		};
-	}();
+	                case 4:
+	                    info = _context4.sent;
 	
-	window.Abort = function () {
-		var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee7(callback) {
-			return _regenerator2.default.wrap(function _callee7$(_context7) {
-				while (1) {
-					switch (_context7.prev = _context7.next) {
-						case 0:
-							_context7.t0 = callback;
-							_context7.next = 3;
-							return fpapi.abort();
+	                    if (!(info.code === rets.ok)) {
+	                        _context4.next = 9;
+	                        break;
+	                    }
 	
-						case 3:
-							_context7.t1 = _context7.sent;
-							(0, _context7.t0)(_context7.t1);
+	                    window.log.i("device sign success!", info);
+	                    _context4.next = 11;
+	                    break;
 	
-						case 5:
-						case 'end':
-							return _context7.stop();
-					}
-				}
-			}, _callee7, undefined);
-		}));
+	                case 9:
+	                    window.log.e("device sign fail!\n", info);
+	                    return _context4.abrupt('return');
 	
-		return function (_x14) {
-			return _ref7.apply(this, arguments);
-		};
-	}();
-	
-	window.GetSN = function () {
-		var _ref8 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee8(callback) {
-			return _regenerator2.default.wrap(function _callee8$(_context8) {
-				while (1) {
-					switch (_context8.prev = _context8.next) {
-						case 0:
-							_context8.t0 = callback;
-							_context8.next = 3;
-							return fpapi.getsn();
-	
-						case 3:
-							_context8.t1 = _context8.sent;
-							(0, _context8.t0)(_context8.t1);
-	
-						case 5:
-						case 'end':
-							return _context8.stop();
-					}
-				}
-			}, _callee8, undefined);
-		}));
-	
-		return function (_x15) {
-			return _ref8.apply(this, arguments);
-		};
-	}();
+	                case 11:
+	                case 'end':
+	                    return _context4.stop();
+	            }
+	        }
+	    }, _callee4, undefined);
+	}));
 
 /***/ }),
 /* 1 */
@@ -3212,7 +3147,7 @@
 							code = rets.nok;
 							state = void 0;
 							_context11.next = 4;
-							return sendcmd(cmdTable.pinstate);
+							return sendcmd(cmdTable.solo.pinstate);
 	
 						case 4:
 							res = _context11.sent;
@@ -3243,7 +3178,7 @@
 				while (1) {
 					switch (_context12.prev = _context12.next) {
 						case 0:
-							cmd = cmdTable.cmdRecover[coin];
+							cmd = cmdTable.solo.cmdRecover[coin];
 							code = void 0;
 	
 							if (cmd) {
@@ -3272,7 +3207,7 @@
 	
 						case 11:
 							_context12.next = 13;
-							return sendcmd(cmdTable.getaddress);
+							return sendcmd(cmdTable.solo.getaddress);
 	
 						case 13:
 							res = _context12.sent;
@@ -3326,7 +3261,7 @@
 	
 						case 4:
 							_context13.next = 6;
-							return sendcmd(cmdTable.sign[coin] + getTxLen(tx) + tx);
+							return sendcmd(cmdTable.solo.sign[coin] + getTxLen(tx) + tx);
 	
 						case 6:
 							res = _context13.sent;
@@ -3343,7 +3278,7 @@
 	
 						case 11:
 							_context13.next = 13;
-							return sendcmd(cmdTable.getbtn);
+							return sendcmd(cmdTable.solo.getbtn);
 	
 						case 13:
 							res = _context13.sent;
