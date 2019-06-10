@@ -22,12 +22,34 @@ export function getTxLen(tx) {
 	return strTxLen;
 }
 
+export function getHexLen(tx) {
+	let tmpLen = tx.length;
+	let strTxLen = tmpLen.toString(16);
+	if (strTxLen.length % 2 != 0)
+		strTxLen = "0" + strTxLen;
+	return strTxLen;
+}
+
+
 export function getHexID(id) {
 	let hexid = id.toString(16);
 	if (hexid.length % 2 != 0)
 		hexid = "0" + hexid;
 	return hexid;
 }
+
+export function strToAsc(str){
+	let ascstr = "";
+	let len = str.length;
+	for(var i =0;i<len; i++){
+		var tmp = str.charAt(i);
+		tmp = tmp.charCodeAt();
+		tmp = getHexID(tmp);
+		ascstr = ascstr + tmp;
+	}
+	return ascstr;
+}
+
 
 export function getResult(res) {
 	let code = rets.nok;

@@ -133,11 +133,12 @@ const fpGetSN = async () => {
 }
 
 
-const fpDelete = async (nID, isALL) => {
+const fpDelete = async (uID, isALL) => {
+    uID = "2D1A6B84ECBC83BBE9A692B6201E27D5C21A773D94837A4D5337AF9C6F80C0FA"; //! change it when use
     const info = await new Promise((resolve) => {
         Delete(
-            nID,
-            isALL,
+            uID,
+            false,
             (info) => {
                 resolve(info)
             })
@@ -154,5 +155,98 @@ const fpAbort = async () => {
             })
     });
     console.log("fpAbort", info);
+    return info;
+}
+
+const fpVerifyPIN = async () => {
+    let pin = "12345678";
+    let pin_wrong = "12345679";
+    let info = await new Promise((resolve) => {
+        VerifyPIN(
+            pin_wrong,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN not right", info);
+    info = await new Promise((resolve) => {
+        VerifyPIN(
+            pin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN right", info);
+    
+    return info;
+}
+
+const fpChangePIN = async () => {
+    let oldpin = "12345678";
+    let newpin = "12345679";
+    let info = await new Promise((resolve) => {
+        ChangePIN(
+            oldpin,
+            newpin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpChangePIN old->new", info);
+
+    info = await new Promise((resolve) => {
+        VerifyPIN(
+            oldpin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN old", info);
+    
+    info = await new Promise((resolve) => {
+        VerifyPIN(
+            newpin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN new", info);
+
+    info = await new Promise((resolve) => {
+        ChangePIN(
+            newpin,
+            oldpin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpChangePIN new -> old", info);
+
+    return info;
+}
+
+const fpWriteData = async () => {
+    let data = "202.4.135.234";
+    const info = await new Promise((resolve) => {
+        WriteData(
+            data,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpWriteData", info);
+    return info;
+}
+
+const fpReadData = async () => {
+    len = 15; //!should longer or euqal then write in data, cut by L+V's L
+    const info = await new Promise((resolve) => {
+        ReadData(
+            len,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpReadData", info);
     return info;
 }

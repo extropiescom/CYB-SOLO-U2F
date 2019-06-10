@@ -96,11 +96,15 @@ export const cmdTable = {
         fpverify: "00f2000000",
         fpstate: "00f3000000",
         fplist: "00f4000000",
-        fpdelete: "00f5010000",
+        fpdeleteuid: "00f5010120",
         fpdelete_all: "00f5000000",
         fpgetid: "00f6000001",
         fpabort: "00f7000000",
-        fpsn: "8030000011"
+        fpsn: "8030000011",
+        fpverifypin:"00200001",
+        fpchangepin:"00240001",
+        fpwritedata:"00d60000",
+        fpreaddata:"00b00000"
     }
 
 }

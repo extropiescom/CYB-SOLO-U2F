@@ -26,7 +26,7 @@ function cmdCallback(response) {
 		if (strcode.length % 2 != 0)
 			strcode = "0" + strcode;
 		res = commDefine.cmdNG + strcode;
-		//window.log.d("error code =%s \n", res);
+		window.log.d("error code =%s \n", res);
 	}
 	return res;
 }

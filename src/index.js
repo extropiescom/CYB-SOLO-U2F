@@ -1,7 +1,7 @@
 import { fp_ops, fp_state } from "./constants";
 
 const { rets, cmdTable } = require("./constants");
-const { getResult, parseAddr, getTxLen,getHexID} = require('./util.js');
+const { getResult, parseAddr, getTxLen,getHexID, strToAsc,getHexLen} = require('./util.js');
 const { sendcmd } = require('./u2f-io.js');
 
 export const retCode = {
@@ -9,6 +9,7 @@ export const retCode = {
 	nok: 1,
 	nodevice: 2,
 	wait: 3,
+	pinerr:4,
 	notsupprot: 10
 }
 
@@ -62,10 +63,22 @@ const getstate = async (op) => {
 }
 
 const del = async (fpID, isAll) => {
-	let code = getResult(
-		await sendcmd(cmdTable.fp.fpdelete_all)
-	).code;
-	return { code };
+	let code = "";
+	if(isAll)
+	{
+		code  = getResult(
+			await sendcmd(cmdTable.fp.fpdelete_all)
+		).code;
+		return { code };
+	}
+	else
+	{
+		code  = getResult(
+			await sendcmd(cmdTable.fp.fpdeleteuid+fpID)
+		).code;
+		return { code };
+	}
+
 }
 
 const list = async () => {
@@ -111,6 +124,139 @@ const getsn = async () => {
 	sn = info.result.resData.substring(18, 36);
 	return { code, result: { sn } };
 }
+
+const verifypin = async (pin) => {
+
+	let cmd = cmdTable.fp.fpverifypin;
+	let pinasc = strToAsc(pin);
+	let hexlen = getHexLen(pin);
+	cmd = cmd + hexlen + pinasc;
+	
+	let code = rets.nok;
+
+	var res = await sendcmd(cmd);
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok){
+		code = retCode.pinerr;
+	}
+	return { code };
+}
+
+const changepin = async (oldpin, newpin) => {
+
+	let cmd = cmdTable.fp.fpchangepin;
+	let pinoldasc = strToAsc(oldpin);
+	let pinnewasc = strToAsc(newpin);
+	let lenstr = oldpin+"1"+newpin;
+	let hexlen = getHexLen(lenstr);
+	cmd = cmd + hexlen+ pinoldasc + "ff" + pinnewasc;
+	let code = rets.nok;
+
+	var res = await sendcmd(cmd);
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		code = retCode.pinerr;
+	}
+	return { code };
+}
+
+const writedata = async (data) => {
+
+	let cmd = cmdTable.fp.fpwritedata;
+	let ascdata = strToAsc(data);
+	let hexlen = getHexLen(data);
+	let Apdulen = getHexLen(data+"1");
+	cmd = cmd + Apdulen + hexlen + ascdata;
+	let code = rets.nok;
+	var res = await sendcmd("00a4000000");
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	res = await sendcmd("00a40100021502");
+	info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	res = await sendcmd("00a40200025200");
+	info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	res = await sendcmd(cmd);
+	info = getResult(res);
+	code = info.code;
+	return { code };
+}
+
+const readdata = async (len) => {
+
+	
+	let code = rets.nok;
+	let hexlen = getHexID(len);
+	let cmd = cmdTable.fp.fpreaddata + hexlen;
+	var res = await sendcmd("00a4000000");
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	res = await sendcmd("00a40100021502");
+	info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	res = await sendcmd("00a40200025200");
+	info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+	{
+		return { code };
+	}
+
+	var res = await sendcmd(cmd);
+	info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	let data = info.result.resData.substring(0, info.result.resData.length);
+	let res_len = parseInt(data.substring(0,2),16);
+	if(res_len>len)
+	{
+		code = retCode.nok;
+		return { code };
+	}
+	let str = data.substring(2,data.length);
+	data = "";
+	for(var i=0;i<res_len;i++)
+	{
+		var tmp = str.substring(2*i, 2*i+2);
+		let charcode = parseInt(tmp,16);
+		data = data + String.fromCharCode(charcode);
+	}
+
+	return { code, result: { data } };
+}
+
+
 
 export const rand = async () => {
 
@@ -212,6 +358,6 @@ export const signTransaction = async (coin, tx) => {
 	return { code, result: { sign } };
 }
 
-const fpapi = { enroll, verify, getstate, del, list, getid, abort,getsn }
+const fpapi = { enroll, verify, getstate, del, list, getid, abort,getsn, verifypin, changepin, writedata, readdata }
 const solo = { getinfo, checkpinstate, getaddress, signTransaction }
 export { fpapi, solo }
