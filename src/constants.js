@@ -15,13 +15,16 @@ export const fetchBase = 1000;
 
 export const codeSwTable =
 {
-    sw6805: 2,
+    sw6805: 2,//timeout
     sw6802: 2,
     sw9000: 0,
     sw6e00: 1,
     sw6d00: 1,
     sw6f00: 3,
-    sw6993: 9
+    sw6993: 9,
+    sw6a84: 8, //finger full
+    sw6988: 4, //verify pin error
+    sw6983: 11,//pin lock
 }
 
 

@@ -3829,7 +3829,8 @@
 	    sw6e00: 1,
 	    sw6d00: 1,
 	    sw6f00: 3,
-	    sw6993: 9
+	    sw6993: 9,
+	    sw6a84: 8
 	};
 	
 	var commDefine = exports.commDefine = {

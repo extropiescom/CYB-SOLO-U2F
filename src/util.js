@@ -10,7 +10,7 @@ function convert_code(sw) {
 
 	code = codeSwTable["sw" + sw.toLowerCase()];
 	if (!code)
-		code = 10;
+		code = 15;
 	return code;
 }
 

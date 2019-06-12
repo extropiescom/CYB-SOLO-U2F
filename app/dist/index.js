@@ -134,7 +134,7 @@ const fpGetSN = async () => {
 
 
 const fpDelete = async (uID, isALL) => {
-    uID = "2D1A6B84ECBC83BBE9A692B6201E27D5C21A773D94837A4D5337AF9C6F80C0FA"; //! change it when use
+    uID = "CB2CECB5B14944595C6084130CACFA5B8A2FCC6D6366EB21959BCB7E6DD3A08F"; //! change it when use
     const info = await new Promise((resolve) => {
         Delete(
             uID,
@@ -226,7 +226,7 @@ const fpChangePIN = async () => {
 }
 
 const fpWriteData = async () => {
-    let data = "202.4.135.234";
+    let data = "123456712345671234567";
     const info = await new Promise((resolve) => {
         WriteData(
             data,
@@ -239,7 +239,7 @@ const fpWriteData = async () => {
 }
 
 const fpReadData = async () => {
-    len = 15; //!should longer or euqal then write in data, cut by L+V's L
+    len = 64; //!should longer or euqal then write in data, cut by L+V's L
     const info = await new Promise((resolve) => {
         ReadData(
             len,

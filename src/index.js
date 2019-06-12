@@ -10,7 +10,10 @@ export const retCode = {
 	nodevice: 2,
 	wait: 3,
 	pinerr:4,
-	notsupprot: 10
+	pinlocked:11,
+	fingerfull:8,
+	notsupprot: 10,
+	error:15
 }
 
 export const coins = {
@@ -137,9 +140,6 @@ const verifypin = async (pin) => {
 	var res = await sendcmd(cmd);
 	let info = getResult(res);
 	code = info.code;
-	if (code != rets.ok){
-		code = retCode.pinerr;
-	}
 	return { code };
 }
 
@@ -156,10 +156,6 @@ const changepin = async (oldpin, newpin) => {
 	var res = await sendcmd(cmd);
 	let info = getResult(res);
 	code = info.code;
-	if (code != rets.ok)
-	{
-		code = retCode.pinerr;
-	}
 	return { code };
 }
 
