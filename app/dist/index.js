@@ -225,8 +225,44 @@ const fpChangePIN = async () => {
     return info;
 }
 
+const fpReloadPIN = async () => {
+    let adminpin = "17Gs03F22qDW";
+    let oripin = "12345678";
+    let oldpin = "12345678";
+    let newpin = "12345679";
+
+    let info = await new Promise((resolve) => {
+        ChangePIN(
+            oldpin,
+            newpin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpChangePIN old->new", info);
+
+    info = await new Promise((resolve) => {
+        ReloadPIN(
+            adminpin,
+            oripin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpReloadPIN", info);
+
+    info = await new Promise((resolve) => {
+        VerifyPIN(
+            oripin,
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN ori", info);
+}
+
 const fpWriteData = async () => {
-    let data = "123456712345671234567";
+    let data = "https://119.57.117.216:8443";
     const info = await new Promise((resolve) => {
         WriteData(
             data,

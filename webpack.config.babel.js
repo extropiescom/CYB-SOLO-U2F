@@ -1,7 +1,7 @@
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
-const outputPath = path.join(__dirname, 'app', 'dist');
-
+//const outputPath = path.join(__dirname, 'app', 'dist');
+const outputPath = "/Users/chester/www";
 export default [
     {
       target: 'web',

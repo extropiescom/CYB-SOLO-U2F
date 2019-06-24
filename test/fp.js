@@ -41,6 +41,10 @@ window.ChangePIN = async (oldpin, newpin,callback) => {
 	callback(await fpapi.changepin(oldpin,newpin));
 }
 
+window.ReloadPIN = async (adminpin, newpin,callback) => {
+	callback(await fpapi.reloadpin(adminpin,newpin));
+}
+
 window.WriteData = async (data,callback) => {
 	callback(await fpapi.writedata(data));
 }
@@ -49,3 +53,4 @@ window.ReadData = async (len,callback) => {
 	callback(await fpapi.readdata(len));
 }
 
+ 

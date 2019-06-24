@@ -107,7 +107,8 @@ export const cmdTable = {
         fpverifypin:"00200001",
         fpchangepin:"00240001",
         fpwritedata:"00d60000",
-        fpreaddata:"00b00000"
+        fpreaddata:"00b00000",
+        fpreloadpin:"00250201"
     }
 
 }

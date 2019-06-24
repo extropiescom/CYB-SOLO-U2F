@@ -159,6 +159,22 @@ const changepin = async (oldpin, newpin) => {
 	return { code };
 }
 
+const reloadpin = async (adminpin, newpin) => {
+
+	let cmd = cmdTable.fp.fpreloadpin;
+	let pinadminasc = strToAsc(adminpin);
+	let pinnewasc = strToAsc(newpin);
+	let lenstr = adminpin+"1"+newpin;
+	let hexlen = getHexLen(lenstr);
+	cmd = cmd + hexlen+ pinadminasc + "ff" + pinnewasc;
+	let code = rets.nok;
+
+	var res = await sendcmd(cmd);
+	let info = getResult(res);
+	code = info.code;
+	return { code };
+}
+
 const writedata = async (data) => {
 
 	let cmd = cmdTable.fp.fpwritedata;
@@ -354,6 +370,6 @@ export const signTransaction = async (coin, tx) => {
 	return { code, result: { sign } };
 }
 
-const fpapi = { enroll, verify, getstate, del, list, getid, abort,getsn, verifypin, changepin, writedata, readdata }
+const fpapi = { enroll, verify, getstate, del, list, getid, abort,getsn, verifypin, changepin, writedata, readdata, reloadpin}
 const solo = { getinfo, checkpinstate, getaddress, signTransaction }
 export { fpapi, solo }
