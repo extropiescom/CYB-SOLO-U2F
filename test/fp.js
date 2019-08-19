@@ -33,8 +33,8 @@ window.GetSN = async (callback) => {
 	callback(await fpapi.getsn());
 }
 
-window.VerifyPIN = async (pin,callback) => {
-	callback(await fpapi.verifypin(pin));
+window.VerifyPIN = async (pin,mode,callback) => {
+	callback(await fpapi.verifypin(pin,mode));
 }
 
 window.ChangePIN = async (oldpin, newpin,callback) => {

@@ -128,9 +128,9 @@ const getsn = async () => {
 	return { code, result: { sn } };
 }
 
-const verifypin = async (pin) => {
+const verifypin = async (pin,mode) => {
 
-	let cmd = cmdTable.fp.fpverifypin;
+	let cmd = cmdTable.fp.fpverifypin+mode;
 	let pinasc = strToAsc(pin);
 	let hexlen = getHexLen(pin);
 	cmd = cmd + hexlen + pinasc;

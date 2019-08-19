@@ -104,7 +104,7 @@ export const cmdTable = {
         fpgetid: "00f6000001",
         fpabort: "00f7000000",
         fpsn: "8030000011",
-        fpverifypin:"00200001",
+        fpverifypin:"002000",
         fpchangepin:"00240001",
         fpwritedata:"00d60000",
         fpreaddata:"00b00000",

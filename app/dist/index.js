@@ -164,6 +164,7 @@ const fpVerifyPIN = async () => {
     let info = await new Promise((resolve) => {
         VerifyPIN(
             pin_wrong,
+            "01",
             (info) => {
                 resolve(info)
             })
@@ -172,6 +173,7 @@ const fpVerifyPIN = async () => {
     info = await new Promise((resolve) => {
         VerifyPIN(
             pin,
+            "01",
             (info) => {
                 resolve(info)
             })
@@ -180,7 +182,18 @@ const fpVerifyPIN = async () => {
     
     return info;
 }
-
+const fpVerifyAdminPIN = async () => {
+    let pin = "17Gs03F22qDW";
+    let info = await new Promise((resolve) => {
+        VerifyPIN(
+            pin,
+            "02",
+            (info) => {
+                resolve(info)
+            })
+    });
+    console.log("fpVerifyPIN Admin", info);
+}
 const fpChangePIN = async () => {
     let oldpin = "12345678";
     let newpin = "12345679";
@@ -197,6 +210,7 @@ const fpChangePIN = async () => {
     info = await new Promise((resolve) => {
         VerifyPIN(
             oldpin,
+            "01",
             (info) => {
                 resolve(info)
             })
@@ -206,6 +220,7 @@ const fpChangePIN = async () => {
     info = await new Promise((resolve) => {
         VerifyPIN(
             newpin,
+            "01",
             (info) => {
                 resolve(info)
             })
@@ -254,6 +269,7 @@ const fpReloadPIN = async () => {
     info = await new Promise((resolve) => {
         VerifyPIN(
             oripin,
+            "01",
             (info) => {
                 resolve(info)
             })
