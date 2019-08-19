@@ -95,12 +95,12 @@ export const cmdTable = {
 
     },
     fp: {
-        fpenroll: "00f1000000",
+        fpenroll: "00f10000000100",
         fpverify: "00f2000000",
         fpstate: "00f3000000",
         fplist: "00f4000000",
-        fpdeleteuid: "00f5010120",
-        fpdelete_all: "00f5000000",
+        fpdeleteuid: "00f501010000120",
+        fpdelete_all: "00f50000000100",
         fpgetid: "00f6000001",
         fpabort: "00f7000000",
         fpsn: "8030000011",
@@ -108,7 +108,10 @@ export const cmdTable = {
         fpchangepin:"00240001",
         fpwritedata:"00d60000",
         fpreaddata:"00b00000",
-        fpreloadpin:"00250201"
+        fpreloadpin:"00250201",
+        fpgetrand:"00f800000000",
+        fpsetpub:"00f9000000",
+        fpreloadadmin:"0026000000"
     }
 
 }

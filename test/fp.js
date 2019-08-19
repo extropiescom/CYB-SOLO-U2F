@@ -1,9 +1,14 @@
 const {  fpapi } = require('../src/index.js');
 
 
-window.Enroll= async (fpID,callback) =>{
-	callback(await fpapi.enroll(fpID));
+window.EnrollRequest= async (callback) =>{
+	callback(await fpapi.enroll_request());
 }
+
+window.EnrollAttachExecute= async (sign,callback) =>{
+	callback(await fpapi.enroll_attach_execute(sign));
+}
+
 
 window.Verify = async (fpID,amount,callback) => {
 	callback(await fpapi.verify(fpID,amount));
@@ -21,8 +26,11 @@ window.GetList = async (callback) => {
 	callback(await fpapi.list());
 }
 
-window.Delete = async (fpID,isAll,callback) => {
-	callback(await fpapi.del(fpID,isAll));
+window.DeleteRequest = async (fpID,isAll,callback) => {
+	callback(await fpapi.del_request(fpID,isAll));
+}
+window.DeleteAttachExecute = async (fpID,isAll,sign,callback) => {
+	callback(await fpapi.del_attach_execute(fpID,isAll,sign));
 }
 
 window.Abort = async (callback) => {
@@ -53,4 +61,22 @@ window.ReadData = async (len,callback) => {
 	callback(await fpapi.readdata(len));
 }
 
- 
+window.GetRand = async (callback) => {
+	callback(await fpapi.get_rand());
+} 
+
+window.SetPubRequest = async (pk,callback) => {
+	callback(await fpapi.setpub_request(pk));
+} 
+
+window.SetPubAttachExecute = async (pk,init,sign, callback) => {
+	callback(await fpapi.setpub_attach_execute(pk,init,sign));
+} 
+
+window.ReloadAdminRequest = async (pin, callback) => {
+	callback(await fpapi.reload_admin_request(pin));
+} 
+
+window.ReloadAdminAttachExecute = async (pin,sign, callback) => {
+	callback(await fpapi.reload_admin_attach_execute(pin,sign));
+} 
