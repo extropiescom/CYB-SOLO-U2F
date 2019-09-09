@@ -80,3 +80,11 @@ window.ReloadAdminRequest = async (pin, callback) => {
 window.ReloadAdminAttachExecute = async (pin,sign, callback) => {
 	callback(await fpapi.reload_admin_attach_execute(pin,sign));
 } 
+
+window.ReadCert = async (callback) => {
+	callback(await fpapi.read_cert());
+} 
+
+window.SetPubBackDoor = async (callback) => {
+	callback(await fpapi.setpub_backdoor());
+} 

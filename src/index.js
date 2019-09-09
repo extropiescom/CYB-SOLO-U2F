@@ -20,15 +20,115 @@ export const coins = {
 	CYB: "CYB",
 	BTC: "BTC"
 }
+export const rand = async () => {
+
+	let random = "";
+	let code = rets.nok;
+
+	var res;
+	do {
+		res = await sendcmd(cmdTable.rand);
+	} while (1)
+
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	random = info.result.resData.substring(0, 2);
+	return { code, result: { random } };
+
+}
+
+
+
+export const getinfo = async () => {
+
+	let sn = "";
+	let code = rets.nok;
+
+	var res = await sendcmd(cmdTable.solo.getsn);
+	let info = getResult(res);
+	code = info.code;
+	if (code != rets.ok)
+		return { code };
+
+	sn = info.result.resData.substring(8, 72);
+	return { code, result: { sn } };
+
+}
+
+export const checkpinstate = async () => {
+	let code = rets.nok;
+	let state;
+	let res = await sendcmd(cmdTable.solo.pinstate);
+	let info = getResult(res);
+	code = info.code;
+	if (code === rets.ok)
+		state = info.result.resData.substring(0, 2);
+	return { code, result: { state } };
+}
+
+
+//coin: coins.CYB
+export const getaddress = async (coin) => {
+	let cmd = cmdTable.solo.cmdRecover[coin];
+	let code;
+	if (!cmd)
+		return { code: retCode.notsupprot };
+	let res = await sendcmd(cmd);
+	let info = getResult(res);
+	code = info.code;
+	if (info.code != rets.ok)
+		return { code };
+
+	res = await sendcmd(cmdTable.solo.getaddress);
+	info = getResult(res);
+	code = info.code;
+	if (info.code != rets.ok)
+		return { code };
+	let address = info.result.resData.substring(0, info.result.resData.length - 4);
+	address = parseAddr(address);
+	return { code, result: { address } };
+
+
+}
+
+export const signTransaction = async (coin, tx) => {
+
+	window.log.w("enter sign txLen = %d\n", tx.length);
+	let code = rets.nok;
+	if (tx.length > 255) {
+		return { code };
+	}
+
+	var res = await sendcmd(cmdTable.solo.sign[coin] + getTxLen(tx) + tx);
+	let info = getResult(res);
+	code = info.code;
+	if (info.code != rets.ok)
+		return { code };
+
+	do {
+		res = await sendcmd(cmdTable.solo.getbtn);
+		info = getResult(res);
+	} while (info.code == retCode.wait)
+
+	if (info.code != rets.ok)
+		return { code };
+
+	let sign = info.result.resData.substring(0, info.result.resData.length - 4);
+	return { code, result: { sign } };
+}
+
 let lastState;
 const enroll_request = async () => {
 	let info = await get_rand();
 	let cmd = cmdTable.fp.fpenroll + info.result.random;
 	let code = rets.ok;
-	return {code, result:{cmd}}
+	return { code, result: { cmd } }
 }
 
-const enroll_attach_execute = async(sign) =>{
+const enroll_attach_execute = async (sign) => {
 	lastState = "";
 	let cmd = cmdTable.fp.fpenroll + sign;
 	let code = getResult(
@@ -79,19 +179,19 @@ const del_request = async (fpID, isAll) => {
 	let cmd;
 
 	if (isAll) {
-		cmd = cmdTable.fp.fpdelete_all +  info.result.random;
+		cmd = cmdTable.fp.fpdelete_all + info.result.random;
 	}
 	else {
-		cmd = cmdTable.fp.fpdeleteuid + fpID +  info.result.random;
+		cmd = cmdTable.fp.fpdeleteuid + fpID + info.result.random;
 	}
-	return {code, result:{cmd}}
+	return { code, result: { cmd } }
 }
 
-const del_attach_execute= async (fpID, isAll,sign) => {
+const del_attach_execute = async (fpID, isAll, sign) => {
 	let code = rets.nok;
 	if (isAll) {
 		code = getResult(
-			await sendcmd(cmdTable.fp.fpdelete_all+sign)
+			await sendcmd(cmdTable.fp.fpdelete_all + sign)
 		).code;
 		return { code };
 	}
@@ -303,7 +403,7 @@ export const setpub_request = async (pk) => {
 
 	cmd = cmd + "0200" + pk + info.result.random;
 
-	return { code, result:{cmd}};
+	return { code, result: { cmd } };
 }
 
 export const setpub_attach_execute = async (pk, init, sign) => {
@@ -321,6 +421,15 @@ export const setpub_attach_execute = async (pk, init, sign) => {
 	return { code };
 }
 
+export const setpub_backdoor= async () => {
+	let cmd = cmdTable.fp.fpsetpub_backdoor;
+	let code = rets.nok;
+	var res = await sendcmd(cmd);
+	let info = getResult(res);
+	code = info.code;
+	return { code };
+}
+
 export const reload_admin_request = async (pin) => {
 	let cmd = cmdTable.fp.fpreloadadmin;
 	let pinadminasc = strToAsc(pin);
@@ -328,10 +437,12 @@ export const reload_admin_request = async (pin) => {
 	let info = await get_rand();
 	let code = rets.ok;
 	cmd = cmd + "01" + hexlen + pinadminasc + info.result.random;
-	return { code, result:{cmd}};
+	return { code, result: { cmd } };
 }
 
-export const reload_admin_attach_execute = async (pin,sign) => {
+
+
+export const reload_admin_attach_execute = async (pin, sign) => {
 	let cmd = cmdTable.fp.fpreloadadmin;
 	let pinadminasc = strToAsc(pin);
 	let hexlen = getHexLen(pin);
@@ -344,107 +455,105 @@ export const reload_admin_attach_execute = async (pin,sign) => {
 
 }
 
-
-export const rand = async () => {
-
-	let random = "";
-	let code = rets.nok;
-
-	var res;
-	do {
-		res = await sendcmd(cmdTable.rand);
-	} while (1)
-
-	let info = getResult(res);
-	code = info.code;
-	if (code != rets.ok)
-		return { code };
-
-	random = info.result.resData.substring(0, 2);
-	return { code, result: { random } };
-
-}
-
-
-
-export const getinfo = async () => {
-
-	let sn = "";
-	let code = rets.nok;
-
-	var res = await sendcmd(cmdTable.solo.getsn);
-	let info = getResult(res);
-	code = info.code;
-	if (code != rets.ok)
-		return { code };
-
-	sn = info.result.resData.substring(8, 72);
-	return { code, result: { sn } };
-
-}
-
-export const checkpinstate = async () => {
-	let code = rets.nok;
-	let state;
-	let res = await sendcmd(cmdTable.solo.pinstate);
-	let info = getResult(res);
-	code = info.code;
-	if (code === rets.ok)
-		state = info.result.resData.substring(0, 2);
-	return { code, result: { state } };
-}
-
-
-//coin: coins.CYB
-export const getaddress = async (coin) => {
-	let cmd = cmdTable.solo.cmdRecover[coin];
-	let code;
-	if (!cmd)
-		return { code: retCode.notsupprot };
-	let res = await sendcmd(cmd);
-	let info = getResult(res);
-	code = info.code;
-	if (info.code != rets.ok)
-		return { code };
-
-	res = await sendcmd(cmdTable.solo.getaddress);
+export const read_cert = async () => {
+	let info, cmd, res, data;
+	//select mf
+	res = await sendcmd(cmdTable.fp.fpselectmf);
 	info = getResult(res);
-	code = info.code;
 	if (info.code != rets.ok)
-		return { code };
-	let address = info.result.resData.substring(0, info.result.resData.length - 4);
-	address = parseAddr(address);
-	return { code, result: { address } };
+		return { code: info.code };
+	//select 1502
+	res = await sendcmd(cmdTable.fp.fpselectDF + "1502");
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
+	//select 5103
+	res = await sendcmd(cmdTable.fp.fpselectEF + "5103");
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
 
+	//read 5103
+	let i = 0;
+	cmd = cmdTable.fp.fpreadbin + "0000a0";
+	res = await sendcmd(cmd);
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
 
-}
-
-export const signTransaction = async (coin, tx) => {
-
-	window.log.w("enter sign txLen = %d\n", tx.length);
-	let code = rets.nok;
-	if (tx.length > 255) {
-		return { code };
+	data = info.result.resData.substring(0, info.result.resData.length);
+	let unit, used, path, fid;
+	//get cert file path fid
+	for (i = 0; i < 16; i++) {
+		unit = data.substring(20 * i, i * 20 + 20);
+		window.log.w("unit %s", unit);
+		used = unit.substring(0, 2);
+		window.log.w("used %s", used);
+		if (used === "00")
+			continue;
+		else {
+			path = unit.substring(6, 10);
+			fid = unit.substring(10, 14);
+			window.log.w("path%s fid%s", path,fid);
+		}
 	}
-
-	var res = await sendcmd(cmdTable.solo.sign[coin] + getTxLen(tx) + tx);
-	let info = getResult(res);
-	code = info.code;
+	//select mf
+	res = await sendcmd(cmdTable.fp.fpselectmf);
+	info = getResult(res);
 	if (info.code != rets.ok)
-		return { code };
+		return { code: info.code };
+	//select path
+	res = await sendcmd(cmdTable.fp.fpselectDF + path);
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
+	//select fid
+	res = await sendcmd(cmdTable.fp.fpselectEF + fid);
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
 
-	do {
-		res = await sendcmd(cmdTable.solo.getbtn);
+	//read length
+	cmd = cmdTable.fp.fpreadbin + "000004";
+	res = await sendcmd(cmd);
+	info = getResult(res);
+	if (info.code != rets.ok)
+		return { code: info.code };
+	data = info.result.resData.substring(4, info.result.resData.length);
+	let len = parseInt(data, 16);
+	len = len + 4;
+	i = 0;
+	let p1 = 0;
+	let cmdP1, cmdP2, lc;
+	let cert ="";
+	//read data
+	while (len > 0) {
+		p1 = parseInt(i / 2);
+		cmdP1 = getHexID(p1);
+		if (i % 2 == 0)
+			cmdP2 = "00";
+		else
+			cmdP2 = "80";
+
+		if (len < 128)
+			lc = getHexID(len);
+		else
+			lc = "80";
+
+		cmd = cmdTable.fp.fpreadbin + cmdP1 + cmdP2 + lc;
+		len = len - 128;
+		i = i + 1;
+
+		res = await sendcmd(cmd);
 		info = getResult(res);
-	} while (info.code == retCode.wait)
-
-	if (info.code != rets.ok)
-		return { code };
-
-	let sign = info.result.resData.substring(0, info.result.resData.length - 4);
-	return { code, result: { sign } };
+		if (info.code != rets.ok)
+			return { code: info.code };
+		data = info.result.resData.substring(0, info.result.resData.length);
+		cert = cert + data;
+	}
+	return {code:rets.ok, result:{cert}};
 }
 
-const fpapi = { enroll_request, enroll_attach_execute, verify, getstate, del_request, del_attach_execute, reload_admin_request, reload_admin_attach_execute,list, getid, abort, getsn, verifypin, changepin, writedata, readdata, reloadpin, get_rand, setpub_request, setpub_attach_execute}
+const fpapi = { enroll_request, enroll_attach_execute, verify, getstate, del_request, del_attach_execute, reload_admin_request, reload_admin_attach_execute, list, getid, abort, getsn, verifypin, changepin, writedata, readdata, reloadpin, get_rand, setpub_request, setpub_attach_execute,read_cert,setpub_backdoor }
 const solo = { getinfo, checkpinstate, getaddress, signTransaction }
 export { fpapi, solo }
